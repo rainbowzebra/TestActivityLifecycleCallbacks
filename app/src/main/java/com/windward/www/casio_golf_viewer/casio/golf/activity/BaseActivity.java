@@ -12,13 +12,13 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
     public Context mContext;
     @Override
     public void setContentView(int layoutResID) {
-
         super.setContentView(layoutResID);
         mContext=this;
         ScreenUtil.initScale(findView(android.R.id.content));
         initView();
         initListener();
         initData();
+
     }
 
     @Override
