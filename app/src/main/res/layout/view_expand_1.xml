@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 展开后的布局 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/main_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="40px"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="スクロールで画面を下部の画面を表示スクロールで画面を下部の画面を表示(请替换文字)"/>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_a"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100px"
+        />
+
+    <TextView
+        android:layout_marginTop="100px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="スクロールで画面を下部の画面を表示スクロールで画面を下部の画面を表示(请替换文字)"/>
+
+    <ImageView
+        android:layout_width="614px"
+        android:layout_height="371px"
+        android:src="@drawable/img_b"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100px"
+        />
+
+</LinearLayout>

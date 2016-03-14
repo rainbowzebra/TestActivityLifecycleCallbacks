@@ -1,0 +1,261 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="pandingStyle">
+        <item name="android:background">@color/bg_color_white</item>
+        <item name="android:paddingLeft">36px</item>
+        <item name="android:paddingRight">36px</item>
+    </style>
+
+
+    <!--以下为ToolBar的style，用于toolbar.xml中  现在暂时不用-->
+    <style name="ToolbarTheme" parent="@android:style/Theme.Holo.Light">
+
+    </style>
+
+
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 这一行是为了防止可能出现的异常：java.lang.IllegalStateException: This Activity already has an action bar supplied by the window decor. Do not request Window.FEATURE_ACTION_BAR and set windowActionBar to false in your theme to use a Toolbar instead. -->
+        <item name="windowActionBar">false</item>
+        <!--windowActionModeOverlay属性是设置让toolbar重叠在Actionbar上，将其盖住；高版本请用第三行，低版本请用第二行-->
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <!-- toolbar（actionbar）颜色 -->
+        <item name="colorPrimary">#F7F7F7</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">#3A5FCD</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- SearchView -->
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+
+    </style>
+
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView" />
+
+
+    <style name="popupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/in</item>
+        <item name="android:windowExitAnimation">@anim/out</item>
+    </style>
+
+
+    <style name="dialog_style">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="dialog_style_test" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="AppBaseTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppBaseTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!-- 用于测试-->
+    <style name="mProgress_horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/progressbar_horizontal_1</item><!-- progress_horizontal -->
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:minHeight">20dip</item>
+        <item name="android:maxHeight">20dip</item>
+    </style>
+
+    <!-- 用于测试-->
+    <style name="MediaController_SeekBar" parent="android:Widget.SeekBar">
+        <item name="android:progressDrawable">@drawable/play_controller_seekbar</item>
+        <item name="android:indeterminateDrawable">@drawable/play_controller_seekbar</item>
+        <item name="android:minHeight">13dip</item>
+        <item name="android:maxHeight">13dip</item>
+        <item name="android:thumb">@drawable/ic_overflow_gr</item>//拖动的图标
+        <item name="android:thumbOffset">16dip</item>//保证滑块中心和进度条首尾两端的中心点是一致的
+        <item name="android:paddingLeft">16dip</item>//保证滑块显示全部，没有它滑块在首尾两端只会显示一半，左一半、右一半
+        <item name="android:paddingRight">16dip</item>//同上，控制右边的滑块能全部显示
+    </style>
+
+
+    <!-- 用于PlayVideoActivity中dialog_operate界面的Style-->
+    <style name="operate_LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">20px</item>
+        <item name="android:paddingBottom">20px</item>
+    </style>
+
+    <!-- 用于PlayVideoActivity中dialog_operate界面的Style-->
+    <style name="operate_textView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">55px</item>
+        <item name="android:paddingTop">10px</item>
+        <item name="android:paddingBottom">10px</item>
+        <item name="android:textColor">#1C1C1C</item>
+        <item name="android:textSize">50px</item>
+    </style>
+
+    <!-- 用于界面上方的title布局 30 30 -->
+    <style name="title_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">150px</item>
+        <item name="android:paddingLeft">58px</item>
+        <item name="android:paddingRight">58px</item>
+    </style>
+
+    <!-- 用于dialog_category-->
+    <style name="category_RelativeLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">20px</item>
+        <item name="android:paddingBottom">20px</item>
+    </style>
+
+    <!-- 用于dialog_category-->
+    <style name="category_TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">10px</item>
+        <item name="android:paddingBottom">10px</item>
+        <item name="android:layout_marginLeft">65px</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">#1C1C1C</item>
+    </style>
+
+
+    <!-- 用于dialog_edit-->
+    <style name="edit_TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">10px</item>
+        <item name="android:paddingBottom">10px</item>
+        <item name="android:textSize">55px</item>
+        <item name="android:textColor">#1C1C1C</item>
+        <item name="android:layout_marginTop">35px</item>
+    </style>
+
+
+    <!-- 用于dialog_introduce-->
+    <style name="introduce_TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">10px</item>
+        <item name="android:paddingBottom">10px</item>
+        <item name="android:textSize">55px</item>
+        <item name="android:textColor">#1C1C1C</item>
+        <item name="android:layout_marginTop">35px</item>
+    </style>
+
+    <!-- 用于view_media_controller-->
+    <style name="view_media_controller_ImageView">
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- 用于dialog_revolution-->
+    <style name="revolution_TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">10px</item>
+        <item name="android:paddingBottom">10px</item>
+        <item name="android:textSize">55px</item>
+        <item name="android:textColor">#949494</item>
+        <item name="android:layout_marginTop">35px</item>
+    </style>
+
+    <!-- 用于dialog_video_info-->
+    <style name="dialog_video_info_RelativeLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+       <item name="android:layout_marginTop">85px</item>
+    </style>
+
+    <!-- 用于dialog_video_info-->
+    <style name="dialog_video_info_left_TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">#1C1C1C</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <!-- 用于dialog_video_info-->
+    <style name="dialog_video_info_right_TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">#949494</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <!-- 用于自定义Dialog-->
+    <!-- @android:style/Theme.Dialog-->
+    <!-- @android:style/Theme.Holo.DialogWhenLarge-->
+    <!--  <item name="android:windowBackground">@null</item>-->
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
+    <!-- 用于DrawLineActivity-->
+    <style name="left_image_style">
+        <item name="android:layout_marginTop">@dimen/image_margin_top</item>
+        <item name="android:layout_width">90px</item>
+        <item name="android:layout_height">90px</item>
+    </style>
+    <!-- 用于DrawLineActivity-->
+    <style name="right_image_style">
+        <item name="android:layout_marginTop">@dimen/image_margin_top</item>
+        <item name="android:layout_width">90px</item>
+        <item name="android:layout_height">90px</item>
+    </style>
+
+    <!-- 用于dialog_category和dialog_edit_category-->
+    <style name="done_image_style">
+        <item name="android:layout_width">48px</item>
+        <item name="android:layout_height">36px</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_done</item>
+    </style>
+
+    <!-- 用于dialog_category和dialog_edit_category-->
+    <style name="upallow_image_style">
+        <item name="android:layout_width">36px</item>
+        <item name="android:layout_height">36px</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_upallow</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+</resources>

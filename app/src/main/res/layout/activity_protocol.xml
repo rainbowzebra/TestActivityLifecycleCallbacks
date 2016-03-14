@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.windward.www.casio_golf_viewer.casio.golf.activity.ProtocolActivity">
+
+    <TextView
+        android:id="@+id/protocolTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:layout_alignParentTop="true"
+        android:background="#F7F7F7"
+        android:gravity="center"
+        android:text="@string/protocoltitle"
+        android:textColor="#535353"
+        android:textSize="40px" />
+
+    <LinearLayout
+        android:id="@+id/protocolLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="250px"
+        android:layout_alignParentBottom="true"
+        android:background="#F7F7F7"
+        android:gravity="center"
+        android:padding="50px">
+
+        <TextView
+            android:id="@+id/unAgreeTextView"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#F7F7F7"
+            android:gravity="center"
+            android:text="@string/unagree"
+            android:textColor="#535353"
+            android:textSize="40px" />
+
+        <TextView
+            android:id="@+id/agreeTextView"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#416E4F"
+            android:gravity="center"
+            android:text="@string/agree"
+            android:textColor="#FDFDFE"
+            android:textSize="40px" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/protocolTitleTextView"
+        android:layout_above="@id/protocolLinearLayout">
+        <TextView
+            android:id="@+id/protocolContentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:text="This is protocolContent.This is protocolContent.This is protocolContent."
+            android:textColor="#535353"
+            android:textSize="40px" />
+    </ScrollView>
+
+</RelativeLayout>

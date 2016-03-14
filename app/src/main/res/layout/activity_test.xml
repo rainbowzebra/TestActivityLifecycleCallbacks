@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+
+
+    <SeekBar
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progressDrawable="@drawable/seekbarlayer"/>
+
+
+    <SeekBar
+        android:layout_marginTop="200px"
+        android:id="@+id/timeline"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:maxHeight="4.0dip"
+        android:minHeight="4.0dip"
+        android:progressDrawable="@drawable/po_seekbar"
+        android:thumb="@drawable/seekbar_thumb" />
+
+
+
+    <SeekBar
+        android:layout_marginTop="200px"
+        android:id="@+id/sb_detail_play_progress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:paddingLeft="15.0dip"
+        android:paddingRight="15.0dip"
+        android:progressDrawable="@drawable/progress_holo_light"
+        android:thumb="@drawable/detail_icon_schedule_ball" />
+
+    <SeekBar
+        android:layout_marginTop="200px"
+        android:id="@+id/setting_view_bright_seekbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/player_setting_bright_progressbar"
+        android:thumb="@drawable/player_settings_bright_thumb" />
+
+</LinearLayout>

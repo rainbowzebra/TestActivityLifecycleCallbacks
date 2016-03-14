@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#416C4E"
+    tools:context="com.windward.www.casio_golf_viewer.casio.golf.activity.LoadingActivity">
+
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:gravity="center_vertical"
+        android:layout_width="420px"
+        android:layout_height="270px"
+        android:paddingLeft="40px"
+        android:paddingRight="40px"
+        android:background="#000000"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="動画読み込み動画み動込み"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="35px"/>
+        <!--  android:indeterminateDrawable="@drawable/indeterminate"  -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="5px"
+            android:layout_marginTop="15px"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:progressDrawable="@drawable/progressbar_color"
+            android:indeterminate="false" />
+
+        <TextView
+            android:id="@+id/percentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30%"
+            android:textStyle="bold"
+            android:layout_marginTop="15px"
+            android:textColor="#ffffff"
+            android:layout_gravity="center_horizontal"
+            android:textSize="35px"/>
+    </LinearLayout>
+</RelativeLayout>

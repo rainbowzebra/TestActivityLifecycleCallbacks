@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="50px"
+        android:paddingRight="50px"
+        android:paddingTop="40px"
+        android:paddingBottom="40px"
+        android:background="#000000">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40px"
+        android:text="動画(需要替换文字)"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#949494"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50px"
+        android:text="動画の削除に対しての確確削除に対しての確(需要替换文字)"
+        android:textColor="#949494"
+        android:textStyle="bold"
+        android:layout_marginTop="50px"
+        />
+
+    <TextView
+        android:id="@+id/okTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:textSize="60px"
+        android:text="了解"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="60px"
+        android:background="@color/indicator"
+        android:gravity="center"
+        />
+
+    </LinearLayout>
+
+</LinearLayout>

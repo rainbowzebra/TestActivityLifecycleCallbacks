@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">CASIO_GOLF_VIEWER</string>
+    <string name="start">さっそくはじめる</string>
+    <string name="protocoltitle">ソフトウェア使用許諾契約</string>
+    <string name="agree">同意する</string>
+    <string name="unagree">同意しない</string>
+    <string name="maintitle">スイングー覧</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_open">打开</string>
+    <string name="drawer_close">关闭</string>
+    <string name="introduce_title">機能紹介</string>
+    <string name="license_title">ソフトウェア使用許諾契約</string>
+    <string name="information_title">ライセンス情報</string>
+    <string name="help_title">ヘルプ</string>
+    <string name="title_activity_delete_video">DeleteVideoActivity</string>
+    <string name="delete_title">動画を選択</string>
+    <string name="cut_title">動画をカット</string>
+    <string name="remove_collection_title">お気に入り動画を選択</string>
+    <string name="add_collection_title">お気に入りに動画を追加</string>
+    <string name="play_title">動画を見る</string>
+    <string name="compare_title">動画を比較</string>
+    <string name="drawline_title">ラインを引く</string>
+</resources>

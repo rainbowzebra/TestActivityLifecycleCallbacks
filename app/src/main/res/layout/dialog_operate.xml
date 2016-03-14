@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FDFDFE">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="70px"
+        android:paddingLeft="55px"
+        android:paddingTop="70px">
+
+        <LinearLayout
+            android:id="@+id/move_cut_LinearLayout"
+            style="@style/operate_LinearLayout"
+           >
+
+            <ImageView
+                android:layout_width="48px"
+                android:layout_height="48px"
+                android:src="@drawable/ic_movcut" />
+
+            <TextView
+                style="@style/operate_textView"
+                android:text="動画をカット"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/move_combine_LinearLayout"
+            style="@style/operate_LinearLayout"
+            >
+
+            <ImageView
+                android:layout_width="51px"
+                android:layout_height="36px"
+                android:src="@drawable/ic_combine" />
+
+            <TextView
+                style="@style/operate_textView"
+                android:text="動画にラインを焼き込む"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/move_reflect_LinearLayout"
+            style="@style/operate_LinearLayout"
+            >
+
+            <ImageView
+                android:layout_width="45px"
+                android:layout_height="54px"
+                android:src="@drawable/ic_reflect" />
+
+            <TextView
+                style="@style/operate_textView"
+                android:text="動画を反転"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/move_revolution_LinearLayout"
+            style="@style/operate_LinearLayout"
+           >
+
+            <ImageView
+                android:layout_width="54px"
+                android:layout_height="54px"
+                android:src="@drawable/ic_revolution" />
+
+            <TextView
+                style="@style/operate_textView"
+                android:text="動画を回転"
+                 />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/move_movtx_LinearLayout"
+            style="@style/operate_LinearLayout"
+           >
+
+            <ImageView
+                android:layout_width="51px"
+                android:layout_height="39px"
+                android:src="@drawable/ic_movtx" />
+
+            <TextView
+                style="@style/operate_textView"
+                android:text="動画情報を表示"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

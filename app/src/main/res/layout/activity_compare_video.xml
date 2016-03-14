@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    tools:context="com.windward.www.casio_golf_viewer.casio.golf.activity.PlayVideoActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/titleRelativeLayout"
+        style="@style/title_style"
+        android:background="@color/title_bg"
+        android:paddingLeft="58px"
+        android:paddingRight="58px">
+
+        <RelativeLayout
+            android:id="@+id/backRelativeLayout"
+            android:layout_width="200px"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/backImageView"
+                android:layout_width="39px"
+                android:layout_height="57px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back_gr" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/compare_title"
+            android:textSize="50px"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/selectRelativeLayout"
+            android:layout_width="60px"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="right">
+
+            <ImageView
+                android:id="@+id/selectImageView"
+                android:layout_width="57px"
+                android:layout_height="57px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_movselect_gr" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/editRelativeLayout"
+            android:layout_width="60px"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/selectRelativeLayout"
+            android:layout_marginRight="50px"
+            android:gravity="right">
+
+            <ImageView
+                android:id="@+id/editImageView"
+                android:layout_width="57px"
+                android:layout_height="57px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_pen_gr" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/compareRelativeLayout"
+            android:layout_width="60px"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/editRelativeLayout"
+            android:layout_marginRight="50px"
+            android:gravity="right">
+
+            <ImageView
+                android:id="@+id/compareImageView"
+                android:layout_width="51px"
+                android:layout_height="57px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_ichi_gr" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <include
+        layout="@layout/view_media_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"></include>
+
+
+</RelativeLayout>

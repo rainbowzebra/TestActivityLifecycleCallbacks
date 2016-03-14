@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FDFDFE"
+        android:orientation="vertical"
+        android:paddingLeft="55px"
+        android:paddingTop="70px"
+        android:paddingBottom="70px">
+
+        <TextView
+            android:id="@+id/edit_dialog_textView1"
+            style="@style/edit_TextView"
+            android:text="並び替え"
+             />
+
+        <TextView
+            android:id="@+id/edit_dialog_textView2"
+            style="@style/edit_TextView"
+            android:text="セットを削除"
+             />
+    </LinearLayout>
+</RelativeLayout>

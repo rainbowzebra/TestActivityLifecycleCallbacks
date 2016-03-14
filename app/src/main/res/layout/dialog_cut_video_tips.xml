@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="50px"
+    android:paddingRight="50px"
+    android:paddingTop="100px"
+    android:paddingBottom="50px"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="55px"
+        android:text="動画をカットしますか？"
+        android:textColor="#949494"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50px"
+        android:text="動画を指定の長さでカットしますか？カットすると元の長さの動画はデバイスから削除されます。"
+        android:textColor="#949494"
+        android:textStyle="bold"
+        android:layout_marginTop="50px"
+        />
+
+    <TextView
+        android:id="@+id/okTextView"
+        android:layout_width="match_parent"
+        android:layout_height="170px"
+        android:textSize="60px"
+        android:text="動画をカット"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="100px"
+        android:background="@color/indicator"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/cancelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="60px"
+        android:text="キャンセル"
+        android:textColor="@color/indicator"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:layout_marginTop="100px"
+        />
+
+
+</LinearLayout>

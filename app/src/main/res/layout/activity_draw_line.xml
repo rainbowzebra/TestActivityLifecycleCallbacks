@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    tools:context="com.windward.www.casio_golf_viewer.casio.golf.activity.PlayVideoActivity">
+
+    <!-- 以下为title-->
+    <RelativeLayout
+        android:id="@+id/titleRelativeLayout"
+        style="@style/title_style"
+        android:paddingRight="48px"
+        android:background="#262424"
+        >
+
+        <RelativeLayout
+            android:id="@+id/backRelativeLayout"
+            android:layout_width="200px"
+            android:layout_height="match_parent">s
+
+            <ImageView
+                android:id="@+id/backImageView"
+                android:layout_width="45px"
+                android:layout_height="45px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_close_wh" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/drawline_title"
+            android:textColor="@color/white"
+            android:textSize="50px"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/saveRelativeLayout"
+            android:layout_alignParentRight="true"
+            android:layout_width="110px"
+            android:gravity="right"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="right|center_vertical"
+                android:textColor="@color/white"
+                android:text="保存"
+                android:textSize="40px"
+                android:textStyle="normal" /> />
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/editImageView"
+            android:layout_width="51px"
+            android:layout_height="57px"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30px"
+            android:layout_toLeftOf="@id/saveRelativeLayout"
+            android:src="@drawable/ic_ichi_ble" />
+
+    </RelativeLayout>
+    <!-- 以上为title-->
+
+
+    <include layout="@layout/view_clean_draw"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100px"
+        />
+
+
+    <include
+        android:id="@+id/mediaController"
+        layout="@layout/view_media_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </include>
+
+
+    <RelativeLayout
+        android:id="@+id/drawLineRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="38px"
+        android:paddingRight="38px"
+        android:background="#161414"
+        android:layout_below="@id/titleRelativeLayout"
+        android:layout_above="@id/mediaController">
+
+        <RelativeLayout
+            android:background="#000000"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100px"
+            android:layout_width="300px"
+            android:layout_height="130px">
+            <ImageView
+                android:background="#424242"
+                android:layout_width="148px"
+                android:layout_alignParentLeft="true"
+                android:scaleType="center"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_delete_wh"/>
+            <ImageView
+                android:background="#424242"
+                android:layout_width="148px"
+                android:layout_height="match_parent"
+                android:scaleType="center"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_delete_wh"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/leftImageView"
+                style="@style/left_image_style"
+                android:src="@drawable/btn_e_on"/>
+            <LinearLayout
+                android:id="@+id/leftLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/left_image_style"
+                    android:src="@drawable/left_image2_selector"/>
+                <ImageView
+                    style="@style/left_image_style"
+                    android:src="@drawable/left_image3_selector"/>
+                <ImageView
+                    style="@style/left_image_style"
+                    android:src="@drawable/left_image4_selector"/>
+                <ImageView
+                    style="@style/left_image_style"
+                    android:src="@drawable/left_image5_selector"/>
+                <ImageView
+                    style="@style/left_image_style"
+                    android:src="@drawable/left_image6_selector"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/rightImageView"
+                style="@style/right_image_style"
+                android:src="@drawable/btn_4_on"/>
+            <LinearLayout
+                android:id="@+id/rightLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/right_image_style"
+                    android:src="@drawable/right_image2_selector"/>
+                <ImageView
+                    style="@style/right_image_style"
+                    android:src="@drawable/right_image3_selector"/>
+                <ImageView
+                    style="@style/right_image_style"
+                    android:src="@drawable/right_image4_selector"/>
+                <ImageView
+                    style="@style/right_image_style"
+                    android:src="@drawable/right_image5_selector"/>
+                <ImageView
+                    style="@style/right_image_style"
+                    android:src="@drawable/right_image6_selector"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <include layout="@layout/view_clean_draw"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/titleRelativeLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25px"
+        />
+
+
+</RelativeLayout>

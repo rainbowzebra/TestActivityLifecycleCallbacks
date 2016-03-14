@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingTop="50px"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/addImageView"
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:src="@drawable/ic_new" />
+
+    <ImageView
+        android:layout_width="57px"
+        android:layout_height="74px"
+        android:src="@drawable/ic_upallow_gray"
+        android:layout_marginTop="100px"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70px"
+        android:paddingLeft="250px"
+        android:paddingRight="250px"
+        android:text="ブラスボタンから２つの動画を比較するセットを作成しましょう。"
+        android:textColor="#949494" />
+
+
+</LinearLayout>

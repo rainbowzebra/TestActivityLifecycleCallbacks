@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="100px"
+    android:paddingBottom="80px"
+    android:background="@color/play_controller_bg"
+    >
+
+    <RelativeLayout
+        android:id="@+id/seekRelativeLayout"
+        android:paddingLeft="30px"
+        android:paddingRight="30px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- android:layout_height="120px" -->
+        <!-- android:thumb="@drawable/selector_thumb" -->
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="820px"
+            android:layout_height="100px"
+            android:thumb="@drawable/bar_gray"
+            android:progressDrawable="@drawable/play_controller_seekbar"
+            android:max="100"
+            android:progress="10"
+            android:thumbOffset="13px"
+            android:maxHeight="16dip"
+            android:minHeight="16dip"
+             />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+           android:layout_centerVertical="true"
+            android:layout_marginRight="40px"
+            android:gravity="center_vertical"
+            android:text="00:26:30"
+            android:textColor="#535353"
+            android:textSize="40px" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seekRelativeLayout"
+        android:layout_marginTop="50px"
+        >
+        <ImageView
+           style="@style/view_media_controller_ImageView"
+            android:src="@drawable/ic_skip_gr"
+            android:layout_width="45px"
+            android:layout_height="45px"
+            />
+        <ImageView
+            style="@style/view_media_controller_ImageView"
+            android:src="@drawable/ic_framebk_gr"
+            android:layout_width="63px"
+            android:layout_height="48px"
+             />
+        <ImageView
+            style="@style/view_media_controller_ImageView"
+            android:src="@drawable/ic_play_gr"
+            android:layout_width="42px"
+            android:layout_height="54px"
+             />
+        <ImageView
+            style="@style/view_media_controller_ImageView"
+            android:src="@drawable/ic_framego_gr"
+            android:layout_width="63px"
+            android:layout_height="48px"
+             />
+        <ImageView
+            style="@style/view_media_controller_ImageView"
+            android:src="@drawable/ic_x_gr"
+            android:layout_width="60px"
+            android:layout_height="48px"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

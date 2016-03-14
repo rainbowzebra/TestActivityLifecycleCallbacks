@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.windward.www.casio_golf_viewer">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppBaseTheme">
+        <activity android:name=".casio.golf.activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".casio.golf.activity.ChoseTwoVideoActivity" />
+        <activity android:name=".casio.golf.activity.GuideActivity" />
+        <activity android:name=".casio.golf.activity.ProtocolActivity" />
+        <activity android:name=".casio.golf.activity.MainActivity" />
+        <activity android:name=".casio.golf.activity.IntroduceActivity" />
+        <activity android:name=".casio.golf.activity.LoadingActivity" />
+        <activity android:name=".casio.golf.activity.LicenseActivity" />
+        <activity android:name=".casio.golf.activity.InformationActivity" />
+        <activity android:name=".casio.golf.activity.HelpActivity" />
+        <activity
+            android:name=".casio.golf.activity.DeleteOneVideoActivity"
+            android:label="@string/title_activity_delete_video"
+            android:theme="@style/AppBaseTheme" />
+        <activity android:name=".casio.golf.activity.CollectionAddActivity" />
+        <activity android:name=".casio.golf.activity.CollectionRemoveActivity" />
+        <activity android:name=".casio.golf.activity.TestActivity" />
+        <activity android:name=".casio.golf.activity.PlayVideoActivity" />
+        <activity android:name=".casio.golf.activity.CutVideoActivity" />
+        <activity android:name=".casio.golf.activity.DeleteTwoVideoActivity" />
+        <activity android:name=".casio.golf.activity.CompareVideoActivity" />
+        <activity android:name=".casio.golf.activity.DrawLineActivity"></activity>
+    </application>
+
+</manifest>

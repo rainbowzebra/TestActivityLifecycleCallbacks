@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="50px"
+    android:paddingRight="50px"
+    android:paddingTop="80px">
+
+    <RelativeLayout
+        android:id="@+id/closeVideoInfoRelativeLayout"
+        android:layout_width="100px"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/closeVideoInfoDialogImageView"
+            android:layout_width="45px"
+            android:layout_height="45px"
+            android:src="@drawable/ic_close_blk" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/dialog_video_info_RelativeLayout">
+
+        <TextView
+            style="@style/dialog_video_info_left_TextView"
+            android:text="ファイルNo" />
+
+        <TextView
+            style="@style/dialog_video_info_right_TextView"
+            android:text="CIMG0043.jpg" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/dialog_video_info_RelativeLayout">
+
+        <TextView
+            style="@style/dialog_video_info_left_TextView"
+            android:text="撮影日時" />
+
+        <TextView
+            style="@style/dialog_video_info_right_TextView"
+            android:text="2015.10.30" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/dialog_video_info_RelativeLayout">
+
+        <TextView
+            style="@style/dialog_video_info_left_TextView"
+            android:text="撮影モード" />
+
+        <TextView
+            style="@style/dialog_video_info_right_TextView"
+            android:text="屋外後方" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/dialog_video_info_RelativeLayout">
+
+        <TextView
+            style="@style/dialog_video_info_left_TextView"
+            android:text="fps" />
+
+        <TextView
+            style="@style/dialog_video_info_right_TextView"
+            android:text="120fps" />
+    </RelativeLayout>
+
+
+</LinearLayout>

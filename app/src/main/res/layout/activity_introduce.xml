@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_bg"
+    tools:context="com.windward.www.casio_golf_viewer.casio.golf.activity.IntroduceActivity">
+
+    <RelativeLayout
+        android:id="@+id/titleRelativeLayout"
+        style="@style/title_style"
+        android:background="@color/main_bg">
+
+        <RelativeLayout
+            android:id="@+id/backRelativeLayout"
+            android:layout_width="200px"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/backImageView"
+                android:layout_width="39px"
+                android:layout_height="57px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_back_gr" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/introduce_title"
+            android:textSize="50px"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleRelativeLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.windward.www.casio_golf_viewer.casio.golf.views.CollapseLinearlayoutView
+                android:id="@+id/collapseLinearlayoutView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.windward.www.casio_golf_viewer.casio.golf.views.CollapseLinearlayoutView
+                android:id="@+id/collapseLinearlayoutView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.windward.www.casio_golf_viewer.casio.golf.views.CollapseLinearlayoutView
+                android:id="@+id/collapseLinearlayoutView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

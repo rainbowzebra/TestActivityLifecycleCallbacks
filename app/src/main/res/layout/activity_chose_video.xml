@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.windward.www.casio_golf_viewer.casio.golf.activity.LicenseActivity">
+
+    <RelativeLayout
+        android:id="@+id/titleRelativeLayout"
+        style="@style/title_style"
+        android:background="@color/indicator"
+       >
+        <RelativeLayout
+            android:id="@+id/backRelativeLayout"
+            android:layout_width="200px"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/backImageView"
+                android:layout_width="45px"
+                android:layout_height="45px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_close_wh"/>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="50px"
+            android:text="@string/delete_title"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"/>
+
+        <RelativeLayout
+            android:id="@+id/nextRelativeLayout"
+            android:layout_width="200px"
+            android:layout_alignParentRight="true"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/nextTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="40px"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:text="次へ"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

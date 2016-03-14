@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/titleRelativeLayout"
+        android:padding="30px"
+        android:layout_width="match_parent"
+        android:layout_height="170px"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/numberTextView"
+            android:layout_width="70px"
+            android:layout_height="70px"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:background="@drawable/circle_textview"
+            android:clickable="false"
+            android:text="1"
+            android:textStyle="bold"
+            android:textColor="#EBEFEC"
+            android:textSize="35px" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/numberTextView"
+            android:layout_marginLeft="30px"
+            android:clickable="false"
+            android:text="This is title"
+            android:textColor="#1C1C1C"
+            android:textSize="46px" />
+
+
+        <ImageView
+            android:id="@+id/arrowImageView"
+            android:layout_width="48px"
+            android:layout_height="27px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_an_xxh"
+            android:clickable="false"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_below="@id/titleRelativeLayout"
+        android:background="@color/main_bg"
+        android:clickable="false"
+        />
+
+    <!-- 隐藏部分,点击箭头后显示-->
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/contentRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </RelativeLayout>
+
+</LinearLayout>

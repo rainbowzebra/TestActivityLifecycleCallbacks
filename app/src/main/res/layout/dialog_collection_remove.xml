@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="50px"
+    android:paddingRight="50px"
+    android:paddingTop="80px"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="60px"
+        android:text="動画の削除に対しての確(需要替换文字)"
+        android:textColor="#949494"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50px"
+        android:text="動画の削除に対しての確削除に対しての確削除に対しての確削除に対しての確削除に対しての確(需要替换文字)"
+        android:textColor="#949494"
+        android:textStyle="bold"
+        android:layout_marginTop="50px"
+        />
+
+    <TextView
+        android:id="@+id/okTextView"
+        android:layout_width="match_parent"
+        android:layout_height="170px"
+        android:textSize="60px"
+        android:text="削除"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="100px"
+        android:background="#DD0060"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/cancelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="60px"
+        android:text="キャンセル"
+        android:textColor="@color/indicator"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="100px"
+        />
+
+
+</LinearLayout>

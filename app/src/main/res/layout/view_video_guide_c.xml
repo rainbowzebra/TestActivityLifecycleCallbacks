@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical"
+    android:paddingLeft="50px"
+    android:paddingRight="50px"
+    android:paddingTop="50px">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:id="@+id/closeRelativeLayout"
+            android:layout_width="100px"
+            android:layout_height="100px">
+
+            <ImageView
+                android:id="@+id/closeImageView"
+                android:layout_width="36px"
+                android:layout_height="36px"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_close_gr" />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="動画の使い方"
+            android:textColor="@color/white"
+            android:textSize="38px" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30px"
+        android:paddingRight="30px"
+        android:layout_marginTop="70px"
+       android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="47px"
+        android:text="ドラックで動画の再生位置を好きなところに移動する事ができます。"
+        android:textColor="@color/white"
+       />
+
+    <ImageView
+        android:layout_width="305px"
+        android:layout_height="257px"
+        android:layout_marginTop="70px"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/img_h"/>
+
+</LinearLayout>

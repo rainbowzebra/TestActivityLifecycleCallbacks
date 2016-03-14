@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20px"
+    android:paddingBottom="20px"
+    android:paddingLeft="30px"
+    android:paddingRight="30px"
+    android:background="#000000"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px"
+        android:text="動画読み込み動画読み込み動画読み込み"
+        android:textColor="#ffffff"
+        android:textSize="25px"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="20dip"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progressbar_color"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30%"
+        android:layout_marginTop="10px"
+        android:textColor="#ffffff"
+       android:layout_gravity="center_horizontal"
+        android:textSize="25px"/>
+
+</LinearLayout>

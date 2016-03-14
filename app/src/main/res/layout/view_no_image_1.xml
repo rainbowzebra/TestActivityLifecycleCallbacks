@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:paddingTop="330px"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="392px"
+        android:layout_height="297px"
+        android:src="@drawable/img_no_photo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="150px"
+        android:paddingRight="150px"
+        android:paddingTop="50px"
+        android:text="アプリで読み込める動画がなかった場合に表示される。(请替换文字)"
+        android:textColor="#949494" />
+
+
+</LinearLayout>
