@@ -48,7 +48,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="400px"
-                android:src="@drawable/logo"
+                android:src="@drawable/ic_new"
                 android:scaleType="center"
                 android:background="#426E50"/>
             <ListView
