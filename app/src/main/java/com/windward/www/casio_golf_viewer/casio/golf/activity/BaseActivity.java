@@ -7,6 +7,7 @@ import android.view.View;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ToastUtil;
 
+
 public abstract class BaseActivity extends Activity implements View.OnClickListener{
     public Context mContext;
     @Override
