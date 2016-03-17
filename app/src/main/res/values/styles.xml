@@ -247,6 +247,7 @@
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:src">@drawable/ic_done</item>
+        <item name="android:visibility">invisible</item>
     </style>
 
     <!-- 用于dialog_category和dialog_edit_category-->

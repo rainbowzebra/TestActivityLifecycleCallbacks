@@ -73,9 +73,17 @@ public class CasioFirstFragment extends Fragment {
 			mVideoGridViewAdapter=new VideoGridViewAdapter(getContext());
 			VideoUtils videoUtils=new VideoUtils();
 			ArrayList<ListItemInfo> list=videoUtils.getVideoList(getContext());
-			list=videoUtils.fixVideoArrayList(getContext(),list);
-			mVideoGridViewAdapter.setList(list);
-			mGridView.setAdapter(mVideoGridViewAdapter);
+
+			if(null!=list&&list.size()>0){
+				list=videoUtils.fixVideoArrayList(getContext(),list);
+				mVideoGridViewAdapter.setList(list);
+				mGridView.setAdapter(mVideoGridViewAdapter);
+			}else {
+				mGridView.setVisibility(View.INVISIBLE);
+				view.findViewById(R.id.noVideoLinearLayout).setVisibility(View.VISIBLE);
+			}
+
+
 
 //			Iterator<ListItemInfo> iterator=list.iterator();
 //			while (iterator.hasNext()){

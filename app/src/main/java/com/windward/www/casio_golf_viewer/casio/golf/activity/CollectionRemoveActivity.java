@@ -7,15 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.RelativeLayout;
 
 import com.windward.www.casio_golf_viewer.R;
+import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoGridViewAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
+
+import java.util.ArrayList;
 
 public class CollectionRemoveActivity extends BaseActivity {
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mDeleteVideoRelativeLayout;
     private Dialog mRemoveCollectionDialog;
+    private GridView mGridView;
+    private VideoGridViewAdapter mVideoGridViewAdapter;
+    private ItemClickListenerImpl mItemClickListenerImpl;
+    private ArrayList<ListItemInfo> mArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +37,7 @@ public class CollectionRemoveActivity extends BaseActivity {
     protected void initView() {
         mBackRelativeLayout=(RelativeLayout)findViewById(R.id.backRelativeLayout);
         mDeleteVideoRelativeLayout=(RelativeLayout)findViewById(R.id.addRelativeLayout);
+        mGridView= (GridView) findViewById(R.id.gridview);
     }
 
     @Override
@@ -36,8 +48,31 @@ public class CollectionRemoveActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        mItemClickListenerImpl=new ItemClickListenerImpl();
+        mVideoGridViewAdapter=new VideoGridViewAdapter(mContext);
+        mArrayList= VideoUtils.getFixedVideoArrayList();
+        mVideoGridViewAdapter.setList(mArrayList);
+        mGridView.setAdapter(mVideoGridViewAdapter);
+        mGridView.setOnItemClickListener(mItemClickListenerImpl);
     }
+
+    private class ItemClickListenerImpl implements AdapterView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            ListItemInfo item=mArrayList.get(position);
+            if(item.isShowVideo()){
+                RelativeLayout deleteRelativeLayout= (RelativeLayout)view.findViewById(R.id.deleteRelativeLayout);
+                if(deleteRelativeLayout.getVisibility()==View.VISIBLE){
+                    deleteRelativeLayout.setVisibility(View.INVISIBLE);
+                }else {
+                    deleteRelativeLayout.setVisibility(View.VISIBLE);
+                }
+
+            }
+        }
+    }
+
 
     @Override
     public void onClick(View v) {

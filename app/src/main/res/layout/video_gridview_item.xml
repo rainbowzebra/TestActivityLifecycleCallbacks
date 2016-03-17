@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="50px"
+                android:gravity="center"
                 android:textColor="#949494"
                 android:text="2015/10"/>
 
@@ -31,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="135px"
                 android:textStyle="bold"
+                android:gravity="center"
                 android:textColor="#000000"
                 android:layout_marginTop="-20px"
                 android:text="22"/>
@@ -40,12 +42,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="50px"
+                android:gravity="center"
                 android:textColor="#949494"
                 android:layout_marginTop="-20px"
                 android:text="THU"/>
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -53,6 +59,43 @@
             android:layout_centerInParent="true"
             android:background="#22000000"
             android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/editImageView"
+                android:layout_width="57px"
+                android:layout_height="57px"
+                android:visibility="invisible"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30px"
+               android:src="@drawable/ic_pen_wh" />
+
+            <ImageView
+                android:id="@+id/starImageView"
+                android:visibility="invisible"
+                android:layout_width="57px"
+                android:layout_height="57px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="30px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30px"
+                android:src="@drawable/ic_star_wh" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/deleteRelativeLayout"
+            android:visibility="invisible"
+            android:background="@color/bg_color_half_transent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="117px"
+                android:layout_height="117px"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_check" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

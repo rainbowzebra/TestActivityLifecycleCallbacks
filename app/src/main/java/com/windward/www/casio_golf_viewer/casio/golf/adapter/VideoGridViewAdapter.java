@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.windward.www.casio_golf_viewer.R;
@@ -70,6 +71,7 @@ public class VideoGridViewAdapter extends BaseAdapter {
             holder.yearTextView=(TextView)convertView.findViewById(R.id.timeTextView1);
             holder.dayTextView=(TextView)convertView.findViewById(R.id.timeTextView2);
             holder.weekTextView=(TextView)convertView.findViewById(R.id.timeTextView3);
+            holder.deleteRelativeLayout=(RelativeLayout)convertView.findViewById(R.id.deleteRelativeLayout);
             convertView.setTag(holder);
         } else {
             holder = (HolderView) convertView.getTag();
@@ -78,6 +80,7 @@ public class VideoGridViewAdapter extends BaseAdapter {
         ListItemInfo item=list.get(position);
         if(item.isShowVideo()){
             holder.dateLinearLayout.setVisibility(View.INVISIBLE);
+            holder.deleteRelativeLayout.setVisibility(View.INVISIBLE);
             holder.imageView.setVisibility(View.VISIBLE);
             holder.imageView.setImageBitmap(list.get(position).getThumbnail());
         }else {
@@ -94,6 +97,7 @@ public class VideoGridViewAdapter extends BaseAdapter {
 
     class HolderView {
         LinearLayout dateLinearLayout;
+        RelativeLayout deleteRelativeLayout;
         ImageView imageView;
         TextView yearTextView;
         TextView dayTextView;

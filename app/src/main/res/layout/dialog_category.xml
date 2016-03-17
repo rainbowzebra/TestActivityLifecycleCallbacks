@@ -23,6 +23,7 @@
             android:textSize="50px" />
 
         <RelativeLayout
+            android:id="@+id/category_RelativeLayout1"
             style="@style/category_RelativeLayout"
             android:layout_marginTop="20px">
 
@@ -36,10 +37,15 @@
                 android:layout_toRightOf="@id/upallowImageView1"
                 android:text="日にち" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView
+                android:id="@+id/doneImageView1"
+                style="@style/done_image_style"
+                android:visibility="visible"/>
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/category_RelativeLayout2"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView2"
@@ -50,10 +56,13 @@
                 android:layout_toRightOf="@id/upallowImageView2"
                 android:text="お気に入り" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView   android:id="@+id/doneImageView2"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/category_RelativeLayout3"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView3"
@@ -64,10 +73,13 @@
                 android:layout_toRightOf="@id/upallowImageView3"
                 android:text="屋外" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView   android:id="@+id/doneImageView3"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/category_RelativeLayout4"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView4"
@@ -78,10 +90,14 @@
                 android:layout_toRightOf="@id/upallowImageView4"
                 android:text="屋内" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView
+                android:id="@+id/doneImageView4"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/category_RelativeLayout5"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView5"
@@ -92,10 +108,13 @@
                 android:layout_toRightOf="@id/upallowImageView5"
                 android:text="前方" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView   android:id="@+id/doneImageView5"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/category_RelativeLayout6"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView6"
@@ -106,10 +125,13 @@
                 android:layout_toRightOf="@id/upallowImageView6"
                 android:text="後方" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView   android:id="@+id/doneImageView6"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/category_RelativeLayout7"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView7"
@@ -120,7 +142,8 @@
                 android:layout_toRightOf="@id/upallowImageView7"
                 android:text="プロ" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView   android:id="@+id/doneImageView7"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
     </LinearLayout>

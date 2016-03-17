@@ -2,13 +2,11 @@ package com.windward.www.casio_golf_viewer.casio.golf.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -31,18 +29,17 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.SliderMenuAdapter;
-import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.SliderMenuItem;
 import com.windward.www.casio_golf_viewer.casio.golf.fragment.CasioSecondFragment;
 import com.windward.www.casio_golf_viewer.casio.golf.util.APPUtils;
 import com.windward.www.casio_golf_viewer.casio.golf.util.PagerSlidingTabStrip;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 import com.windward.www.casio_golf_viewer.casio.golf.fragment.CasioFirstFragment;
-import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
 
 import java.util.ArrayList;
 //http://stackoverflow.com/questions/26533510/android-toolbar-center-title-and-custom-font
@@ -78,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
     private int currentPosition=0;
     private Dialog mSecondCategoryDialog;
     private AlertDialog mSecondEditDialog;
+    private View mSelcetedImageView;
+    private RelativeLayout mCategoryRelativeLayout1;
+    private RelativeLayout mCategoryRelativeLayout2;
+    private RelativeLayout mCategoryRelativeLayout3;
+    private RelativeLayout mCategoryRelativeLayout4;
+    private RelativeLayout mCategoryRelativeLayout5;
+    private RelativeLayout mCategoryRelativeLayout6;
+    private RelativeLayout mCategoryRelativeLayout7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,8 +323,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initFirstCategoryDialog(View view){
-
+        mSelcetedImageView =view.findViewById(R.id.doneImageView1);
+        mCategoryRelativeLayout1 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout1);
+        mCategoryRelativeLayout1 .setOnClickListener(mClickListenerImpl);
+        mCategoryRelativeLayout2 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout2);
+        mCategoryRelativeLayout2 .setOnClickListener(mClickListenerImpl);
+        mCategoryRelativeLayout3 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout3);
+        mCategoryRelativeLayout3 .setOnClickListener(mClickListenerImpl);
+        mCategoryRelativeLayout4 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout4);
+        mCategoryRelativeLayout4 .setOnClickListener(mClickListenerImpl);
+        mCategoryRelativeLayout5 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout5);
+        mCategoryRelativeLayout5 .setOnClickListener(mClickListenerImpl);
+        mCategoryRelativeLayout6 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout6);
+        mCategoryRelativeLayout6 .setOnClickListener(mClickListenerImpl);
+        mCategoryRelativeLayout7 =(RelativeLayout)view.findViewById(R.id.category_RelativeLayout7);
+        mCategoryRelativeLayout7 .setOnClickListener(mClickListenerImpl);
     }
+
+
 
 
     private void showSecondEditDialog(){
@@ -419,6 +440,41 @@ public class MainActivity extends AppCompatActivity {
                     mIntent=new Intent(mContext,DeleteTwoVideoActivity.class);
                     startActivity(mIntent);
                     closeSecondEditDialog();
+                    break;
+                case R.id.category_RelativeLayout1:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout1.findViewById(R.id.doneImageView1);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.category_RelativeLayout2:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout2.findViewById(R.id.doneImageView2);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.category_RelativeLayout3:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout3.findViewById(R.id.doneImageView3);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.category_RelativeLayout4:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout4.findViewById(R.id.doneImageView4);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.category_RelativeLayout5:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout5.findViewById(R.id.doneImageView5);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.category_RelativeLayout6:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout6.findViewById(R.id.doneImageView6);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.category_RelativeLayout7:
+                    mSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSelcetedImageView = mCategoryRelativeLayout7.findViewById(R.id.doneImageView7);
+                    mSelcetedImageView.setVisibility(View.VISIBLE);
                     break;
             }
         }

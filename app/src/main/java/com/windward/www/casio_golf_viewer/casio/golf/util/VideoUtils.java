@@ -26,6 +26,7 @@ public class VideoUtils {
     private final String MOVIE_DIR = "/Camera";
     private final String[] MOVIE_EXTENSION_LIST = {"mov","mp4","mpeg","avi"};
     private ArrayList<ListItemInfo> mMovieList;
+    private static ArrayList<ListItemInfo> mFixedArrayList;
 
     //获取设备上的视频的时间
     public static String getVideoTime(Context context,String path) {
@@ -82,11 +83,17 @@ public class VideoUtils {
             }
         }
 
-
+       mFixedArrayList=fixedArrayList;
 
         return fixedArrayList;
 
     }
+
+
+    public static ArrayList<ListItemInfo> getFixedVideoArrayList(){
+       return mFixedArrayList;
+    }
+
 
 
     //获取设备中的视频

@@ -46,4 +46,17 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_below="@id/titleRelativeLayout"
+        android:background="@color/main_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:listSelector="@android:color/transparent"
+        android:padding="10px"
+        android:numColumns="3"
+        android:overScrollMode="never"
+        android:smoothScrollbar="false" />
+
 </RelativeLayout>
