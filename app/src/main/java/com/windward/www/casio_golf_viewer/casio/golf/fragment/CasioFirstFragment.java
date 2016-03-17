@@ -16,19 +16,30 @@
 
 package com.windward.www.casio_golf_viewer.casio.golf.fragment;
 
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.windward.www.casio_golf_viewer.R;
+import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoGridViewAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CasioFirstFragment extends Fragment {
 	private int position;
 	private static final String POSITION = "position";
+	private GridView mGridView;
+	private VideoGridViewAdapter mVideoGridViewAdapter;
 
 	public static CasioFirstFragment getFragment(int position) {
 		Bundle bundle = new Bundle();
@@ -58,7 +69,22 @@ public class CasioFirstFragment extends Fragment {
 
 	private void initFirstFragmentViews(View view){
 		if(null!=view){
+			mGridView= (GridView) view.findViewById(R.id.gridView);
+			mVideoGridViewAdapter=new VideoGridViewAdapter(getContext());
+			VideoUtils videoUtils=new VideoUtils();
+			ArrayList<ListItemInfo> list=videoUtils.getVideoList(getContext());
+			list=videoUtils.fixVideoArrayList(getContext(),list);
 
+
+			mVideoGridViewAdapter.setList(list);
+			mGridView.setAdapter(mVideoGridViewAdapter);
+			Iterator<ListItemInfo> iterator=list.iterator();
+
+			while (iterator.hasNext()){
+				System.out.println("---> 视频信息:"+iterator.next());
+
+
+			}
 		}
 	}
 

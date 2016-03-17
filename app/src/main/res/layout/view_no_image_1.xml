@@ -1,11 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:paddingTop="330px"
-    android:orientation="vertical">
+    android:gravity="center"
+    >
 
+    <GridView
+        android:background="@color/main_bg"
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:listSelector="@android:color/transparent"
+        android:padding="10px"
+        android:numColumns="3"
+        android:overScrollMode="never"
+        android:smoothScrollbar="false" />
+
+    <LinearLayout
+        android:id="@+id/noVideoLinearLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="330px"
+        android:orientation="vertical">
     <ImageView
         android:layout_width="392px"
         android:layout_height="297px"
@@ -19,6 +38,6 @@
         android:paddingTop="50px"
         android:text="アプリで読み込める動画がなかった場合に表示される。(请替换文字)"
         android:textColor="#949494" />
+    </LinearLayout>
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.SliderMenuAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.SliderMenuItem;
 import com.windward.www.casio_golf_viewer.casio.golf.fragment.CasioSecondFragment;
 import com.windward.www.casio_golf_viewer.casio.golf.util.APPUtils;
@@ -100,8 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     protected void initData() {
-        ContentResolver contentResolver=mContext.getContentResolver();
-        VideoUtils.getVideoThumbnail(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+//        ContentResolver contentResolver=mContext.getContentResolver();
+//        VideoUtils.getVideoThumbnail(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+
     }
 
 //http://blog.csdn.net/chencehnggq/article/details/21492417 back
