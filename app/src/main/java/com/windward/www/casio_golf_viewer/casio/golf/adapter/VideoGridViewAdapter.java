@@ -10,10 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.WWUitls;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,16 +66,38 @@ public class VideoGridViewAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.video_gridview_item, null);
             ScreenUtil.initScale(convertView);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
+            holder.dateLinearLayout=(LinearLayout)convertView.findViewById(R.id.dateLinearLayout);
+            holder.yearTextView=(TextView)convertView.findViewById(R.id.timeTextView1);
+            holder.dayTextView=(TextView)convertView.findViewById(R.id.timeTextView2);
+            holder.weekTextView=(TextView)convertView.findViewById(R.id.timeTextView3);
             convertView.setTag(holder);
         } else {
             holder = (HolderView) convertView.getTag();
         }
-        holder.imageView.setImageBitmap(list.get(position).getThumbnail());
+
+        ListItemInfo item=list.get(position);
+        if(item.isShowVideo()){
+            holder.dateLinearLayout.setVisibility(View.INVISIBLE);
+            holder.imageView.setVisibility(View.VISIBLE);
+            holder.imageView.setImageBitmap(list.get(position).getThumbnail());
+        }else {
+            holder.dateLinearLayout.setVisibility(View.VISIBLE);
+            holder.yearTextView.setText(WWUitls.getYearAndMonth(item.getmTime()));
+            holder.dayTextView.setText(WWUitls.getDayTime(item.getmTime()));
+            holder.weekTextView.setText(WWUitls.getWeek(item.getmTime()));
+            holder.imageView.setVisibility(View.INVISIBLE);
+        }
+
+
         return convertView;
     }
 
     class HolderView {
+        LinearLayout dateLinearLayout;
         ImageView imageView;
+        TextView yearTextView;
+        TextView dayTextView;
+        TextView weekTextView;
     }
 }
 

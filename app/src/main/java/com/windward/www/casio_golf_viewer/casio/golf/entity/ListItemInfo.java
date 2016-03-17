@@ -28,6 +28,10 @@ public class ListItemInfo {
 
     private String mDay;
 
+
+    private  boolean isShowVideo=true;
+
+
     public ListItemInfo(Context context,String path) {
         mContext=context;
 
@@ -40,8 +44,16 @@ public class ListItemInfo {
             mFileName = split[split.length - 1];
         }
 
-        mTime= VideoUtils.getVideoTime(mContext,path);
+        mTime= VideoUtils.getVideoTime(mContext, path);
         mDay= WWUitls.getDay(mTime);
+    }
+
+    public boolean isShowVideo() {
+        return isShowVideo;
+    }
+
+    public void setIsShowVideo(boolean isShowVideo) {
+        this.isShowVideo = isShowVideo;
     }
 
     public String getmTime() {
@@ -85,7 +97,6 @@ public class ListItemInfo {
         return ThumbnailUtils.createVideoThumbnail(mFilePath, MediaStore.Video.Thumbnails.MICRO_KIND);
     }
 
-
     @Override
     public String toString() {
         return "ListItemInfo{" +
@@ -94,6 +105,7 @@ public class ListItemInfo {
                 ", mFilePath='" + mFilePath + '\'' +
                 ", mTime='" + mTime + '\'' +
                 ", mDay='" + mDay + '\'' +
+                ", isShowVideo=" + isShowVideo +
                 '}';
     }
 }

@@ -27,7 +27,7 @@ public class VideoUtils {
     private final String[] MOVIE_EXTENSION_LIST = {"mov","mp4","mpeg","avi"};
     private ArrayList<ListItemInfo> mMovieList;
 
-    //获取设备上的视频
+    //获取设备上的视频的时间
     public static String getVideoTime(Context context,String path) {
         String data,_id,title,mime_type,date_added=null;
         ContentResolver contentResolver=context.getContentResolver();
@@ -59,6 +59,7 @@ public class VideoUtils {
         ArrayList<String> daysList=new ArrayList<String>();
         ArrayList<ListItemInfo> fixedArrayList=new ArrayList<ListItemInfo>();
 
+        //对原视频排序,否则可能出现顺序的错乱
         Collections.sort(arrayList, new Comparator<ListItemInfo>() {
             @Override
             public int compare(ListItemInfo lhs, ListItemInfo rhs) {
@@ -71,8 +72,9 @@ public class VideoUtils {
             ListItemInfo listItemInfo=arrayList.get(i);
             if(!daysList.contains(listItemInfo.getmDay())){
                 daysList.add(listItemInfo.getmDay());
-                ListItemInfo l=new ListItemInfo(context,"");
+                ListItemInfo l=new ListItemInfo(context,listItemInfo.getFilePath());
                 l.setmDay(listItemInfo.getmDay());
+                l.setIsShowVideo(false);
                 fixedArrayList.add(l);
                 fixedArrayList.add(listItemInfo);
             }else {

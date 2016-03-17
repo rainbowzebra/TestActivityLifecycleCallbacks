@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -543,41 +544,6 @@ public class WWUitls {
 		return s;
 	}
 
-	public static String getDanWei(String str) {
-		String s = null;
-		double d = Double.valueOf(str);
-		if (d < 10000) {
-			s = "元";
-		} else if (1000000 > d && d >= 10000d) {
-			s = "万元";
-		} else if (d >= 1000000) {
-			s = "百万元";
-		}
-
-		return s;
-	}
-
-	// public static String[] getFormatMoney(String str) {
-	// String s[] = new String[2];
-	// String s1 = "";
-	// String s2 = "";
-	// double d = string2Double(str);
-	// if (d < 10000) {
-	// s1 = str;
-	// s2 = "元";
-	// } else if (1000000 > d && d >= 10000d) {
-	// d = (double) (d / 10000);
-	// s1 = String.valueOf(d);
-	// s2 = "万元";
-	// } else if (d >= 1000000) {
-	// d = (double) (d / 10000);
-	// s1 = String.valueOf(d);
-	// s2 = "百万元";
-	// }
-	// s[0] = s1;
-	// s[1] = s2;
-	// return s;
-	// }
 
 	// yyyy-MM-dd HH:mm:ss
 	public static String getNowDate(String format) {
@@ -618,10 +584,51 @@ public class WWUitls {
 
 	public static String getDay(String time) {
 		String day="";
-		Date date = new Date();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		day = simpleDateFormat.format(new Date(WWUitls.string2Long(time) * 1000L));
 		return day;
+	}
+
+	public static String getYearAndMonth(String time){
+		String day="";
+		if(!TextUtils.isEmpty(time)){
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM");
+			day = simpleDateFormat.format(new Date(WWUitls.string2Long(time) * 1000L));
+			System.out.println("----> yearAndMonth="+day);
+		}
+
+		return  day;
+	}
+
+	//获取号数
+	public static String getDayTime(String time){
+		String dayTime="";
+		if(!TextUtils.isEmpty(time)){
+			String day="";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+			day = simpleDateFormat.format(new Date(WWUitls.string2Long(time) * 1000L));
+			dayTime=day.substring(day.length() - 2, day.length());
+			System.out.println("----> dayTime="+dayTime);
+		}
+		return  dayTime;
+	}
+
+	//获取星期几
+	public static String getWeek(String time){
+		Date date=null;
+		String week="";
+		try{
+			date =new Date(WWUitls.string2Long(time) * 1000L);// 将字符串转换为日期
+			SimpleDateFormat format = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+			week= format.format(date);
+			System.out.println("----> week1="+week);
+		}catch (Exception e){
+		}
+
+		week=week.toUpperCase();
+		week=week.substring(0, 3);
+		System.out.println("----> week2="+week);
+		return week;
 	}
 
 	//将时间yyyy/MM/dd转换成时间戳

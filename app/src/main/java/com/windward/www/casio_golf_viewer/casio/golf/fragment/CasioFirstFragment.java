@@ -74,17 +74,13 @@ public class CasioFirstFragment extends Fragment {
 			VideoUtils videoUtils=new VideoUtils();
 			ArrayList<ListItemInfo> list=videoUtils.getVideoList(getContext());
 			list=videoUtils.fixVideoArrayList(getContext(),list);
-
-
 			mVideoGridViewAdapter.setList(list);
 			mGridView.setAdapter(mVideoGridViewAdapter);
-			Iterator<ListItemInfo> iterator=list.iterator();
 
-			while (iterator.hasNext()){
-				System.out.println("---> 视频信息:"+iterator.next());
-
-
-			}
+//			Iterator<ListItemInfo> iterator=list.iterator();
+//			while (iterator.hasNext()){
+//				System.out.println("---> 视频信息:"+iterator.next());
+//			}
 		}
 	}
 
