@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
     protected void initData() {
 //        ContentResolver contentResolver=mContext.getContentResolver();
 //        VideoUtils.getVideoThumbnail(contentResolver, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-
     }
 
 //http://blog.csdn.net/chencehnggq/article/details/21492417 back

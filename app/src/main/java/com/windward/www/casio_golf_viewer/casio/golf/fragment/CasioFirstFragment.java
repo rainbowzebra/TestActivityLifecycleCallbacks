@@ -16,16 +16,21 @@
 
 package com.windward.www.casio_golf_viewer.casio.golf.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.windward.www.casio_golf_viewer.R;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayVideoActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoGridViewAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
@@ -37,9 +42,13 @@ import java.util.Iterator;
 
 public class CasioFirstFragment extends Fragment {
 	private int position;
+	private Context mContext;
 	private static final String POSITION = "position";
 	private GridView mGridView;
 	private VideoGridViewAdapter mVideoGridViewAdapter;
+	private ArrayList<String> mPlayList;
+	private ItemClickListenerImpl mItemClickListenerImpl;
+	private ArrayList<ListItemInfo> mVideosArrayList;
 
 	public static CasioFirstFragment getFragment(int position) {
 		Bundle bundle = new Bundle();
@@ -53,6 +62,7 @@ public class CasioFirstFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mContext=getContext();
 		position = getArguments().getInt(POSITION);
 	}
 
@@ -70,25 +80,34 @@ public class CasioFirstFragment extends Fragment {
 	private void initFirstFragmentViews(View view){
 		if(null!=view){
 			mGridView= (GridView) view.findViewById(R.id.gridView);
-			mVideoGridViewAdapter=new VideoGridViewAdapter(getContext());
 			VideoUtils videoUtils=new VideoUtils();
-			ArrayList<ListItemInfo> list=videoUtils.getVideoList(getContext());
+			mVideosArrayList=videoUtils.getVideoList(getContext());
 
-			if(null!=list&&list.size()>0){
-				list=videoUtils.fixVideoArrayList(getContext(),list);
-				mVideoGridViewAdapter.setList(list);
+			if(null!=mVideosArrayList&&mVideosArrayList.size()>0){
+				mPlayList = new ArrayList<String>();
+				mVideosArrayList=videoUtils.fixVideoArrayList(getContext(),mVideosArrayList);
+				mVideoGridViewAdapter=new VideoGridViewAdapter(getContext());
+				mVideoGridViewAdapter.setList(mVideosArrayList);
 				mGridView.setAdapter(mVideoGridViewAdapter);
+				mItemClickListenerImpl=new ItemClickListenerImpl();
+				mGridView.setOnItemClickListener(mItemClickListenerImpl);
 			}else {
 				mGridView.setVisibility(View.INVISIBLE);
 				view.findViewById(R.id.noVideoLinearLayout).setVisibility(View.VISIBLE);
 			}
 
+		}
+	}
 
 
-//			Iterator<ListItemInfo> iterator=list.iterator();
-//			while (iterator.hasNext()){
-//				System.out.println("---> 视频信息:"+iterator.next());
-//			}
+	private class ItemClickListenerImpl implements AdapterView.OnItemClickListener{
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			Intent intent=new Intent(mContext, PlayVideoActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("path", mVideosArrayList.get(position).getFilePath());
+			intent.putExtras(bundle);
+			startActivity(intent);
 		}
 	}
 

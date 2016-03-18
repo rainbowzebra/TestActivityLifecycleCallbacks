@@ -65,11 +65,37 @@
 
 
     <include
+        android:id="@+id/mediaController"
         layout="@layout/view_media_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
     </include>
+
+
+    <RelativeLayout
+        android:id="@+id/MainImageControllerLayout"
+        android:layout_marginTop="170px"
+        android:layout_marginBottom="170px"
+        android:layout_below="@id/titleRelativeLayout"
+        android:layout_above="@id/mediaController"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.opengl.GLSurfaceView
+            android:id="@+id/EffectGLSurfaceView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:layout_centerInParent="true" />
+        <android.opengl.GLSurfaceView
+            android:id="@+id/PlayerGLSurfaceView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

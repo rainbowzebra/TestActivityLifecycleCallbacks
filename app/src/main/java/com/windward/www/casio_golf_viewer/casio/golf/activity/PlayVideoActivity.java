@@ -3,12 +3,16 @@ package com.windward.www.casio_golf_viewer.casio.golf.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.Dialog;
@@ -19,7 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
+import com.windward.www.casio_golf_viewer.casio.golf.player.EffectGlLayer;
+import com.windward.www.casio_golf_viewer.casio.golf.player.GlLayer;
+import com.windward.www.casio_golf_viewer.casio.golf.player.VideoController;
+import com.windward.www.casio_golf_viewer.casio.golf.player.VideoGlLayer;
+import com.windward.www.casio_golf_viewer.casio.golf.player.VideoInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 
 public class PlayVideoActivity extends BaseActivity {
     private Intent mIntent;
@@ -36,6 +50,17 @@ public class PlayVideoActivity extends BaseActivity {
     private ImageView[] dotImageViews;
     private PageChangeListenerImpl mPageChangeListenerImpl;
     private LinearLayout mDotsLinearLayout;
+    private EffectGlLayer mEffectGlLayer;
+    private VideoGlLayer mVideoGlLayer;
+
+    private GLSurfaceView mPlayerView;// 動画表示面のGLSurfaceView
+    private GLSurfaceView mEffectView;
+
+    private String mVideoPath;
+    private VideoController mVideoController;
+    private final boolean IS_USE_SURFACE = true;  // true:decoderが画像を直接Surfaceに書き込む方式を使用　false:デコード画像をVideoFrameから取得描画ライブラリに渡す方式を使用
+    private boolean mIsPreparedVideoGlLayer = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +72,9 @@ public class PlayVideoActivity extends BaseActivity {
         mBackRelativeLayout=(RelativeLayout)findViewById(R.id.backRelativeLayout);
         mEditImageView=(ImageView)findViewById(R.id.editImageView);
         mOperateRelativeLayout =(RelativeLayout)findViewById(R.id.operateRelativeLayout);
+        mPlayerView = (GLSurfaceView)findViewById(R.id.PlayerGLSurfaceView);
+        mEffectView = (GLSurfaceView)findViewById(R.id.EffectGLSurfaceView);
+
     }
 
     @Override
@@ -58,8 +86,86 @@ public class PlayVideoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        Bundle bundle = getIntent().getExtras();
+        mVideoPath = bundle.getString("path");
+        initGlLayer();
+        VideoInfo videoInfo=new VideoInfo();
+       // mVideoController.openFile(mVideoPath, videoInfo);
     }
+
+
+
+    /**
+     * GLLayerに関する初期化関数
+     */
+    private void initGlLayer()
+    {
+
+        //エフェクトレイヤーの生成
+        mEffectGlLayer = new EffectGlLayer(mEffectView);
+
+        /**
+         * 描画レイヤーの生成
+         * 　デコーダでデコーダでSurfaceを使用するかしないかで分岐を使用するかしないかで分岐
+         * 　(I)Surfaceを使用する場合
+         * 　　　 GLSurfaceViewを設定し、onSurfaceCreatedで生成されたSurfaceをVideoControllerに設定する
+         * 　(II)Surfaceを使用しない場合
+         * 　　　 VideoControllerにSurfaceを設定する必要なし
+         */
+        mIsPreparedVideoGlLayer = false;
+        if(IS_USE_SURFACE) {
+            mVideoGlLayer = new VideoGlLayer(mPlayerView, IS_USE_SURFACE, new GlLayer.GlLayerCallback() {
+
+                @Override
+                public void onSurfaceCreated(Surface surface) {
+                    mVideoController = new VideoController(surface);   // デコードコントローラの初期化
+                    synchronized (this) {
+                        mIsPreparedVideoGlLayer = true;
+                    }
+                }
+            });
+        }else{
+            mVideoGlLayer = new VideoGlLayer(mPlayerView, IS_USE_SURFACE, null);
+            mVideoController = new VideoController(null);                   // デコードコントローラの初期化
+            mIsPreparedVideoGlLayer = true;
+        }
+
+//        //エフェクトレイヤーにエフェクトを設定
+//        Bitmap frameImg =  checkFrameImage(0);
+//        if (frameImg != null) {
+//            mEffectGlLayer.setUIImage(frameImg);
+//        }
+    }
+
+
+
+//    /**
+//     * エフェクト画像配列から該当のエフェクト画像を取得する関数
+//     * @param presentationTimeUs 現在時刻[us]
+//     * @return 該当のエフェクト画像
+//     */
+//    private Bitmap checkFrameImage(long presentationTimeUs) {
+//        int number;
+//        Bitmap frameImg = null;
+//
+//        if(mTouchController != null){
+//            if(mTouchController.isVertical()){
+//                number = (int)(presentationTimeUs/1000/20)%18;     //縦モード:0-17 20[ms]を1Frameとする
+//            }else{
+//                number = (int)(presentationTimeUs/1000/20)%25 + 18;//横モード:18-42 20[ms]を1Frameとする
+//            }
+//            InputStream inputStream = mContext.getResources().openRawResource(mEffectFrameIdArray[number]);
+//            frameImg = BitmapFactory.decodeStream(inputStream);
+//            try {
+//                inputStream.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return frameImg;
+//    }
+
+
 
     @Override
     public void onClick(View v) {
