@@ -26,10 +26,12 @@ import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapt
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.player.EffectGlLayer;
 import com.windward.www.casio_golf_viewer.casio.golf.player.GlLayer;
+import com.windward.www.casio_golf_viewer.casio.golf.player.TouchController;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoController;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoGlLayer;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,6 +62,9 @@ public class PlayVideoActivity extends BaseActivity {
     private VideoController mVideoController;
     private final boolean IS_USE_SURFACE = true;  // true:decoderが画像を直接Surfaceに書き込む方式を使用　false:デコード画像をVideoFrameから取得描画ライブラリに渡す方式を使用
     private boolean mIsPreparedVideoGlLayer = false;
+    private TouchController mTouchController;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,11 +135,13 @@ public class PlayVideoActivity extends BaseActivity {
             mIsPreparedVideoGlLayer = true;
         }
 
-//        //エフェクトレイヤーにエフェクトを設定
-//        Bitmap frameImg =  checkFrameImage(0);
-//        if (frameImg != null) {
-//            mEffectGlLayer.setUIImage(frameImg);
-//        }
+        //エフェクトレイヤーにエフェクトを設定
+        //Bitmap frameImg =  checkFrameImage(0);
+        //获取视频的第一帧的图片
+        Bitmap frameImg= VideoUtils.getBitmapsFromVideo(mVideoPath);
+        if (frameImg != null) {
+            mEffectGlLayer.setUIImage(frameImg);
+        }
     }
 
 
@@ -154,13 +161,16 @@ public class PlayVideoActivity extends BaseActivity {
 //            }else{
 //                number = (int)(presentationTimeUs/1000/20)%25 + 18;//横モード:18-42 20[ms]を1Frameとする
 //            }
+//
 //            InputStream inputStream = mContext.getResources().openRawResource(mEffectFrameIdArray[number]);
+//
 //            frameImg = BitmapFactory.decodeStream(inputStream);
 //            try {
 //                inputStream.close();
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
+//
 //        }
 //        return frameImg;
 //    }

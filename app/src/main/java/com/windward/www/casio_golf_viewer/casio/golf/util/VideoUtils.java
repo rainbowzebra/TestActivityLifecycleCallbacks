@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+
+import java.io.FileOutputStream;
 import java.util.Comparator;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 
@@ -27,6 +29,19 @@ public class VideoUtils {
     private final String[] MOVIE_EXTENSION_LIST = {"mov","mp4","mpeg","avi"};
     private ArrayList<ListItemInfo> mMovieList;
     private static ArrayList<ListItemInfo> mFixedArrayList;
+
+
+    public static Bitmap getBitmapsFromVideo(String path) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(path);
+        // 取得视频的长度(单位为毫秒)
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        // 取得视频的长度(单位为秒)
+        int seconds = Integer.valueOf(time) / 1000;
+        // 得到第一秒的图片
+        Bitmap bitmap = retriever.getFrameAtTime(1*1000*1000,MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+        return bitmap;
+    }
 
     //获取设备上的视频的时间
     public static String getVideoTime(Context context,String path) {
