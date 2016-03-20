@@ -1,8 +1,10 @@
 package com.windward.www.casio_golf_viewer.casio.golf.activity;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView;
@@ -26,6 +28,8 @@ import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapt
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.player.EffectGlLayer;
 import com.windward.www.casio_golf_viewer.casio.golf.player.GlLayer;
+import com.windward.www.casio_golf_viewer.casio.golf.player.InstructionSyncController;
+import com.windward.www.casio_golf_viewer.casio.golf.player.TimeManager;
 import com.windward.www.casio_golf_viewer.casio.golf.player.TouchController;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoController;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoGlLayer;
@@ -38,6 +42,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class PlayVideoActivity extends BaseActivity {
+
+    public static final int STATUS_PAUSE = 0;                                       // 再生状態(一時停止)
+    public static final int STATUS_PLAY = 1;                                        // 再生状態(再生)
+    public static final int STATUS_REALTIME_PLAY = 2;                               // 再生状態(実速度再生)
+
+    private int mPlayStatus = STATUS_PAUSE;                                         // 現在の再生状態
+    private int mBeforeTouchPlayStatus = STATUS_PAUSE;                              // タッチ操作前の再生状態
+    private int mBeforeSeekPlayStatus = STATUS_PAUSE;                               // シークバー操作前の再生状態
     private Intent mIntent;
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mOperateRelativeLayout;
@@ -52,18 +64,28 @@ public class PlayVideoActivity extends BaseActivity {
     private ImageView[] dotImageViews;
     private PageChangeListenerImpl mPageChangeListenerImpl;
     private LinearLayout mDotsLinearLayout;
-    private EffectGlLayer mEffectGlLayer;
-    private VideoGlLayer mVideoGlLayer;
+
+    private ImageView mPlayImageView;
 
     private GLSurfaceView mPlayerView;// 動画表示面のGLSurfaceView
     private GLSurfaceView mEffectView;
+    private EffectGlLayer mEffectGlLayer;
+    private VideoGlLayer mVideoGlLayer;
 
     private String mVideoPath;
     private VideoController mVideoController;
     private final boolean IS_USE_SURFACE = true;  // true:decoderが画像を直接Surfaceに書き込む方式を使用　false:デコード画像をVideoFrameから取得描画ライブラリに渡す方式を使用
     private boolean mIsPreparedVideoGlLayer = false;
     private TouchController mTouchController;
+    private TimeManager mTimeManager;
+    private InstructionSyncController mInstructionSyncController;
 
+    private BroadcastReceiver mSetInstructionTypeReceiver = null;                   // 他プレイヤーからの操作に関するIntentを受信するBroadcastReceiver
+    private BroadcastReceiver mSetReversalTypeReceiver = null;                      // 他プレイヤーからの反転に関するIntentを受信するBroadcastReceiver
+    private BroadcastReceiver mSetRotationAngleReceiver = null;                     // 他プレイヤーからの回転に関するIntentを受信するBroadcastReceiver
+    private BroadcastReceiver mSetTranslationReceiver = null;                       // 他プレイヤーからの画像移動に関するIntentを受信するBroadcastReceiver
+    private BroadcastReceiver mSetZoomLevelReceiver = null;                         // 他プレイヤーからの拡大率に関するIntentを受信するBroadcastReceiver
+    private int mInstructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY; // 操作タイプ
 
 
     @Override
@@ -79,7 +101,7 @@ public class PlayVideoActivity extends BaseActivity {
         mOperateRelativeLayout =(RelativeLayout)findViewById(R.id.operateRelativeLayout);
         mPlayerView = (GLSurfaceView)findViewById(R.id.PlayerGLSurfaceView);
         mEffectView = (GLSurfaceView)findViewById(R.id.EffectGLSurfaceView);
-
+        mPlayImageView=(ImageView)findViewById(R.id.playImageView);
     }
 
     @Override
@@ -87,6 +109,7 @@ public class PlayVideoActivity extends BaseActivity {
         addListener(mBackRelativeLayout);
         addListener(mOperateRelativeLayout);
         addListener(mEditImageView);
+        addListener(mPlayImageView);
     }
 
     @Override
@@ -94,8 +117,8 @@ public class PlayVideoActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         mVideoPath = bundle.getString("path");
         initGlLayer();
-        VideoInfo videoInfo=new VideoInfo();
-       // mVideoController.openFile(mVideoPath, videoInfo);
+        initTimeManager();
+        setInstructionSyncController(null);
     }
 
 
@@ -103,9 +126,7 @@ public class PlayVideoActivity extends BaseActivity {
     /**
      * GLLayerに関する初期化関数
      */
-    private void initGlLayer()
-    {
-
+    private void initGlLayer() {
         //エフェクトレイヤーの生成
         mEffectGlLayer = new EffectGlLayer(mEffectView);
 
@@ -137,11 +158,15 @@ public class PlayVideoActivity extends BaseActivity {
 
         //エフェクトレイヤーにエフェクトを設定
         //Bitmap frameImg =  checkFrameImage(0);
-        //获取视频的第一帧的图片
+        //获取视频的第一帧的图片.以上一行为原本的代码.
         Bitmap frameImg= VideoUtils.getBitmapsFromVideo(mVideoPath);
         if (frameImg != null) {
             mEffectGlLayer.setUIImage(frameImg);
         }
+    }
+
+    private void initTimeManager(){
+        mTimeManager=new TimeManager();
     }
 
 
@@ -254,8 +279,201 @@ public class PlayVideoActivity extends BaseActivity {
                     mTipsDialog.dismiss();
                 }
                 break;
+            case R.id.playImageView:
+                //播放视频
+                playVideo();
+                break;
         }
     }
+
+
+
+    private void playVideo(){
+        System.out.println("----->开始播放视频");
+        mPlayStatus = STATUS_PLAY;
+        if (mTimeManager != null) {
+            //実速度＝1倍速を設定
+            double realTimeMoviePlayRate = 1;
+            //mTimeManager.setPlayRateFromPlayer(mPlayerId, realTimeMoviePlayRate);
+            mTimeManager.setPlayRateFromPlayer(0, realTimeMoviePlayRate);
+            //他プレイヤーに再生状態を通知し状態の同期を図る
+            if (mInstructionSyncController != null) {
+                int instructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY;
+               // mInstructionSyncController.setInstructionTypeFromPlayer(mPlayerId, instructionType);
+                mInstructionSyncController.setInstructionTypeFromPlayer(0, instructionType);
+                mInstructionType = instructionType;
+            }
+        }
+    }
+
+
+    /**
+     * InstructionSyncControllerの受信設定をする関数
+     * 　BroadcastReceiverをセットする
+     * @param instructionSyncController InstructionSyncControllerのインスタンス
+     */
+    public void setInstructionSyncController(InstructionSyncController instructionSyncController) {
+
+        if (instructionSyncController != null) {
+            mInstructionSyncController = instructionSyncController;
+
+            IntentFilter intentFilter;
+
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(InstructionSyncController.ACTION_INSTRUCTION_TYPE);
+            mSetInstructionTypeReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    //onReceiveSetInstructionType(intent);
+                }
+            };
+            mContext.registerReceiver(mSetInstructionTypeReceiver, intentFilter);
+
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(InstructionSyncController.ACTION_REVERSAL_TYPE);
+            mSetReversalTypeReceiver = new BroadcastReceiver(){
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    //onReceiveSetReversalType(intent);
+                }
+            };
+            mContext.registerReceiver(mSetReversalTypeReceiver ,intentFilter);
+
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(InstructionSyncController.ACTION_ROTATION_ANGLE);
+            mSetRotationAngleReceiver = new BroadcastReceiver(){
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                   // onReceiveSetRotationAngle(intent);
+                }
+            };
+            mContext.registerReceiver(mSetRotationAngleReceiver,intentFilter);
+
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(InstructionSyncController.ACTION_TRANSLATION);
+            mSetTranslationReceiver = new BroadcastReceiver(){
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    //onReceiveSetTranslation(intent);
+                }
+            };
+            mContext.registerReceiver(mSetTranslationReceiver,intentFilter);
+
+            intentFilter = new IntentFilter();
+            intentFilter.addAction(InstructionSyncController.ACTION_ZOOM_LEVEL);
+            mSetZoomLevelReceiver = new BroadcastReceiver(){
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    //onReceiveSetZoomLevel(intent);
+                }
+            };
+            mContext.registerReceiver(mSetZoomLevelReceiver,intentFilter);
+        }
+    }
+
+
+//    /**
+//     * 操作同期コントローラからのInstructionType変更通知
+//     * @param intent 通知内容Intent
+//     */
+//    private void onReceiveSetInstructionType( Intent intent ){
+//        Bundle bundle = intent.getExtras();
+//
+//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
+//
+//        if(playerInfo != null){
+//            if(playerInfo.contains(mPlayerId)){
+//                int instructionType = bundle.getInt(InstructionSyncController.BCEXTRA_INSTRUCTION_TYPE);
+//                mInstructionType = instructionType;
+//            }
+//        }
+//    }
+
+//    /**
+//     * 操作同期コントローラからのReversalType変更通知
+//     * @param intent 通知内容Intent
+//     */
+//    private void onReceiveSetReversalType(Intent intent){
+//        Bundle bundle = intent.getExtras();
+//
+//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
+//
+//        if(playerInfo != null){
+//            if(playerInfo.contains(mPlayerId)){
+//                int reversalType = bundle.getInt(InstructionSyncController.BCEXTRA_REVERSAL_TYPE);
+//
+//                if(mVideoGlLayer != null){
+//                    mVideoGlLayer.setReversalType(reversalType);
+//                }
+//                checkReversalBtn();
+//            }
+//        }
+//    }
+
+//    /**
+//     * 操作同期コントローラからのRotationAngle変更通知
+//     * @param intent 通知内容Intent
+//     */
+//    private void onReceiveSetRotationAngle(Intent intent){
+//        Bundle bundle = intent.getExtras();
+//
+//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
+//
+//        if(playerInfo != null){
+//            if(playerInfo.contains(mPlayerId)){
+//                float rotationAngle = bundle.getFloat(InstructionSyncController.BCEXTRA_ROTATION_ANGLE);
+//                if(mVideoGlLayer != null){
+//                    mVideoGlLayer.setRotateAngle(rotationAngle);
+//                }
+//            }
+//        }
+//    }
+
+//    /**
+//     * 操作同期コントローラからのTranslation変更通知
+//     * @param intent 通知内容Intent
+//     */
+//    private void onReceiveSetTranslation(Intent intent){
+//        Bundle bundle = intent.getExtras();
+//
+//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
+//
+//        if(playerInfo != null){
+//            if(playerInfo.contains(mPlayerId)){
+//                float diffMovementX = bundle.getFloat(InstructionSyncController.BCEXTRA_DIFF_MOVEMENT_X);
+//                float diffMovementY = bundle.getFloat(InstructionSyncController.BCEXTRA_DIFF_MOVEMENT_Y);
+//
+//                if(mVideoGlLayer != null){
+//                    mVideoGlLayer.setTranslate(diffMovementX, diffMovementY);
+//                }
+//            }
+//        }
+//    }
+
+//    /**
+//     * 操作同期コントローラからのZoomLevel変更通知
+//     * @param intent 通知内容Intent
+//     */
+//    private void onReceiveSetZoomLevel(Intent intent){
+//        Bundle bundle = intent.getExtras();
+//
+//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
+//
+//        if(playerInfo != null){
+//            if(playerInfo.contains(mPlayerId)){
+//
+//                float diffZoomLevel = bundle.getFloat(InstructionSyncController.BCEXTRA_DIFF_ZOOM_LEVEL);
+//                float centerPointX = bundle.getFloat(InstructionSyncController.BCEXTRA_CENTER_POINT_X);
+//                float centerPointY = bundle.getFloat(InstructionSyncController.BCEXTRA_CENTER_POINT_Y);
+//
+//                if(mVideoGlLayer != null){
+//                    mVideoGlLayer.setZoomLevel(diffZoomLevel);
+//                }
+//            }
+//        }
+//    }
+
+
 
     //显示操作(剪切,翻转,旋转等)对话框
     private void showOperateDialog(){
