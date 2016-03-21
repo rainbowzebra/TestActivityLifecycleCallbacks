@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    >
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/MultiPlayerContainer1"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true">
+        </LinearLayout>
+
+        <ToggleButton
+            android:id="@+id/MultiPlayerSyncButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="同期 ON"
+            android:textOff="同期 OFF"
+            android:checked="false"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:id="@+id/MultiPlayerContainer2"
+            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1">
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

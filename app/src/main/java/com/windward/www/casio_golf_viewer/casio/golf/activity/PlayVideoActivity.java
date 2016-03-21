@@ -49,7 +49,9 @@ public class PlayVideoActivity extends BaseActivity {
 
     private int mPlayStatus = STATUS_PAUSE;                                         // 現在の再生状態
     private int mBeforeTouchPlayStatus = STATUS_PAUSE;                              // タッチ操作前の再生状態
-    private int mBeforeSeekPlayStatus = STATUS_PAUSE;                               // シークバー操作前の再生状態
+    private int mBeforeSeekPlayStatus = STATUS_PAUSE;
+                          // シークバー操作前の再生状態
+
     private Intent mIntent;
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mOperateRelativeLayout;

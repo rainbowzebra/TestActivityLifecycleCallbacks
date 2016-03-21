@@ -18,7 +18,6 @@ package com.windward.www.casio_golf_viewer.casio.golf.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,18 +26,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.windward.www.casio_golf_viewer.R;
-import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayVideoActivity;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayerBaseActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoGridViewAdapter;
-import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class CasioFirstFragment extends Fragment {
 	private int position;
@@ -46,7 +42,7 @@ public class CasioFirstFragment extends Fragment {
 	private static final String POSITION = "position";
 	private GridView mGridView;
 	private VideoGridViewAdapter mVideoGridViewAdapter;
-	private ArrayList<String> mPlayList;
+	private ArrayList<String> playList;
 	private ItemClickListenerImpl mItemClickListenerImpl;
 	private ArrayList<ListItemInfo> mVideosArrayList;
 
@@ -84,7 +80,6 @@ public class CasioFirstFragment extends Fragment {
 			mVideosArrayList=videoUtils.getVideoList(getContext());
 
 			if(null!=mVideosArrayList&&mVideosArrayList.size()>0){
-				mPlayList = new ArrayList<String>();
 				mVideosArrayList=videoUtils.fixVideoArrayList(getContext(),mVideosArrayList);
 				mVideoGridViewAdapter=new VideoGridViewAdapter(getContext());
 				mVideoGridViewAdapter.setList(mVideosArrayList);
@@ -103,11 +98,27 @@ public class CasioFirstFragment extends Fragment {
 	private class ItemClickListenerImpl implements AdapterView.OnItemClickListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Intent intent=new Intent(mContext, PlayVideoActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString("path", mVideosArrayList.get(position).getFilePath());
-			intent.putExtras(bundle);
-			startActivity(intent);
+//			跳转到Activity,现在被注释掉
+//			Intent intent=new Intent(mContext, PlayVideoActivity.class);
+//			Bundle bundle = new Bundle();
+//			bundle.putString("path", mVideosArrayList.get(position).getFilePath());
+//			intent.putExtras(bundle);
+//			startActivity(intent);
+
+
+			//需要跳转到fragment
+			if (null != mVideosArrayList && mVideosArrayList.size() > 0) {
+				ListItemInfo itemInfo = mVideosArrayList.get(position);
+				if (itemInfo.isShowVideo()) {
+					ArrayList<String> playList = new ArrayList<String>();
+					Intent intent = new Intent(mContext, PlayerBaseActivity.class);
+					Bundle bundle = new Bundle();
+					playList.add(mVideosArrayList.get(position).getFilePath());
+					bundle.putStringArrayList("key_playlist", playList);
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			}
 		}
 	}
 

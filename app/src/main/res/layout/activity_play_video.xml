@@ -73,7 +73,18 @@
     </include>
 
 
+    <LinearLayout
+        android:id="@+id/SinglePlayerContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleRelativeLayout"
+        android:layout_above="@id/mediaController"
+        tools:layout="@layout/fragment_player"
+        android:orientation="vertical" />
+
+
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/MainImageControllerLayout"
         android:layout_marginTop="170px"
         android:layout_marginBottom="170px"

@@ -41,6 +41,7 @@
         <activity android:name=".casio.golf.activity.DeleteTwoVideoActivity" />
         <activity android:name=".casio.golf.activity.CompareVideoActivity" />
         <activity android:name=".casio.golf.activity.DrawLineActivity"></activity>
+        <activity android:name=".casio.golf.activity.PlayerBaseActivity"></activity>
     </application>
 
 </manifest>
