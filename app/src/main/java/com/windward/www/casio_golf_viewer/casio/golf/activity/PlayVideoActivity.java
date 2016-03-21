@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -118,58 +119,10 @@ public class PlayVideoActivity extends BaseActivity {
     protected void initData() {
         Bundle bundle = getIntent().getExtras();
         mVideoPath = bundle.getString("path");
-        initGlLayer();
-        initTimeManager();
-        setInstructionSyncController(null);
+
     }
 
 
-
-    /**
-     * GLLayerに関する初期化関数
-     */
-    private void initGlLayer() {
-        //エフェクトレイヤーの生成
-        mEffectGlLayer = new EffectGlLayer(mEffectView);
-
-        /**
-         * 描画レイヤーの生成
-         * 　デコーダでデコーダでSurfaceを使用するかしないかで分岐を使用するかしないかで分岐
-         * 　(I)Surfaceを使用する場合
-         * 　　　 GLSurfaceViewを設定し、onSurfaceCreatedで生成されたSurfaceをVideoControllerに設定する
-         * 　(II)Surfaceを使用しない場合
-         * 　　　 VideoControllerにSurfaceを設定する必要なし
-         */
-        mIsPreparedVideoGlLayer = false;
-        if(IS_USE_SURFACE) {
-            mVideoGlLayer = new VideoGlLayer(mPlayerView, IS_USE_SURFACE, new GlLayer.GlLayerCallback() {
-
-                @Override
-                public void onSurfaceCreated(Surface surface) {
-                    mVideoController = new VideoController(surface);   // デコードコントローラの初期化
-                    synchronized (this) {
-                        mIsPreparedVideoGlLayer = true;
-                    }
-                }
-            });
-        }else{
-            mVideoGlLayer = new VideoGlLayer(mPlayerView, IS_USE_SURFACE, null);
-            mVideoController = new VideoController(null);                   // デコードコントローラの初期化
-            mIsPreparedVideoGlLayer = true;
-        }
-
-        //エフェクトレイヤーにエフェクトを設定
-        //Bitmap frameImg =  checkFrameImage(0);
-        //获取视频的第一帧的图片.以上一行为原本的代码.
-        Bitmap frameImg= VideoUtils.getBitmapsFromVideo(mVideoPath);
-        if (frameImg != null) {
-            mEffectGlLayer.setUIImage(frameImg);
-        }
-    }
-
-    private void initTimeManager(){
-        mTimeManager=new TimeManager();
-    }
 
 
 
@@ -283,197 +236,9 @@ public class PlayVideoActivity extends BaseActivity {
                 break;
             case R.id.playImageView:
                 //播放视频
-                playVideo();
                 break;
         }
     }
-
-
-
-    private void playVideo(){
-        System.out.println("----->开始播放视频");
-        mPlayStatus = STATUS_PLAY;
-        if (mTimeManager != null) {
-            //実速度＝1倍速を設定
-            double realTimeMoviePlayRate = 1;
-            //mTimeManager.setPlayRateFromPlayer(mPlayerId, realTimeMoviePlayRate);
-            mTimeManager.setPlayRateFromPlayer(0, realTimeMoviePlayRate);
-            //他プレイヤーに再生状態を通知し状態の同期を図る
-            if (mInstructionSyncController != null) {
-                int instructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY;
-               // mInstructionSyncController.setInstructionTypeFromPlayer(mPlayerId, instructionType);
-                mInstructionSyncController.setInstructionTypeFromPlayer(0, instructionType);
-                mInstructionType = instructionType;
-            }
-        }
-    }
-
-
-    /**
-     * InstructionSyncControllerの受信設定をする関数
-     * 　BroadcastReceiverをセットする
-     * @param instructionSyncController InstructionSyncControllerのインスタンス
-     */
-    public void setInstructionSyncController(InstructionSyncController instructionSyncController) {
-
-        if (instructionSyncController != null) {
-            mInstructionSyncController = instructionSyncController;
-
-            IntentFilter intentFilter;
-
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(InstructionSyncController.ACTION_INSTRUCTION_TYPE);
-            mSetInstructionTypeReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    //onReceiveSetInstructionType(intent);
-                }
-            };
-            mContext.registerReceiver(mSetInstructionTypeReceiver, intentFilter);
-
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(InstructionSyncController.ACTION_REVERSAL_TYPE);
-            mSetReversalTypeReceiver = new BroadcastReceiver(){
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    //onReceiveSetReversalType(intent);
-                }
-            };
-            mContext.registerReceiver(mSetReversalTypeReceiver ,intentFilter);
-
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(InstructionSyncController.ACTION_ROTATION_ANGLE);
-            mSetRotationAngleReceiver = new BroadcastReceiver(){
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                   // onReceiveSetRotationAngle(intent);
-                }
-            };
-            mContext.registerReceiver(mSetRotationAngleReceiver,intentFilter);
-
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(InstructionSyncController.ACTION_TRANSLATION);
-            mSetTranslationReceiver = new BroadcastReceiver(){
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    //onReceiveSetTranslation(intent);
-                }
-            };
-            mContext.registerReceiver(mSetTranslationReceiver,intentFilter);
-
-            intentFilter = new IntentFilter();
-            intentFilter.addAction(InstructionSyncController.ACTION_ZOOM_LEVEL);
-            mSetZoomLevelReceiver = new BroadcastReceiver(){
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    //onReceiveSetZoomLevel(intent);
-                }
-            };
-            mContext.registerReceiver(mSetZoomLevelReceiver,intentFilter);
-        }
-    }
-
-
-//    /**
-//     * 操作同期コントローラからのInstructionType変更通知
-//     * @param intent 通知内容Intent
-//     */
-//    private void onReceiveSetInstructionType( Intent intent ){
-//        Bundle bundle = intent.getExtras();
-//
-//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
-//
-//        if(playerInfo != null){
-//            if(playerInfo.contains(mPlayerId)){
-//                int instructionType = bundle.getInt(InstructionSyncController.BCEXTRA_INSTRUCTION_TYPE);
-//                mInstructionType = instructionType;
-//            }
-//        }
-//    }
-
-//    /**
-//     * 操作同期コントローラからのReversalType変更通知
-//     * @param intent 通知内容Intent
-//     */
-//    private void onReceiveSetReversalType(Intent intent){
-//        Bundle bundle = intent.getExtras();
-//
-//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
-//
-//        if(playerInfo != null){
-//            if(playerInfo.contains(mPlayerId)){
-//                int reversalType = bundle.getInt(InstructionSyncController.BCEXTRA_REVERSAL_TYPE);
-//
-//                if(mVideoGlLayer != null){
-//                    mVideoGlLayer.setReversalType(reversalType);
-//                }
-//                checkReversalBtn();
-//            }
-//        }
-//    }
-
-//    /**
-//     * 操作同期コントローラからのRotationAngle変更通知
-//     * @param intent 通知内容Intent
-//     */
-//    private void onReceiveSetRotationAngle(Intent intent){
-//        Bundle bundle = intent.getExtras();
-//
-//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
-//
-//        if(playerInfo != null){
-//            if(playerInfo.contains(mPlayerId)){
-//                float rotationAngle = bundle.getFloat(InstructionSyncController.BCEXTRA_ROTATION_ANGLE);
-//                if(mVideoGlLayer != null){
-//                    mVideoGlLayer.setRotateAngle(rotationAngle);
-//                }
-//            }
-//        }
-//    }
-
-//    /**
-//     * 操作同期コントローラからのTranslation変更通知
-//     * @param intent 通知内容Intent
-//     */
-//    private void onReceiveSetTranslation(Intent intent){
-//        Bundle bundle = intent.getExtras();
-//
-//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
-//
-//        if(playerInfo != null){
-//            if(playerInfo.contains(mPlayerId)){
-//                float diffMovementX = bundle.getFloat(InstructionSyncController.BCEXTRA_DIFF_MOVEMENT_X);
-//                float diffMovementY = bundle.getFloat(InstructionSyncController.BCEXTRA_DIFF_MOVEMENT_Y);
-//
-//                if(mVideoGlLayer != null){
-//                    mVideoGlLayer.setTranslate(diffMovementX, diffMovementY);
-//                }
-//            }
-//        }
-//    }
-
-//    /**
-//     * 操作同期コントローラからのZoomLevel変更通知
-//     * @param intent 通知内容Intent
-//     */
-//    private void onReceiveSetZoomLevel(Intent intent){
-//        Bundle bundle = intent.getExtras();
-//
-//        ArrayList<Integer> playerInfo = bundle.getIntegerArrayList(InstructionSyncController.BCEXTRA_PLAYER_LIST);
-//
-//        if(playerInfo != null){
-//            if(playerInfo.contains(mPlayerId)){
-//
-//                float diffZoomLevel = bundle.getFloat(InstructionSyncController.BCEXTRA_DIFF_ZOOM_LEVEL);
-//                float centerPointX = bundle.getFloat(InstructionSyncController.BCEXTRA_CENTER_POINT_X);
-//                float centerPointY = bundle.getFloat(InstructionSyncController.BCEXTRA_CENTER_POINT_Y);
-//
-//                if(mVideoGlLayer != null){
-//                    mVideoGlLayer.setZoomLevel(diffZoomLevel);
-//                }
-//            }
-//        }
-//    }
 
 
 

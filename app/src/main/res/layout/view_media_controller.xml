@@ -49,6 +49,7 @@
         android:layout_marginTop="50px"
         >
         <ImageView
+            android:id="@+id/controller_to_start_ImageView"
            style="@style/view_media_controller_ImageView"
             android:src="@drawable/ic_skip_gr"
             android:layout_width="45px"
@@ -61,6 +62,7 @@
             android:layout_height="48px"
              />
         <ImageView
+            android:id="@+id/controller_startAndPause_ImageView"
             style="@style/view_media_controller_ImageView"
             android:src="@drawable/ic_play_gr"
             android:layout_width="42px"

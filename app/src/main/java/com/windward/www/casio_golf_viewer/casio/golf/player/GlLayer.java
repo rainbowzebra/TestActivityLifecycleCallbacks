@@ -121,6 +121,7 @@ public class GlLayer implements GLSurfaceView.Renderer, SurfaceTexture.OnFrameAv
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+
         //テクスチャ生成
         int[] textures = new int[1];
         GLES20.glGenTextures(1, textures, 0);
@@ -157,6 +158,7 @@ public class GlLayer implements GLSurfaceView.Renderer, SurfaceTexture.OnFrameAv
 
             mImageShader.setupShader(GLES20.GL_TEXTURE_2D);
         }
+
 
     }
 
@@ -200,7 +202,8 @@ public class GlLayer implements GLSurfaceView.Renderer, SurfaceTexture.OnFrameAv
         if(mIsUseSurface) {
             //以降、描画処理
             //背景クリア
-            GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+           // GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GLES20.glClearColor(231, 231, 239, 255);
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -219,7 +222,8 @@ public class GlLayer implements GLSurfaceView.Renderer, SurfaceTexture.OnFrameAv
         }else {
             //以降、描画処理
             //背景クリア
-            GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+           //GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            GLES20.glClearColor(231, 231, 239, 255);
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
             synchronized (this) {

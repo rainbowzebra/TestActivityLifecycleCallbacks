@@ -1,5 +1,7 @@
 package com.windward.www.casio_golf_viewer.casio.golf.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,24 +9,32 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import com.windward.www.casio_golf_viewer.R;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.CutVideoActivity;
+import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.player.EffectGlLayer;
 import com.windward.www.casio_golf_viewer.casio.golf.player.GlLayer;
 import com.windward.www.casio_golf_viewer.casio.golf.player.InstructionSyncController;
@@ -34,7 +44,7 @@ import com.windward.www.casio_golf_viewer.casio.golf.player.VideoController;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoFrame;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoGlLayer;
 import com.windward.www.casio_golf_viewer.casio.golf.player.VideoInfo;
-
+import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -42,10 +52,15 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by kato-hy on 2015/12/07.
+ * 在GlLayer.java中修改背景色
+ *  // GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+ *  GLES20.glClearColor(231, 231, 239, 255);
+ *  一共有两处需要修改
  */
 public class PlayerFragment extends Fragment {
 
@@ -127,10 +142,26 @@ public class PlayerFragment extends Fragment {
     private BroadcastReceiver mSetRotationAngleReceiver = null;                     // 他プレイヤーからの回転に関するIntentを受信するBroadcastReceiver
     private BroadcastReceiver mSetTranslationReceiver = null;                       // 他プレイヤーからの画像移動に関するIntentを受信するBroadcastReceiver
     private BroadcastReceiver mSetZoomLevelReceiver = null;                         // 他プレイヤーからの拡大率に関するIntentを受信するBroadcastReceiver
-
     private final boolean IS_USE_SURFACE = true;                                    // true:decoderが画像を直接Surfaceに書き込む方式を使用　false:デコード画像をVideoFrameから取得描画ライブラリに渡す方式を使用
     private boolean mIsPreparedVideoGlLayer = false;                                // VideoGlLayerが準備完了済みかのフラグ
-
+    private Intent mIntent;
+    private RelativeLayout mBackRelativeLayout;
+    private RelativeLayout mOperateRelativeLayout;
+    private ImageView mEditImageView;
+    private AlertDialog mOperateDialog;
+    private AlertDialog mRevolutionDialog;
+    private Dialog mVideoInfoDialog;
+    private Dialog mGuideDialog;
+    private  Dialog mTipsDialog;
+    private ViewPager mViewPager;
+    private VideoViewPagerAdapter mViewPagerAdapter;
+    private ImageView[] dotImageViews;
+    private PageChangeListenerImpl mPageChangeListenerImpl;
+    private LinearLayout mDotsLinearLayout;
+    private ClickListenerImpl mClickListenerImpl;
+    private ImageView mPlayImageView;
+    private ImageView mStartAndPauseImageView;
+    private ImageView mToStartImageView;
 
 
     @Override
@@ -138,7 +169,18 @@ public class PlayerFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         mPlayerView = (GLSurfaceView)view.findViewById(R.id.PlayerGLSurfaceView);
+
+        //将mPlayerView背景设置为透明
+//        mPlayerView.setZOrderOnTop(true);
+//        mPlayerView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+//        mPlayerView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+
+
+
+        //隐藏EffectGLSurfaceView即mEffectView
         mEffectView = (GLSurfaceView)view.findViewById(R.id.EffectGLSurfaceView);
+        setEffectGlLayerHidden(true);
+
         mContext =view.getContext();
 
         //プレイヤーIDの取得
@@ -238,216 +280,238 @@ public class PlayerFragment extends Fragment {
         }
     }
 
+
+
+
+
+
+
+
     /**
      * 表示関係のUIに関しての初期化関数
      * @param view
      */
     private void initView(View view){
+        mClickListenerImpl=new ClickListenerImpl();
+        mBackRelativeLayout=(RelativeLayout)view.findViewById(R.id.backRelativeLayout);
+        mBackRelativeLayout.setOnClickListener(mClickListenerImpl);
+        mEditImageView=(ImageView)view.findViewById(R.id.editImageView);
+        mEditImageView.setOnClickListener(mClickListenerImpl);
+        mOperateRelativeLayout =(RelativeLayout)view.findViewById(R.id.operateRelativeLayout);
+        mOperateRelativeLayout.setOnClickListener(mClickListenerImpl);
+        mPlayImageView=(ImageView)view.findViewById(R.id.playImageView);
+        mPlayImageView.setOnClickListener(mClickListenerImpl);
+
+        mStartAndPauseImageView=(ImageView)view.findViewById(R.id.controller_startAndPause_ImageView);
+        mStartAndPauseImageView.setOnClickListener(mClickListenerImpl);
+
+        mToStartImageView=(ImageView)view.findViewById(R.id.controller_to_start_ImageView);
+        mToStartImageView.setOnClickListener(mClickListenerImpl);
 
         //操作バー全体
         mMainBottomOperationLayout = (RelativeLayout)view.findViewById(R.id.MainBottomOperationLayout);
         mMainTopOperationLayout = (RelativeLayout)view.findViewById(R.id.MainTopOperationLayout);
         mMainOperationControlButtonLayout = (RelativeLayout)view.findViewById(R.id.MainOperationControlButtonLayout);
 
-        /**
-         * OperationLayoutの表示非表示ボタンに対するActionイベント
-         */
-        mOperationViewHidden = false;
-        mShowHideBtn = (ImageButton)view.findViewById(R.id.ShowHideButton);
-        mShowHideBtn.setImageResource(R.drawable.hidden_btn);
-        mShowHideBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
+//        /**
+//         * OperationLayoutの表示非表示ボタンに対するActionイベント
+//         */
+//        mOperationViewHidden = false;
+//        mShowHideBtn = (ImageButton)view.findViewById(R.id.ShowHideButton);
+//        mShowHideBtn.setImageResource(R.drawable.hidden_btn);
+//        mShowHideBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//
+//                        if(mOperationViewHidden){
+//                            mShowHideBtn.setImageResource(R.drawable.hidden_btn);
+//                            mMainBottomOperationLayout.setVisibility(View.VISIBLE);
+//                        }else{
+//                            mShowHideBtn.setImageResource(R.drawable.show_btn);
+//                            mMainBottomOperationLayout.setVisibility(View.INVISIBLE);
+//                        }
+//                        mOperationViewHidden = !mOperationViewHidden;
+//                    }
+//                });
+//
+//
+//        /**
+//         * 回転切り替えボタンに対するActionイベント
+//         * ボタンを押すごとに0->90->180->270->0->...のトグル動作
+//         */
+//        mRotationBtn = (Button)view.findViewById(R.id.RotationButton);
+//        mRotationBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//
+//                        //動画像の現在の回転量の取得
+//                        float nowRotation = mVideoGlLayer.getRotateAngle();
+//
+//                        if (nowRotation == GlLayer.ROTATE_ANGLE_0) {
+//                            setRotateAngle(GlLayer.ROTATE_ANGLE_90);
+//                        } else if (nowRotation == GlLayer.ROTATE_ANGLE_90) {
+//                            setRotateAngle(GlLayer.ROTATE_ANGLE_180);
+//                        } else if (nowRotation == GlLayer.ROTATE_ANGLE_180) {
+//                            setRotateAngle(GlLayer.ROTATE_ANGLE_270);
+//                        } else if (nowRotation == GlLayer.ROTATE_ANGLE_270) {
+//                            setRotateAngle(GlLayer.ROTATE_ANGLE_0);
+//                        } else {
+//                            setRotateAngle(GlLayer.ROTATE_ANGLE_0);
+//                        }
+//                    }
+//                });
+//
+//        /**
+//         * 左右反転タイプ切り替えボタンに対するActionイベント
+//         */
+//        mReversalLeftRightBtn = (Button)view.findViewById(R.id.ReversalLeftRightButton);
+//        mReversalLeftRightBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//
+//                        //動画像の現在の反転状態取得
+//                        float nowReversalType = mVideoGlLayer.getReversalType();
+//
+//                        if (nowReversalType == GlLayer.REVERSAL_DEFAULT) {
+//                            setReversalType(GlLayer.REVERSAL_LEFTRIGHT);
+//                        } else if (nowReversalType == GlLayer.REVERSAL_LEFTRIGHT) {
+//                            setReversalType(GlLayer.REVERSAL_DEFAULT);
+//                        } else {
+//                            setReversalType(GlLayer.REVERSAL_LEFTRIGHT);
+//                        }
+//                        checkReversalBtn();
+//                    }
+//                });
+//
 
-                        if(mOperationViewHidden){
-                            mShowHideBtn.setImageResource(R.drawable.hidden_btn);
-                            mMainBottomOperationLayout.setVisibility(View.VISIBLE);
-                        }else{
-                            mShowHideBtn.setImageResource(R.drawable.show_btn);
-                            mMainBottomOperationLayout.setVisibility(View.INVISIBLE);
-                        }
-                        mOperationViewHidden = !mOperationViewHidden;
-                    }
-                });
-
-
-        /**
-         * 回転切り替えボタンに対するActionイベント
-         * ボタンを押すごとに0->90->180->270->0->...のトグル動作
-         */
-        mRotationBtn = (Button)view.findViewById(R.id.RotationButton);
-        mRotationBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
-
-                        //動画像の現在の回転量の取得
-                        float nowRotation = mVideoGlLayer.getRotateAngle();
-
-                        if (nowRotation == GlLayer.ROTATE_ANGLE_0) {
-                            setRotateAngle(GlLayer.ROTATE_ANGLE_90);
-                        } else if (nowRotation == GlLayer.ROTATE_ANGLE_90) {
-                            setRotateAngle(GlLayer.ROTATE_ANGLE_180);
-                        } else if (nowRotation == GlLayer.ROTATE_ANGLE_180) {
-                            setRotateAngle(GlLayer.ROTATE_ANGLE_270);
-                        } else if (nowRotation == GlLayer.ROTATE_ANGLE_270) {
-                            setRotateAngle(GlLayer.ROTATE_ANGLE_0);
-                        } else {
-                            setRotateAngle(GlLayer.ROTATE_ANGLE_0);
-                        }
-                    }
-                });
-
-        /**
-         * 左右反転タイプ切り替えボタンに対するActionイベント
-         */
-        mReversalLeftRightBtn = (Button)view.findViewById(R.id.ReversalLeftRightButton);
-        mReversalLeftRightBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
-
-                        //動画像の現在の反転状態取得
-                        float nowReversalType = mVideoGlLayer.getReversalType();
-
-                        if (nowReversalType == GlLayer.REVERSAL_DEFAULT) {
-                            setReversalType(GlLayer.REVERSAL_LEFTRIGHT);
-                        } else if (nowReversalType == GlLayer.REVERSAL_LEFTRIGHT) {
-                            setReversalType(GlLayer.REVERSAL_DEFAULT);
-                        } else {
-                            setReversalType(GlLayer.REVERSAL_LEFTRIGHT);
-                        }
-                        checkReversalBtn();
-                    }
-                });
-
-
-        /**
-         * 上下反転タイプ切り替えボタンに対するActionイベント
-         */
-        mReversalUpDownBtn = (Button)view.findViewById(R.id.ReversalUpDownButton);
-        mReversalUpDownBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
-
-                        float nowReversalType = mVideoGlLayer.getReversalType();
-
-                        if (nowReversalType == GlLayer.REVERSAL_DEFAULT) {
-                            setReversalType(GlLayer.REVERSAL_UPDOWN);
-                        } else if (nowReversalType == GlLayer.REVERSAL_UPDOWN) {
-                            setReversalType(GlLayer.REVERSAL_DEFAULT);
-                        } else {
-                            setReversalType(GlLayer.REVERSAL_UPDOWN);
-                        }
-                        checkReversalBtn();
-                    }
-                });
-
-        /**
-         * タッチ操作の縦横切り替えボタンに対するActionイベント
-         */
-        mTouchModeChangeBtn = (ToggleButton)view.findViewById(R.id.TouchModeChangeButton);
-        mTouchModeChangeBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (mTouchController != null) {
-                        mTouchController.setVertical(isChecked);
-                    }
-                } else {
-                    if (mTouchController != null) {
-                        mTouchController.setVertical(isChecked);
-                    }
-                }
-
-                //エフェクトレイヤーの描画
-                if (mEffectGlLayer != null) {
-                    if (mEffectShow) {
-                        Bitmap frameImg = checkFrameImage(mPresentationTimeUs);
-                        if (frameImg != null) {
-                            //エフェクトレイヤーに画像を設定
-                            mEffectGlLayer.setUIImage(frameImg);
-                        }
-                    } else {
-                        //エフェクトレイヤーに何も表示させない
-                        mEffectGlLayer.setUIImage(null);
-                    }
-                }
-            }
-        });
-
-
-        /**
-         * 再生/一時停止ボタンに対するActionイベント
-         */
-        mPlayPauseBtn = (ImageButton)view.findViewById(R.id.MainOperationPlayPauseButton);
-        mPlayPauseBtn.setImageResource(R.drawable.play_button);
-        mPlayPauseBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
-                        switch(mPlayStatus){
-                            case STATUS_PAUSE:
-                                playPauseMethod(true);
-                                break;
-                            case STATUS_PLAY:
-                                playPauseMethod(false);
-                                break;
-                            case STATUS_REALTIME_PLAY:
-                                playPauseMethod(false);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-
-        /**
-         * 実速再生ボタンに対するActionイベント
-         */
-        mRealTimePlayBtn = (ImageButton)view.findViewById(R.id.MainOperationRealTimePlayButton);
-        mRealTimePlayBtn.setImageResource(R.drawable.realtime_button);
-        mRealTimePlayBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
-
-                        mPlayStatus = STATUS_PLAY;
-                        if (mTimeManager != null) {
-
-                            //実速度＝1倍速を設定
-                            double realTimeMoviePlayRate = 1;
-                            mTimeManager.setPlayRateFromPlayer(mPlayerId, realTimeMoviePlayRate);
-
-                            //他プレイヤーに再生状態を通知し状態の同期を図る
-                            if (mInstructionSyncController != null) {
-                                int instructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY;
-                                mInstructionSyncController.setInstructionTypeFromPlayer(mPlayerId, instructionType);
-                                mInstructionType = instructionType;
-                            }
-                        }
-                    }
-                });
+//        /**
+//         * 上下反転タイプ切り替えボタンに対するActionイベント
+//         */
+//        mReversalUpDownBtn = (Button)view.findViewById(R.id.ReversalUpDownButton);
+//        mReversalUpDownBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//
+//                        float nowReversalType = mVideoGlLayer.getReversalType();
+//
+//                        if (nowReversalType == GlLayer.REVERSAL_DEFAULT) {
+//                            setReversalType(GlLayer.REVERSAL_UPDOWN);
+//                        } else if (nowReversalType == GlLayer.REVERSAL_UPDOWN) {
+//                            setReversalType(GlLayer.REVERSAL_DEFAULT);
+//                        } else {
+//                            setReversalType(GlLayer.REVERSAL_UPDOWN);
+//                        }
+//                        checkReversalBtn();
+//                    }
+//                });
+//
+//        /**
+//         * タッチ操作の縦横切り替えボタンに対するActionイベント
+//         */
+//        mTouchModeChangeBtn = (ToggleButton)view.findViewById(R.id.TouchModeChangeButton);
+//        mTouchModeChangeBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    if (mTouchController != null) {
+//                        mTouchController.setVertical(isChecked);
+//                    }
+//                } else {
+//                    if (mTouchController != null) {
+//                        mTouchController.setVertical(isChecked);
+//                    }
+//                }
+//
+//                //エフェクトレイヤーの描画
+//                if (mEffectGlLayer != null) {
+//                    if (mEffectShow) {
+//                        Bitmap frameImg = checkFrameImage(mPresentationTimeUs);
+//                        if (frameImg != null) {
+//                            //エフェクトレイヤーに画像を設定
+//                            mEffectGlLayer.setUIImage(frameImg);
+//                        }
+//                    } else {
+//                        //エフェクトレイヤーに何も表示させない
+//                        mEffectGlLayer.setUIImage(null);
+//                    }
+//                }
+//            }
+//        });
 
 
-        /**
-         * 先頭時刻へ戻るボタンに対するActionイベント
-         */
-        mBackTopBtn = (ImageButton)view.findViewById(R.id.MainOperationBackTopButton);
-        mBackTopBtn.setImageResource(R.drawable.back_top_button);
-        mBackTopBtn.setEnabled(true);
-        mBackTopBtn.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View w) {
-                        if (mTimeManager != null) {
-                            // 再生を停止、再生時刻に0にシーク
-                            mTimeManager.setPlayRateFromPlayer(mPlayerId, 0);
-                            mTimeManager.setCurrentPtsUsFromPlayer(mPlayerId, 0);
-                        }
-                    }
-                });
+//        /**
+//         * 再生/一時停止ボタンに対するActionイベント
+//         */
+//        mPlayPauseBtn = (ImageButton)view.findViewById(R.id.MainOperationPlayPauseButton);
+//        mPlayPauseBtn.setImageResource(R.drawable.play_button);
+//        mPlayPauseBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//                        switch(mPlayStatus){
+//                            case STATUS_PAUSE:
+//                                playPauseMethod(true);
+//                                break;
+//                            case STATUS_PLAY:
+//                                playPauseMethod(false);
+//                                break;
+//                            case STATUS_REALTIME_PLAY:
+//                                playPauseMethod(false);
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                });
+//
+//        /**
+//         * 実速再生ボタンに対するActionイベント
+//         */
+//        mRealTimePlayBtn = (ImageButton)view.findViewById(R.id.MainOperationRealTimePlayButton);
+//        mRealTimePlayBtn.setImageResource(R.drawable.realtime_button);
+//        mRealTimePlayBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//
+//                        mPlayStatus = STATUS_PLAY;
+//                        if (mTimeManager != null) {
+//
+//                            //実速度＝1倍速を設定
+//                            double realTimeMoviePlayRate = 1;
+//                            mTimeManager.setPlayRateFromPlayer(mPlayerId, realTimeMoviePlayRate);
+//
+//                            //他プレイヤーに再生状態を通知し状態の同期を図る
+//                            if (mInstructionSyncController != null) {
+//                                int instructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY;
+//                                mInstructionSyncController.setInstructionTypeFromPlayer(mPlayerId, instructionType);
+//                                mInstructionType = instructionType;
+//                            }
+//                        }
+//                    }
+//                });
+//
+//
+//        /**
+//         * 先頭時刻へ戻るボタンに対するActionイベント
+//         */
+//        mBackTopBtn = (ImageButton)view.findViewById(R.id.MainOperationBackTopButton);
+//        mBackTopBtn.setImageResource(R.drawable.back_top_button);
+//        mBackTopBtn.setEnabled(true);
+//        mBackTopBtn.setOnClickListener(
+//                new Button.OnClickListener() {
+//                    public void onClick(View w) {
+//                        if (mTimeManager != null) {
+//                            // 再生を停止、再生時刻に0にシーク
+//                            mTimeManager.setPlayRateFromPlayer(mPlayerId, 0);
+//                            mTimeManager.setCurrentPtsUsFromPlayer(mPlayerId, 0);
+//                        }
+//                    }
+//                });
 
 
         /**
          * シークバーに対するActionイベント
          */
-        mVideoSeekBar=(SeekBar)view.findViewById(R.id.MainOperationSeekBar);
+        mVideoSeekBar=(SeekBar)view.findViewById(R.id.seekBar);//MainOperationSeekBar
         mVideoSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener(){
 
@@ -503,7 +567,7 @@ public class PlayerFragment extends Fragment {
                 });
 
 
-        mTimeText = (TextView)view.findViewById(R.id.MainOperationTimeText);
+        mTimeText = (TextView)view.findViewById(R.id.timeTextView);//MainOperationTimeText
     }
 
 
@@ -1362,15 +1426,18 @@ public class PlayerFragment extends Fragment {
     private void checkPlayBtnMode() {
         switch (mPlayStatus) {
             case STATUS_PLAY:
-                mPlayPauseBtn.setImageResource(R.drawable.pause_button);
+                //mPlayPauseBtn.setImageResource(R.drawable.pause_button);
+                mStartAndPauseImageView.setImageResource(R.drawable.ic_play_gr);
 
                 break;
             case STATUS_PAUSE:
-                mPlayPauseBtn.setImageResource(R.drawable.play_button);
+                //mPlayPauseBtn.setImageResource(R.drawable.play_button);
+                mStartAndPauseImageView.setImageResource(R.drawable.ic_play_gr);
 
                 break;
             case STATUS_REALTIME_PLAY:
-                mPlayPauseBtn.setImageResource(R.drawable.pause_button);
+                //mPlayPauseBtn.setImageResource(R.drawable.pause_button);
+                mStartAndPauseImageView.setImageResource(R.drawable.ic_play_gr);
                 break;
             default :
                 break;
@@ -1387,9 +1454,12 @@ public class PlayerFragment extends Fragment {
             if (nowPlayRate == 0) {
                 //表示を変化させない
             } else if(nowPlayRate == 1) {
-                mRealTimePlayBtn.setEnabled(false);
+                //mRealTimePlayBtn.setEnabled(false);
+                mPlayImageView.setEnabled(false);
+
             }else {
-                mRealTimePlayBtn.setEnabled(true);
+                //mRealTimePlayBtn.setEnabled(true);
+                mPlayImageView.setEnabled(true);
             }
         }
     }
@@ -1417,7 +1487,8 @@ public class PlayerFragment extends Fragment {
         int min = ((time/1000)-sec)%(60*60)/60;
         int hour = (time/1000)/(60*60);
 
-        String timeStr = String.format("%d:%02d:%02d:%03d",hour,min,sec,msec);
+        //String timeStr = String.format("%d:%02d:%02d:%03d",hour,min,sec,msec);
+        String timeStr = String.format("%d:%02d:%02d",min,sec,msec);
         if(mTimeText != null)
             mTimeText.setText(timeStr);
 
@@ -1557,5 +1628,340 @@ public class PlayerFragment extends Fragment {
         }
         return -1;
     }
+
+
+
+
+
+
+    private class ClickListenerImpl implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.backRelativeLayout:
+                    getActivity().finish();
+                    break;
+                case R.id.editImageView:
+                    showTipsDialog();
+                    break;
+                case R.id.operateRelativeLayout:
+                    showOperateDialog();
+                    break;
+                case R.id.move_cut_LinearLayout:
+                    mIntent=new Intent(mContext,CutVideoActivity.class);
+                    startActivity(mIntent);
+                    break;
+                case R.id.move_combine_LinearLayout:
+                    System.out.println("-----> PPT上未说明跳转");
+                    break;
+                case R.id.move_reflect_LinearLayout:
+                    System.out.println("-----> 视频翻转,不用页面跳转.");
+                    if(null!=mOperateDialog&&mOperateDialog.isShowing()){
+                        mOperateDialog.dismiss();
+
+                        //動画像の現在の反転状態取得
+                        float nowReversalType = mVideoGlLayer.getReversalType();
+                        if (nowReversalType == GlLayer.REVERSAL_DEFAULT) {
+                            setReversalType(GlLayer.REVERSAL_LEFTRIGHT);
+                        } else if (nowReversalType == GlLayer.REVERSAL_LEFTRIGHT) {
+                            setReversalType(GlLayer.REVERSAL_DEFAULT);
+                        } else {
+                            setReversalType(GlLayer.REVERSAL_LEFTRIGHT);
+                        }
+                        checkReversalBtn();
+                    }
+                    System.out.println("-----> 在此测试教程.以后请注释下行代码");
+                    //showGuideDialog();
+                    break;
+                case R.id.move_revolution_LinearLayout:
+                    System.out.println("-----> 视频旋转,不用页面跳转.");
+                    if(null!=mOperateDialog&&mOperateDialog.isShowing()){
+                        mOperateDialog.dismiss();
+                    }
+                    showRevolutionDialog();
+                    break;
+                case R.id.move_movtx_LinearLayout:
+                    System.out.println("-----> 显示视频信息,不用页面跳转.");
+                    if(null!=mOperateDialog&&mOperateDialog.isShowing()){
+                        mOperateDialog.dismiss();
+                    }
+                    showVideoInfoDialog();
+                    break;
+                case R.id.revolution_TextView_90:
+                    System.out.println("-----> 旋转90");
+                    if(null!=mRevolutionDialog&&mRevolutionDialog.isShowing()){
+                        mRevolutionDialog.dismiss();
+                        setRotateAngle(GlLayer.ROTATE_ANGLE_90);
+                    }
+                    break;
+                case R.id.revolution_TextView_180:
+                    System.out.println("-----> 旋转180");
+                    if(null!=mRevolutionDialog&&mRevolutionDialog.isShowing()){
+                        mRevolutionDialog.dismiss();
+                        setRotateAngle(GlLayer.ROTATE_ANGLE_180);
+                    }
+                    break;
+                case R.id.revolution_TextView_270:
+                    System.out.println("-----> 旋转270");
+                    if(null!=mRevolutionDialog&&mRevolutionDialog.isShowing()){
+                        mRevolutionDialog.dismiss();
+                        setRotateAngle(GlLayer.ROTATE_ANGLE_270);
+                    }
+                    break;
+                case R.id.closeVideoInfoRelativeLayout:
+                    System.out.println("-----> 关闭对话框");
+                    if(null!=mVideoInfoDialog&&mVideoInfoDialog.isShowing()){
+                        mVideoInfoDialog.dismiss();
+                    }
+                    break;
+                case R.id.okTextView:
+                    if(null!=mTipsDialog&&mTipsDialog.isShowing()){
+                        mTipsDialog.dismiss();
+                    }
+                    System.out.println("-----> 跳转到 ppt e14 最复杂的画面");
+                    break;
+                case R.id.cancelTextView:
+                    if(null!=mTipsDialog&&mTipsDialog.isShowing()){
+                        mTipsDialog.dismiss();
+                    }
+                    break;
+                case R.id.playImageView:
+                    //开始播放视频
+                   startPlayVideo();
+                    break;
+                case R.id.controller_startAndPause_ImageView:
+                    startAndPauseVideo();
+                    break;
+                case R.id.controller_to_start_ImageView:
+                    toVideoStart();
+                    break;
+            }
+        }
+    }
+
+    private void startPlayVideo(){
+        mPlayImageView.setVisibility(View.GONE);
+        mPlayStatus = STATUS_PLAY;
+        if (mTimeManager != null) {
+            //実速度＝1倍速を設定
+            double realTimeMoviePlayRate = 1;
+            mTimeManager.setPlayRateFromPlayer(mPlayerId, realTimeMoviePlayRate);
+
+            //他プレイヤーに再生状態を通知し状態の同期を図る
+            if (mInstructionSyncController != null) {
+                int instructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY;
+                mInstructionSyncController.setInstructionTypeFromPlayer(mPlayerId, instructionType);
+                mInstructionType = instructionType;
+            }
+        }
+    }
+
+
+    /**
+     * 注意在checkPlayBtnMode()方法中替换图片!!!!!!!
+     */
+    private void startAndPauseVideo(){
+        switch(mPlayStatus){
+            case STATUS_PAUSE:
+                playPauseMethod(true);
+                break;
+            case STATUS_PLAY:
+                playPauseMethod(false);
+                break;
+            case STATUS_REALTIME_PLAY:
+                playPauseMethod(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void toVideoStart(){
+        if (mTimeManager != null) {
+            // 再生を停止、再生時刻に0にシーク
+            mTimeManager.setPlayRateFromPlayer(mPlayerId, 0);
+            mTimeManager.setCurrentPtsUsFromPlayer(mPlayerId, 0);
+        }
+    }
+
+
+
+    //显示操作(剪切,翻转,旋转等)对话框
+    private void showOperateDialog(){
+        LayoutInflater inflater =(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_operate, null);
+        ScreenUtil.initScale(dialogView);
+        mOperateDialog= new AlertDialog.Builder(mContext,R.style.dialog).create();
+        mOperateDialog.show();
+        Window window = mOperateDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        //去掉Dialog本身的padding
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams layoutParams = mOperateDialog.getWindow().getAttributes();
+        //设置宽度为屏幕宽度
+        layoutParams.width =ScreenUtil.getScreenWidth(mContext);
+        mOperateDialog.getWindow().setAttributes(layoutParams);
+        mOperateDialog.setContentView(dialogView);
+        initOperateDialogItems(dialogView);
+    }
+
+    private void initOperateDialogItems(View dialogView) {
+        dialogView.findViewById(R.id.move_revolution_LinearLayout).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.move_combine_LinearLayout).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.move_cut_LinearLayout).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.move_movtx_LinearLayout).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.move_reflect_LinearLayout).setOnClickListener(mClickListenerImpl);
+    }
+
+    //显示视频旋转(90度,180度,270度)对话框
+    private void showRevolutionDialog(){
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_revolution, null);
+        ScreenUtil.initScale(dialogView);
+        mRevolutionDialog= new AlertDialog.Builder(mContext,R.style.dialog).create();
+        mRevolutionDialog.show();
+        Window window = mRevolutionDialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        //去掉Dialog本身的padding
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams layoutParams = mRevolutionDialog.getWindow().getAttributes();
+        //设置宽度为屏幕宽度
+        layoutParams.width =ScreenUtil.getScreenWidth(mContext);
+        mRevolutionDialog.getWindow().setAttributes(layoutParams);
+        mRevolutionDialog.setContentView(dialogView);
+        initRevolutionDialogItems(dialogView);
+    }
+
+    private void initRevolutionDialogItems(View dialogView){
+        dialogView.findViewById(R.id.revolution_TextView_90).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.revolution_TextView_180).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.revolution_TextView_270).setOnClickListener(mClickListenerImpl);
+    }
+
+    //显示Video信息
+    private void showVideoInfoDialog(){
+        LayoutInflater inflater =(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_video_info, null);
+        ScreenUtil.initScale(dialogView);
+        mVideoInfoDialog= new Dialog(mContext,R.style.dialog);
+        mVideoInfoDialog.setContentView(dialogView);
+        Window dialogWindow = mVideoInfoDialog.getWindow();
+        // 获取对话框当前的参数值
+        WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
+        layoutParams.height = (int) (ScreenUtil.getScreenHeight(mContext) * 0.47);
+        layoutParams.width = (int) (ScreenUtil.getScreenWidth(mContext) * 0.7);
+        dialogWindow.setAttributes(layoutParams);
+        mVideoInfoDialog.show();
+        initVideoInfoDialog(dialogView);
+    }
+
+    private void initVideoInfoDialog(View dialogView){
+        dialogView.findViewById(R.id.closeVideoInfoRelativeLayout).setOnClickListener(mClickListenerImpl);
+    }
+
+
+    //提醒用户是否要编辑视频
+    private void showTipsDialog(){
+        LayoutInflater inflater =(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_edit_video_tips, null);
+        ScreenUtil.initScale(dialogView);
+        mTipsDialog= new Dialog(mContext,R.style.dialog);
+        mTipsDialog.setContentView(dialogView);
+        Window dialogWindow = mTipsDialog.getWindow();
+        // 获取对话框当前的参数值
+        WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
+        layoutParams.height = (int) (ScreenUtil.getScreenHeight(mContext) * 0.52);
+        layoutParams.width = (int) (ScreenUtil.getScreenWidth(mContext) * 0.9);
+        dialogWindow.setAttributes(layoutParams);
+        mTipsDialog.show();
+        initTipsDialog(dialogView);
+    }
+
+    private void initTipsDialog(View dialogView){
+        dialogView.findViewById(R.id.okTextView).setOnClickListener(mClickListenerImpl);
+        dialogView.findViewById(R.id.cancelTextView).setOnClickListener(mClickListenerImpl);
+    }
+
+
+
+    //--------------> 以下代码与教程相关
+    //显示ViewPager的Dialog
+
+    //注意ViewPager第二页展示的图片是错误的,需要重新切图！！！！！
+    //即view_video_guide_b中的img_g是不对的
+    private void showGuideDialog(){
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.dialog_video_guide, null);
+        ScreenUtil.initScale(dialogView);
+        mGuideDialog= new Dialog(mContext,R.style.dialog);
+        mGuideDialog.setContentView(dialogView);
+        Window dialogWindow = mGuideDialog.getWindow();
+        // 获取对话框当前的参数值
+        WindowManager.LayoutParams layoutParams = dialogWindow.getAttributes();
+        layoutParams.height = (int) (ScreenUtil.getScreenHeight(mContext) * 0.47);
+        layoutParams.width = (int) (ScreenUtil.getScreenWidth(mContext) * 0.8);
+        dialogWindow.setAttributes(layoutParams);
+        mGuideDialog.show();
+        initViewPager(dialogView);
+    }
+
+    private void initViewPager(View dialogView){
+        mViewPager = (ViewPager)dialogView.findViewById(R.id.guide_viewpager);
+        mDotsLinearLayout = (LinearLayout)dialogView.findViewById(R.id.dotsLinearLayout);
+        mViewPagerAdapter = new VideoViewPagerAdapter(mContext,mGuideDialog);
+        mPageChangeListenerImpl = new PageChangeListenerImpl();
+        mViewPager.setAdapter(mViewPagerAdapter);
+        mViewPager.setOnPageChangeListener(mPageChangeListenerImpl);
+        initDots();
+    }
+
+    //初始化小圆点
+    private void initDots() {
+        dotImageViews = new ImageView[mViewPagerAdapter.getCount()];
+        for (int i = 0; i < dotImageViews.length; i++) {
+            LinearLayout layout = new LinearLayout(mContext);
+            ImageView imageView = new ImageView(mContext);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(ScreenUtil.getScalePxValue(24), ScreenUtil.getScalePxValue(24)));
+            if (i == 0) {
+                imageView.setBackgroundResource(R.drawable.guide_dot_white);
+            } else {
+                layout.setPadding(ScreenUtil.getScalePxValue(16), 0, 0, 0);
+                imageView.setBackgroundResource(R.drawable.guide_dot_black);
+            }
+            dotImageViews[i] = imageView;
+            layout.addView(imageView);
+            mDotsLinearLayout.addView(layout);
+        }
+    }
+
+    private class PageChangeListenerImpl implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageSelected(int arg0) {
+            for (int i = 0; i < dotImageViews.length; i++) {
+                dotImageViews[arg0].setBackgroundResource(R.drawable.guide_dot_white);
+                if (arg0 != i) {
+                    dotImageViews[i].setBackgroundResource(R.drawable.guide_dot_black);
+                }
+            }
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+
+    }
+    //--------------> 以上代码与教程相关
+
+
+
+
+
+
 
 }
