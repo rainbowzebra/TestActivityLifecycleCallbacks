@@ -65,7 +65,7 @@ import javax.microedition.khronos.opengles.GL10;
 public class PlayerFragment extends Fragment {
 
     private String TAG = "PlayerFragment";                                          // クラス名
-
+    private double playerRate=1;
     public static final int STATUS_PAUSE = 0;                                       // 再生状態(一時停止)
     public static final int STATUS_PLAY = 1;                                        // 再生状態(再生)
     public static final int STATUS_REALTIME_PLAY = 2;                               // 再生状態(実速度再生)
@@ -162,6 +162,8 @@ public class PlayerFragment extends Fragment {
     private ImageView mPlayImageView;
     private ImageView mStartAndPauseImageView;
     private ImageView mToStartImageView;
+    private ImageView mRateImageView;
+
 
 
     @Override
@@ -169,12 +171,6 @@ public class PlayerFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         mPlayerView = (GLSurfaceView)view.findViewById(R.id.PlayerGLSurfaceView);
-
-        //将mPlayerView背景设置为透明
-//        mPlayerView.setZOrderOnTop(true);
-//        mPlayerView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-//        mPlayerView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-
 
 
         //隐藏EffectGLSurfaceView即mEffectView
@@ -307,6 +303,11 @@ public class PlayerFragment extends Fragment {
 
         mToStartImageView=(ImageView)view.findViewById(R.id.controller_to_start_ImageView);
         mToStartImageView.setOnClickListener(mClickListenerImpl);
+
+        mRateImageView=(ImageView)view.findViewById(R.id.controller_rate_ImageView);
+        mRateImageView.setOnClickListener(mClickListenerImpl);
+
+
 
         //操作バー全体
         mMainBottomOperationLayout = (RelativeLayout)view.findViewById(R.id.MainBottomOperationLayout);
@@ -1735,6 +1736,9 @@ public class PlayerFragment extends Fragment {
                 case R.id.controller_to_start_ImageView:
                     toVideoStart();
                     break;
+                case R.id.controller_rate_ImageView:
+                    setPlayerRate();
+                    break;
             }
         }
     }
@@ -1782,6 +1786,16 @@ public class PlayerFragment extends Fragment {
             mTimeManager.setPlayRateFromPlayer(mPlayerId, 0);
             mTimeManager.setCurrentPtsUsFromPlayer(mPlayerId, 0);
         }
+    }
+
+    //设置播放速率
+    private void setPlayerRate(){
+        if(playerRate>=4){
+            playerRate=1;
+        }else {
+            playerRate++;
+        }
+        mTimeManager.setPlayRateFromPlayer(mPlayerId,playerRate);
     }
 
 

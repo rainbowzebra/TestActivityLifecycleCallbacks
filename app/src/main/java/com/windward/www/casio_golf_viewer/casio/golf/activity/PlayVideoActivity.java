@@ -1,21 +1,11 @@
 package com.windward.www.casio_golf_viewer.casio.golf.activity;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.Dialog;
@@ -26,33 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
-import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
-import com.windward.www.casio_golf_viewer.casio.golf.player.EffectGlLayer;
-import com.windward.www.casio_golf_viewer.casio.golf.player.GlLayer;
-import com.windward.www.casio_golf_viewer.casio.golf.player.InstructionSyncController;
-import com.windward.www.casio_golf_viewer.casio.golf.player.TimeManager;
-import com.windward.www.casio_golf_viewer.casio.golf.player.TouchController;
-import com.windward.www.casio_golf_viewer.casio.golf.player.VideoController;
-import com.windward.www.casio_golf_viewer.casio.golf.player.VideoGlLayer;
-import com.windward.www.casio_golf_viewer.casio.golf.player.VideoInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
-import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class PlayVideoActivity extends BaseActivity {
-
-    public static final int STATUS_PAUSE = 0;                                       // 再生状態(一時停止)
-    public static final int STATUS_PLAY = 1;                                        // 再生状態(再生)
-    public static final int STATUS_REALTIME_PLAY = 2;                               // 再生状態(実速度再生)
-
-    private int mPlayStatus = STATUS_PAUSE;                                         // 現在の再生状態
-    private int mBeforeTouchPlayStatus = STATUS_PAUSE;                              // タッチ操作前の再生状態
-    private int mBeforeSeekPlayStatus = STATUS_PAUSE;
-                          // シークバー操作前の再生状態
-
     private Intent mIntent;
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mOperateRelativeLayout;
@@ -70,25 +36,6 @@ public class PlayVideoActivity extends BaseActivity {
 
     private ImageView mPlayImageView;
 
-    private GLSurfaceView mPlayerView;// 動画表示面のGLSurfaceView
-    private GLSurfaceView mEffectView;
-    private EffectGlLayer mEffectGlLayer;
-    private VideoGlLayer mVideoGlLayer;
-
-    private String mVideoPath;
-    private VideoController mVideoController;
-    private final boolean IS_USE_SURFACE = true;  // true:decoderが画像を直接Surfaceに書き込む方式を使用　false:デコード画像をVideoFrameから取得描画ライブラリに渡す方式を使用
-    private boolean mIsPreparedVideoGlLayer = false;
-    private TouchController mTouchController;
-    private TimeManager mTimeManager;
-    private InstructionSyncController mInstructionSyncController;
-
-    private BroadcastReceiver mSetInstructionTypeReceiver = null;                   // 他プレイヤーからの操作に関するIntentを受信するBroadcastReceiver
-    private BroadcastReceiver mSetReversalTypeReceiver = null;                      // 他プレイヤーからの反転に関するIntentを受信するBroadcastReceiver
-    private BroadcastReceiver mSetRotationAngleReceiver = null;                     // 他プレイヤーからの回転に関するIntentを受信するBroadcastReceiver
-    private BroadcastReceiver mSetTranslationReceiver = null;                       // 他プレイヤーからの画像移動に関するIntentを受信するBroadcastReceiver
-    private BroadcastReceiver mSetZoomLevelReceiver = null;                         // 他プレイヤーからの拡大率に関するIntentを受信するBroadcastReceiver
-    private int mInstructionType = InstructionSyncController.INSTRUCTION_TYPE_PLAY; // 操作タイプ
 
 
     @Override
@@ -102,8 +49,6 @@ public class PlayVideoActivity extends BaseActivity {
         mBackRelativeLayout=(RelativeLayout)findViewById(R.id.backRelativeLayout);
         mEditImageView=(ImageView)findViewById(R.id.editImageView);
         mOperateRelativeLayout =(RelativeLayout)findViewById(R.id.operateRelativeLayout);
-        mPlayerView = (GLSurfaceView)findViewById(R.id.PlayerGLSurfaceView);
-        mEffectView = (GLSurfaceView)findViewById(R.id.EffectGLSurfaceView);
         mPlayImageView=(ImageView)findViewById(R.id.playImageView);
     }
 
@@ -117,43 +62,9 @@ public class PlayVideoActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        Bundle bundle = getIntent().getExtras();
-        mVideoPath = bundle.getString("path");
 
     }
 
-
-
-
-
-//    /**
-//     * エフェクト画像配列から該当のエフェクト画像を取得する関数
-//     * @param presentationTimeUs 現在時刻[us]
-//     * @return 該当のエフェクト画像
-//     */
-//    private Bitmap checkFrameImage(long presentationTimeUs) {
-//        int number;
-//        Bitmap frameImg = null;
-//
-//        if(mTouchController != null){
-//            if(mTouchController.isVertical()){
-//                number = (int)(presentationTimeUs/1000/20)%18;     //縦モード:0-17 20[ms]を1Frameとする
-//            }else{
-//                number = (int)(presentationTimeUs/1000/20)%25 + 18;//横モード:18-42 20[ms]を1Frameとする
-//            }
-//
-//            InputStream inputStream = mContext.getResources().openRawResource(mEffectFrameIdArray[number]);
-//
-//            frameImg = BitmapFactory.decodeStream(inputStream);
-//            try {
-//                inputStream.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-//        return frameImg;
-//    }
 
 
 

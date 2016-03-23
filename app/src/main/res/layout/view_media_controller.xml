@@ -31,12 +31,12 @@
 
         <TextView
             android:id="@+id/timeTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="160px"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
            android:layout_centerVertical="true"
             android:layout_marginRight="40px"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="00:26:30"
             android:textColor="#535353"
             android:textSize="40px" />
@@ -75,6 +75,7 @@
             android:layout_height="48px"
              />
         <ImageView
+            android:id="@+id/controller_rate_ImageView"
             style="@style/view_media_controller_ImageView"
             android:src="@drawable/ic_x_gr"
             android:layout_width="60px"
