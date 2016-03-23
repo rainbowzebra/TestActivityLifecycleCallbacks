@@ -138,22 +138,4 @@
         </RelativeLayout>
     </LinearLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/bgRelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/listview_item_height"
-        android:background="@color/bg_color_half_transent"
-        android:layout_centerInParent="true"
-        android:visibility="invisible">
-
-        <ImageView
-            android:layout_width="117px"
-            android:layout_height="117px"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="100px"
-            android:src="@drawable/ic_check" />
-    </RelativeLayout>
-
-
 </RelativeLayout>

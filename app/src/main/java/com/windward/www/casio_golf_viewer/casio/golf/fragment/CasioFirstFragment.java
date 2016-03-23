@@ -65,7 +65,7 @@ public class CasioFirstFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		LinearLayout.LayoutParams layoutParams= new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-		View contentView=LayoutInflater.from(getContext()).inflate(R.layout.view_no_image_1,null);
+		View contentView=LayoutInflater.from(getContext()).inflate(R.layout.fragment_first,null);
 		ScreenUtil.initScale(contentView);
 		contentView.setLayoutParams(layoutParams);
 		initFirstFragmentViews(contentView);

@@ -27,7 +27,7 @@ public class LauncherViewPagerAdapter extends PagerAdapter {
 	@Override
 	public Object instantiateItem(View container, int position) {
 		View iv = LayoutInflater.from(mContext).inflate(
-				R.layout.guide_pager_adapter, null);
+				R.layout.adapter_guide_pager, null);
 		iv.setFocusable(true);
 		ImageView layout = (ImageView) iv.findViewById(R.id.imageView);
 		layout.setBackgroundResource(page[position]);

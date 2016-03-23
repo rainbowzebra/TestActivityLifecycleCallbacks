@@ -31,6 +31,7 @@ import com.windward.www.casio_golf_viewer.casio.golf.activity.ChoseTwoVideoActiv
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.TwoVideosAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public class CasioSecondFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-		View contentView=LayoutInflater.from(getContext()).inflate(R.layout.view_no_image_2,null);
+		View contentView=LayoutInflater.from(getContext()).inflate(R.layout.fragment_second,null);
 		ScreenUtil.initScale(contentView);
 		contentView.setLayoutParams(layoutParams);
 		initSecondFragmentViews(contentView);
@@ -93,11 +94,9 @@ public class CasioSecondFragment extends Fragment {
 		public void onClick(View v) {
 			switch (v.getId()){
 				case R.id.addImageView:
-					System.out.println("添加视频");
 					Intent intent=new Intent(mContext, ChoseTwoVideoActivity.class);
 					startActivityForResult(intent,REQUEST_CODE);
 					break;
-
 			}
 		}
 	}
@@ -118,7 +117,7 @@ public class CasioSecondFragment extends Fragment {
 			Iterator<String> iterator=arrayList.iterator();
 			while (iterator.hasNext()){
 				   if (isNeedShowDate){
-					   //添加日期
+					   //添加日期(今天的日期)
 					   itemInfo=new ListItemInfo(mContext,iterator.next());
 					   itemInfo.setIsShowVideo(false);
 					   itemInfo.setmTime("" + (System.currentTimeMillis() / 1000));
@@ -148,6 +147,8 @@ public class CasioSecondFragment extends Fragment {
 
 			mAdapter.setList(allList);
 			mListView.setAdapter(mAdapter);
+			//保存数据
+			VideoUtils.saveComparedVideosList(allList);
 		}
 
 	}

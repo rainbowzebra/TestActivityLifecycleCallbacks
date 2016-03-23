@@ -64,7 +64,7 @@ public class VideoGridViewAdapter extends BaseAdapter {
         HolderView holder;
         if (convertView == null) {
             holder = new HolderView();
-            convertView = LayoutInflater.from(context).inflate(R.layout.video_gridview_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.adapter_video_gridview, null);
             ScreenUtil.initScale(convertView);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
             holder.dateLinearLayout=(LinearLayout)convertView.findViewById(R.id.dateLinearLayout);

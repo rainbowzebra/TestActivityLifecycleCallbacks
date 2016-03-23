@@ -6,15 +6,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.windward.www.casio_golf_viewer.R;
+import com.windward.www.casio_golf_viewer.casio.golf.adapter.DeleteTwoVideosAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.ToastUtil;
+import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DeleteTwoVideoActivity extends BaseActivity {
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mDeleteVideoRelativeLayout;
     private Dialog mDeleteDialog;
+    private ListView mListView;
+    private DeleteTwoVideosAdapter mAdapter;
+    private ItemClickListenerImpl mItemClickListenerImpl;
+    private List<ArrayList<ListItemInfo>> mList;
+    private List<ArrayList<ListItemInfo>> mDeleteList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,10 +38,20 @@ public class DeleteTwoVideoActivity extends BaseActivity {
 
     }
 
+
     @Override
     protected void initView() {
         mBackRelativeLayout=(RelativeLayout)findViewById(R.id.backRelativeLayout);
-        mDeleteVideoRelativeLayout=(RelativeLayout)findViewById(R.id.addRelativeLayout);
+        mDeleteVideoRelativeLayout=(RelativeLayout)findViewById(R.id.deleteRelativeLayout);
+        mListView= (ListView) findViewById(R.id.listView);
+        mAdapter=new DeleteTwoVideosAdapter(mContext);
+        mList= VideoUtils.getComparedVideosList();
+        mAdapter.setList(mList);
+        mListView.setAdapter(mAdapter);
+        mItemClickListenerImpl=new ItemClickListenerImpl();
+        mListView.setOnItemClickListener(mItemClickListenerImpl);
+
+        mDeleteList=new ArrayList<ArrayList<ListItemInfo>>();
     }
 
     @Override
@@ -46,12 +72,31 @@ public class DeleteTwoVideoActivity extends BaseActivity {
             case R.id.backRelativeLayout:
                 finish();
                 break;
-            case R.id.addRelativeLayout:
-                showDeleteDialog();
+            case R.id.deleteRelativeLayout:
+                if(null!=mDeleteList&&mDeleteList.size()>0){
+                    System.out.println("--------> mDeleteList.size()="+mDeleteList.size());
+                    showDeleteDialog();
+                }else{
+                    ToastUtil.showToast(mContext,"please choose videos");
+                }
+
                 break;
             case R.id.okTextView:
                 if (null!=mDeleteDialog&&mDeleteDialog.isShowing()){
                     mDeleteDialog.dismiss();
+                    Iterator<ArrayList<ListItemInfo>> iterator=mDeleteList.iterator();
+                    while (iterator.hasNext()){
+                        ArrayList<ListItemInfo> item=iterator.next();
+                        if (mList.contains(item)){
+                            mList.remove(item);
+                        }
+                    }
+
+                    VideoUtils.saveComparedVideosList(mList);
+                    mList= VideoUtils.getComparedVideosList();
+                    mAdapter.setList(mList);
+                    mListView.setAdapter(mAdapter);
+                    //mAdapter.notifyDataSetChanged();
                 }
                 break;
             case R.id.cancelTextView:
@@ -59,6 +104,29 @@ public class DeleteTwoVideoActivity extends BaseActivity {
                     mDeleteDialog.dismiss();
                 }
                 break;
+        }
+    }
+
+
+    private class ItemClickListenerImpl implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ArrayList<ListItemInfo> item= mList.get(position);
+            if (view.findViewById(R.id.choseImage).getVisibility()==View.VISIBLE){
+                if (!mDeleteList.contains(item)){
+                    mDeleteList.add(item);
+                    System.out.println("--------> add mDeleteList.size()=" + mDeleteList.size());
+                }
+                view.findViewById(R.id.choseImage).setVisibility(View.INVISIBLE);
+                view.findViewById(R.id.deleteRelativeLayout).setVisibility(View.VISIBLE);
+            }else {
+                if (mDeleteList.contains(item)){
+                    mDeleteList.remove(item);
+                    System.out.println("--------> remove mDeleteList.size()=" + mDeleteList.size());
+                }
+                view.findViewById(R.id.choseImage).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.deleteRelativeLayout).setVisibility(View.INVISIBLE);
+            }
         }
     }
 

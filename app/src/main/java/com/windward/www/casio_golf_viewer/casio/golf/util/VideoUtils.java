@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 //http://blog.csdn.net/eclipsexys/article/details/8633793
 public class VideoUtils {
@@ -31,6 +32,7 @@ public class VideoUtils {
     private final String[] MOVIE_EXTENSION_LIST = {"mov","mp4","mpeg","avi"};
     private ArrayList<ListItemInfo> mMovieList;
     private static ArrayList<ListItemInfo> mFixedArrayList;
+    private static List<ArrayList<ListItemInfo>> mComparedVideosList;
 
 
     public static Bitmap getBitmapsFromVideo(String path) {
@@ -154,7 +156,7 @@ public class VideoUtils {
 
     public static void getT(final Context context,String path){
         MediaScannerConnection.scanFile(context,
-                new String[] { path }, null,
+                new String[]{path}, null,
                 new MediaScannerConnection.OnScanCompletedListener() {
                     @Override
                     public void onScanCompleted(String path, Uri uri) {
@@ -163,14 +165,14 @@ public class VideoUtils {
                         long datemodified = 0;
                         long dateadded = 0;
                         Cursor cursor = cr.query(uri, null, null, null, null);
-                        System.out.println("----44---->cursor.getCount()="+cursor.getCount());
+                        System.out.println("----44---->cursor.getCount()=" + cursor.getCount());
                         if (cursor != null && cursor.moveToFirst()) {
                             datemodified = cursor.getLong(cursor
                                     .getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED));
                             dateadded = cursor.getLong(cursor
                                     .getColumnIndex(MediaStore.MediaColumns.DATE_ADDED));
 
-                            System.out.println("-------->dateadded="+dateadded);
+                            System.out.println("-------->dateadded=" + dateadded);
                             cursor.close();
                         }
 
@@ -234,6 +236,17 @@ public class VideoUtils {
     public static ArrayList<ListItemInfo> getFixedVideoArrayList(){
        return mFixedArrayList;
     }
+
+
+    public static void saveComparedVideosList(List<ArrayList<ListItemInfo>> list){
+        mComparedVideosList=list;
+    }
+
+    public static List getComparedVideosList(){
+       return mComparedVideosList;
+    }
+
+
 
 
 
