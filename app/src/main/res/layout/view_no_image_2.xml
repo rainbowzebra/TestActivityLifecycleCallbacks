@@ -15,36 +15,50 @@
         android:layout_height="120px"
         android:src="@drawable/ic_new" />
 
-    <ImageView
-        android:layout_width="57px"
-        android:layout_height="74px"
-        android:src="@drawable/ic_upallow_gray"
-        android:layout_marginTop="100px"/>
-
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70px"
-        android:paddingLeft="250px"
-        android:paddingRight="250px"
-        android:text="ブラスボタンから２つの動画を比較するセットを作成しましょう。"
-        android:textColor="#949494" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="57px"
+                android:layout_height="74px"
+                android:src="@drawable/ic_upallow_gray"
+                android:layout_marginTop="100px"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70px"
+                android:paddingLeft="250px"
+                android:paddingRight="250px"
+                android:text="ブラスボタンから２つの動画を比較するセットを作成しましょう。"
+                android:textColor="#949494" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="40px"
+            android:cacheColorHint="#00000000"
+            android:divider="#E7E7EE"
+            android:dividerHeight="15px"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true"
+            />
+    </RelativeLayout>
 
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="40px"
-        android:cacheColorHint="#00000000"
-        android:divider="#00000000"
-        android:dividerHeight="0px"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="false"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:smoothScrollbar="true"
-        />
+
+
+
 
 
 </LinearLayout>

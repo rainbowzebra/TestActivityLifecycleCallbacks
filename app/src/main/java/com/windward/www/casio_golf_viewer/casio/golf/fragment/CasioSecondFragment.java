@@ -121,6 +121,7 @@ public class CasioSecondFragment extends Fragment {
 					   //添加日期
 					   itemInfo=new ListItemInfo(mContext,iterator.next());
 					   itemInfo.setIsShowVideo(false);
+					   itemInfo.setmTime("" + (System.currentTimeMillis() / 1000));
 					   list.add(itemInfo);
 					   //添加第一个视频
 					   itemInfo.setIsShowVideo(true);
@@ -137,6 +138,14 @@ public class CasioSecondFragment extends Fragment {
 			}
 
 			allList.add(list);
+
+			//以下4句为测试代码
+			allList.add(list);
+			allList.add(list);
+			allList.add(list);
+			allList.add(list);
+			//以上两4为测试代码
+
 			mAdapter.setList(allList);
 			mListView.setAdapter(mAdapter);
 		}
