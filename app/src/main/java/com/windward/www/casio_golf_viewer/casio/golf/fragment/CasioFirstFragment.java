@@ -77,6 +77,9 @@ public class CasioFirstFragment extends Fragment {
 		if(null!=view){
 			mGridView= (GridView) view.findViewById(R.id.gridView);
 			VideoUtils videoUtils=new VideoUtils();
+
+			//videoUtils.getVideosInfo(getContext());
+
 			mVideosArrayList=videoUtils.getVideoList(getContext());
 
 			if(null!=mVideosArrayList&&mVideosArrayList.size()>0){

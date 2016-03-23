@@ -4,6 +4,9 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:paddingTop="50px"
+    android:paddingLeft="15px"
+    android:paddingRight="15px"
+    android:background="#E7E7EE"
     android:orientation="vertical">
 
     <ImageView
@@ -26,6 +29,22 @@
         android:paddingRight="250px"
         android:text="ブラスボタンから２つの動画を比較するセットを作成しましょう。"
         android:textColor="#949494" />
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="40px"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
+        android:dividerHeight="0px"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"
+        />
 
 
 </LinearLayout>

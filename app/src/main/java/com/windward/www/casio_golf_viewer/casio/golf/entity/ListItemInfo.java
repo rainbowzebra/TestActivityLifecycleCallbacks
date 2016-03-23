@@ -10,10 +10,12 @@ import android.provider.MediaStore;
 import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
 import com.windward.www.casio_golf_viewer.casio.golf.util.WWUitls;
 
+import java.io.Serializable;
+
 /**
  */
-public class ListItemInfo {
-
+public class ListItemInfo implements Serializable {
+    public static final long serialVersionUID = 9527L;
     private Context mContext;
 
     private String mFileName;
@@ -45,6 +47,7 @@ public class ListItemInfo {
         }
 
         mTime= VideoUtils.getVideoTime(mContext, path);
+        //System.out.println("-----> path="+path+",mTime="+mTime);
         mDay= WWUitls.getDay(mTime);
     }
 

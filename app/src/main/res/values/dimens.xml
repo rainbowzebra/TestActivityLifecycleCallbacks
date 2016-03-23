@@ -6,4 +6,7 @@
 
     <dimen name="image_margin_top">25px</dimen>
 
+
+    <dimen name="listview_item_height">350px</dimen>
+
 </resources>

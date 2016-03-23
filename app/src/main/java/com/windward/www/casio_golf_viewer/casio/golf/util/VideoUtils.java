@@ -1,6 +1,8 @@
 package com.windward.www.casio_golf_viewer.casio.golf.util;
 
+import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,10 +45,48 @@ public class VideoUtils {
         return bitmap;
     }
 
+
+
+    //获取设备上所有的视频信息
+    public void getVideosInfo(Context context) {
+        ContentResolver contentResolver=context.getContentResolver();
+        String [] videoColumns=new String[]{
+                MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.TITLE,
+                MediaStore.Video.Media.MIME_TYPE
+        };
+//      两种方法均可
+//		Cursor cursor=
+//	    this.managedQuery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, mediaColumns, null, null, null);
+        Cursor cursor=contentResolver.query
+                (MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoColumns, null, null, null);
+        while (cursor.moveToNext()) {
+            String _id=
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+            String filePath=
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+            String title=
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+            String mime_type=
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE));
+
+            System.out.println("---------> filePath="+filePath);
+        }
+    }
+
+
+
+
+
+
     //获取设备上的视频的时间
+    //路径确实是  path=/storage/emulated/0/DCIM/Camera/CIMG0084.MOV
     public static String getVideoTime(Context context,String path) {
+
         String data,_id,title,mime_type,date_added=null;
         ContentResolver contentResolver=context.getContentResolver();
+
         //需要查询的数据,其中MediaStore.Video.Media.DATA表示路径
         String [] videoColumns=new String[]{
                 MediaStore.Video.Media._ID,
@@ -56,16 +96,101 @@ public class VideoUtils {
                 MediaStore.Video.Media.DATE_ADDED
         };
 
-        Cursor cursor=contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoColumns,  MediaStore.Video.Media.DATA + " = '" + path + "'", null, null);
+        String selection =   MediaStore.Video.Media.DATA + " like ?";
+        String[] selectionArgs =  new String[]{"%" + path + "%"};
+       // Cursor cursor=contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null,  selection, selectionArgs, null);
+        Cursor cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, videoColumns, MediaStore.Video.Media.DATA + " like ?", new String[]{"%" + path + "%"}, null);
+
+
+        //cursor.moveToFirst();
+        System.out.println("----> 获取结果,cursor.getCount()="+cursor.getCount());
+
         while (cursor.moveToNext()) {
-             data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
-             _id= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
-             title= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
-             mime_type= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE));
-             date_added= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED));
-            //System.out.println("----> data="+data+",_id="+_id+",title="+title+",mime_type="+mime_type+",date_added="+date_added);
+            data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+            _id= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID));
+            title= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.TITLE));
+            mime_type= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE));
+            date_added= cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED));
+            System.out.println("----> data="+data+",_id="+_id+",title="+title+",mime_type="+mime_type+",date_added="+date_added);
         }
         return date_added;
+    }
+
+
+
+    /**
+     * 获取图片或者视频路径
+     *
+     * @param context
+     * @param uri
+     * @return
+     */
+
+    public static String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if (scheme == null)
+            data = uri.getPath();
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
+            data = uri.getPath();
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
+                    }
+                }
+                cursor.close();
+            }
+        }
+
+        System.out.println("----44---->data="+data);
+        return data;
+    }
+
+
+    public static void getT(final Context context,String path){
+        MediaScannerConnection.scanFile(context,
+                new String[] { path }, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+
+                        ContentResolver cr = context.getContentResolver();
+                        long datemodified = 0;
+                        long dateadded = 0;
+                        Cursor cursor = cr.query(uri, null, null, null, null);
+                        System.out.println("----44---->cursor.getCount()="+cursor.getCount());
+                        if (cursor != null && cursor.moveToFirst()) {
+                            datemodified = cursor.getLong(cursor
+                                    .getColumnIndex(MediaStore.MediaColumns.DATE_MODIFIED));
+                            dateadded = cursor.getLong(cursor
+                                    .getColumnIndex(MediaStore.MediaColumns.DATE_ADDED));
+
+                            System.out.println("-------->dateadded="+dateadded);
+                            cursor.close();
+                        }
+
+                        ContentValues values = new ContentValues();
+                        if (datemodified > 0
+                                && String.valueOf(datemodified).length() > 10) {
+                            values.put(MediaStore.MediaColumns.DATE_MODIFIED,
+                                    datemodified / 1000);
+                        }
+                        if (dateadded > 0
+                                && String.valueOf(dateadded).length() > 13) {
+                            values.put(MediaStore.MediaColumns.DATE_ADDED,
+                                    dateadded / 1000);
+                        }
+
+                        if (values.size() > 0) {
+                            cr.update(uri, values, null, null);
+                        }
+                    }
+                });
     }
 
 
@@ -79,6 +204,7 @@ public class VideoUtils {
         Collections.sort(arrayList, new Comparator<ListItemInfo>() {
             @Override
             public int compare(ListItemInfo lhs, ListItemInfo rhs) {
+
                 return -(lhs.getmTime().compareTo(rhs.getmTime()));
             }
         });
@@ -117,14 +243,17 @@ public class VideoUtils {
 
         mMovieList = new ArrayList<ListItemInfo>();
         File[] files = new File(String.valueOf(DCIM_FILES) + MOVIE_DIR).listFiles();
+        //File[] files =new File("/storage/extSdCard/DCIM/Camera").listFiles();//三星专用
+        // System.out.println("-----> 遍历的路径 ="+String.valueOf(DCIM_FILES) + MOVIE_DIR);
+        // System.out.println("-----> 该路径下文件的个数="+files.length);
         if(files != null) {
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isFile()) {
                     String path = files[i].getPath();
-                    //System.out.println("-----> path="+path);
+                    //System.out.println("-----> 每个的路径path="+path);
                     if (checkFileExtension(path)) {
-                        //满足条件的视频的路径
-                        //System.out.println("-----> path="+path+",files.length="+files.length);
+                        //满足条件的视频的路径 删选出mp4文件
+                        System.out.println("-----> 满足条件的视频 path="+path);
                         mMovieList.add(new ListItemInfo(context,path));
                     }
                 }
@@ -235,12 +364,12 @@ public class VideoUtils {
 
     }
 
-    private void test(String path){
+    public static void test(String path){
         MediaMetadataRetriever mediaMetadataRetriever=new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(path);
         String date= mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
         String duration= mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        System.out.println("----------> date="+date+",duration="+duration+",path="+path);
+        System.out.println("------test----> date="+date+",duration="+duration+",path="+path);
     }
 
     private void  scan(){

@@ -24,16 +24,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.activity.ChoseTwoVideoActivity;
+import com.windward.www.casio_golf_viewer.casio.golf.adapter.TwoVideosAdapter;
+import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class CasioSecondFragment extends Fragment {
 	private int position;
+	private static Context mContext;
 	private static final String POSITION = "position";
 	private ImageView mAddImageView;
 	private ClickListenerImpl mClickListenerImpl;
-	private static Context mContext;
+	private ListView mListView;
+	private TwoVideosAdapter mAdapter;
+	private final int REQUEST_CODE=9527;
+	private final int RESULT_CODE=9528;
 
 	public static CasioSecondFragment getFragment(int position, Context context) {
 		mContext=context;
@@ -67,6 +79,10 @@ public class CasioSecondFragment extends Fragment {
 			mClickListenerImpl=new ClickListenerImpl();
 			mAddImageView=(ImageView)view.findViewById(R.id.addImageView);
 			mAddImageView.setOnClickListener(mClickListenerImpl);
+
+			mListView= (ListView) view.findViewById(R.id.listView);
+			mAdapter=new TwoVideosAdapter(mContext);
+
 		}
 	}
 
@@ -79,7 +95,7 @@ public class CasioSecondFragment extends Fragment {
 				case R.id.addImageView:
 					System.out.println("添加视频");
 					Intent intent=new Intent(mContext, ChoseTwoVideoActivity.class);
-					startActivity(intent);
+					startActivityForResult(intent,REQUEST_CODE);
 					break;
 
 			}
@@ -87,5 +103,43 @@ public class CasioSecondFragment extends Fragment {
 	}
 
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 
+		if (requestCode==REQUEST_CODE&&resultCode==RESULT_CODE&&null!=data){
+
+			List<ArrayList<ListItemInfo>> allList=new ArrayList<ArrayList<ListItemInfo>>();
+			ArrayList<ListItemInfo> list=new ArrayList<ListItemInfo>();
+			ListItemInfo itemInfo;
+			boolean isNeedShowDate=true;
+
+			ArrayList<String> arrayList=(ArrayList<String> )data.getSerializableExtra("selected_videos");
+			Iterator<String> iterator=arrayList.iterator();
+			while (iterator.hasNext()){
+				   if (isNeedShowDate){
+					   //添加日期
+					   itemInfo=new ListItemInfo(mContext,iterator.next());
+					   itemInfo.setIsShowVideo(false);
+					   list.add(itemInfo);
+					   //添加第一个视频
+					   itemInfo.setIsShowVideo(true);
+					   list.add(itemInfo);
+
+					   isNeedShowDate=false;
+
+				   }else {
+					   //添加第二个视频
+					   itemInfo=new ListItemInfo(mContext,iterator.next());
+					   itemInfo.setIsShowVideo(true);
+					   list.add(itemInfo);
+				   }
+			}
+
+			allList.add(list);
+			mAdapter.setList(allList);
+			mListView.setAdapter(mAdapter);
+		}
+
+	}
 }

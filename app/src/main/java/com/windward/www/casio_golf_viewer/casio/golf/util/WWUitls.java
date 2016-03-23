@@ -594,7 +594,7 @@ public class WWUitls {
 		if(!TextUtils.isEmpty(time)){
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM");
 			day = simpleDateFormat.format(new Date(WWUitls.string2Long(time) * 1000L));
-			System.out.println("----> yearAndMonth="+day);
+			//System.out.println("----> yearAndMonth="+day);
 		}
 
 		return  day;
@@ -608,7 +608,7 @@ public class WWUitls {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
 			day = simpleDateFormat.format(new Date(WWUitls.string2Long(time) * 1000L));
 			dayTime=day.substring(day.length() - 2, day.length());
-			System.out.println("----> dayTime="+dayTime);
+			//System.out.println("----> dayTime="+dayTime);
 		}
 		return  dayTime;
 	}
@@ -621,13 +621,13 @@ public class WWUitls {
 			date =new Date(WWUitls.string2Long(time) * 1000L);// 将字符串转换为日期
 			SimpleDateFormat format = new SimpleDateFormat("EEEE", Locale.ENGLISH);
 			week= format.format(date);
-			System.out.println("----> week1="+week);
+			//System.out.println("----> week1="+week);
 		}catch (Exception e){
 		}
 
 		week=week.toUpperCase();
 		week=week.substring(0, 3);
-		System.out.println("----> week2="+week);
+		//System.out.println("----> week2="+week);
 		return week;
 	}
 
