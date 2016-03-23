@@ -23,6 +23,7 @@
             android:textSize="50px" />
 
         <RelativeLayout
+            android:id="@+id/sortRelativeLayout1"
             style="@style/category_RelativeLayout"
             android:layout_marginTop="20px">
 
@@ -36,10 +37,15 @@
                 android:layout_toRightOf="@id/upallowImageView1"
                 android:text="日にち(降順)" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView
+                android:id="@+id/selectedImageView1"
+                style="@style/done_image_style"
+                android:visibility="visible"/>
         </RelativeLayout>
 
-        <RelativeLayout style="@style/category_RelativeLayout">
+        <RelativeLayout
+            android:id="@+id/sortRelativeLayout2"
+            style="@style/category_RelativeLayout">
 
             <ImageView
                 android:id="@+id/upallowImageView2"
@@ -50,7 +56,9 @@
                 android:layout_toRightOf="@id/upallowImageView2"
                 android:text="日にち(昇順)" />
 
-            <ImageView style="@style/done_image_style" />
+            <ImageView
+                android:id="@+id/selectedImageView2"
+                style="@style/done_image_style" />
         </RelativeLayout>
 
 

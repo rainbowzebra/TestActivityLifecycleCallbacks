@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private Dialog mSecondCategoryDialog;
     private AlertDialog mSecondEditDialog;
     private View mSelcetedImageView;
+    private View mSortSelcetedImageView;
     private RelativeLayout mCategoryRelativeLayout1;
     private RelativeLayout mCategoryRelativeLayout2;
     private RelativeLayout mCategoryRelativeLayout3;
@@ -83,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout mCategoryRelativeLayout5;
     private RelativeLayout mCategoryRelativeLayout6;
     private RelativeLayout mCategoryRelativeLayout7;
+    private RelativeLayout mSortRelativeLayout1;
+    private RelativeLayout mSortRelativeLayout2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -399,7 +402,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initSecondCategoryDialog(View view){
-
+        mSortSelcetedImageView =view.findViewById(R.id.selectedImageView1);
+        mSortRelativeLayout1=(RelativeLayout)view.findViewById(R.id.sortRelativeLayout1);
+        mSortRelativeLayout1.setOnClickListener(mClickListenerImpl);
+        mSortRelativeLayout2=(RelativeLayout)view.findViewById(R.id.sortRelativeLayout2);
+        mSortRelativeLayout2.setOnClickListener(mClickListenerImpl);
     }
 
 
@@ -474,6 +481,16 @@ public class MainActivity extends AppCompatActivity {
                     mSelcetedImageView.setVisibility(View.INVISIBLE);
                     mSelcetedImageView = mCategoryRelativeLayout7.findViewById(R.id.doneImageView7);
                     mSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.sortRelativeLayout1:
+                    mSortSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSortSelcetedImageView = mSortRelativeLayout1.findViewById(R.id.selectedImageView1);
+                    mSortSelcetedImageView.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.sortRelativeLayout2:
+                    mSortSelcetedImageView.setVisibility(View.INVISIBLE);
+                    mSortSelcetedImageView = mSortRelativeLayout2.findViewById(R.id.selectedImageView2);
+                    mSortSelcetedImageView.setVisibility(View.VISIBLE);
                     break;
             }
         }

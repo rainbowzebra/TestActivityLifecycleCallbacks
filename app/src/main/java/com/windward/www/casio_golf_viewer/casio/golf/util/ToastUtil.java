@@ -20,7 +20,7 @@ public class ToastUtil {
 		if (mToast != null)
 			mToast.cancel();
 		
-		View view = View.inflate(context, R.layout.toast_info2, null);
+		View view = View.inflate(context, R.layout.toast_layout, null);
 		ScreenUtil.initScale(view);
 		TextView textView = (TextView) view.findViewById(R.id.msg_text);
 		textView.setText(msg);
