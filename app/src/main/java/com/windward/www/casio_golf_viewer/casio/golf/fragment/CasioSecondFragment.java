@@ -98,7 +98,7 @@ public class CasioSecondFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			ArrayList<ListItemInfo> videosArrayList= mList.get(position);
-			//跳转到fragment
+			//跳转到fragment.
 			if (null != mList && videosArrayList.size() > 0) {
 				Intent intent = new Intent(mContext, PlayerBaseActivity.class);
 				Bundle bundle = new Bundle();
