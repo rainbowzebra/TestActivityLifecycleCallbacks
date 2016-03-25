@@ -35,7 +35,6 @@ public class DeleteTwoVideoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_two_video);
-
     }
 
 
@@ -50,7 +49,6 @@ public class DeleteTwoVideoActivity extends BaseActivity {
         mListView.setAdapter(mAdapter);
         mItemClickListenerImpl=new ItemClickListenerImpl();
         mListView.setOnItemClickListener(mItemClickListenerImpl);
-
         mDeleteList=new ArrayList<ArrayList<ListItemInfo>>();
     }
 

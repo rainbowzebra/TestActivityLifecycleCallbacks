@@ -77,7 +77,6 @@ public class ChooseTwoVideoActivity extends BaseActivity {
     private class ItemClickListenerImpl implements AdapterView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             ListItemInfo item = mArrayList.get(position);
             if (item.isShowVideo()) {
                 RelativeLayout deleteRelativeLayout = (RelativeLayout) view.findViewById(R.id.deleteRelativeLayout);

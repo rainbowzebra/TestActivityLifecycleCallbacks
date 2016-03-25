@@ -22,12 +22,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.activity.ChooseTwoVideoActivity;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayerBaseActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.TwoVideosAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
@@ -45,6 +47,9 @@ public class CasioSecondFragment extends Fragment {
 	private ClickListenerImpl mClickListenerImpl;
 	private ListView mListView;
 	private TwoVideosAdapter mAdapter;
+	private ItemClickListenerImpl mItemClickListenerImpl;
+	private List<ArrayList<ListItemInfo>> mList;
+	private List<ArrayList<ListItemInfo>> mDeleteList;
 	private final int REQUEST_CODE=9527;
 	private final int RESULT_CODE=9528;
 
@@ -83,7 +88,32 @@ public class CasioSecondFragment extends Fragment {
 
 			mListView= (ListView) view.findViewById(R.id.listView);
 			mAdapter=new TwoVideosAdapter(mContext);
+			mItemClickListenerImpl=new ItemClickListenerImpl();
+			mListView.setOnItemClickListener(mItemClickListenerImpl);
+		}
+	}
 
+
+	private class ItemClickListenerImpl implements AdapterView.OnItemClickListener{
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			ArrayList<ListItemInfo> videosArrayList= mList.get(position);
+			//跳转到fragment
+			if (null != mList && videosArrayList.size() > 0) {
+				Intent intent = new Intent(mContext, PlayerBaseActivity.class);
+				Bundle bundle = new Bundle();
+				Iterator<ListItemInfo> iterator=videosArrayList.iterator();
+				ArrayList<String> playList = new ArrayList<String>();
+				while (iterator.hasNext()){
+					ListItemInfo itemInfo = iterator.next();
+					if (itemInfo.isShowVideo()) {
+						playList.add(itemInfo.getFilePath());
+					}
+				}
+				bundle.putStringArrayList("key_playlist", playList);
+				intent.putExtras(bundle);
+				startActivity(intent);
+			}
 		}
 	}
 
@@ -107,9 +137,9 @@ public class CasioSecondFragment extends Fragment {
 		super.onActivityResult(requestCode, resultCode, data);
 
 		if (requestCode==REQUEST_CODE&&resultCode==RESULT_CODE&&null!=data){
-
-			List<ArrayList<ListItemInfo>> allList=new ArrayList<ArrayList<ListItemInfo>>();
+			mList=new ArrayList<ArrayList<ListItemInfo>>();
 			ArrayList<ListItemInfo> list=new ArrayList<ListItemInfo>();
+			ListItemInfo dateItemInfo;
 			ListItemInfo itemInfo;
 			boolean isNeedShowDate=true;
 
@@ -118,11 +148,14 @@ public class CasioSecondFragment extends Fragment {
 			while (iterator.hasNext()){
 				   if (isNeedShowDate){
 					   //添加日期(今天的日期)
-					   itemInfo=new ListItemInfo(mContext,iterator.next());
-					   itemInfo.setIsShowVideo(false);
-					   itemInfo.setmTime("" + (System.currentTimeMillis() / 1000));
-					   list.add(itemInfo);
+					   String path=iterator.next();
+					   dateItemInfo=new ListItemInfo(mContext,path);
+					   dateItemInfo.setIsShowVideo(false);
+					   dateItemInfo.setmTime("" + (System.currentTimeMillis() / 1000));
+					   list.add(dateItemInfo);
+
 					   //添加第一个视频
+					   itemInfo=new ListItemInfo(mContext,path);
 					   itemInfo.setIsShowVideo(true);
 					   list.add(itemInfo);
 
@@ -136,19 +169,19 @@ public class CasioSecondFragment extends Fragment {
 				   }
 			}
 
-			allList.add(list);
+			mList.add(list);
 
 			//以下4句为测试代码
-			allList.add(list);
-			allList.add(list);
-			allList.add(list);
-			allList.add(list);
+			mList.add(list);
+			mList.add(list);
+			mList.add(list);
+			mList.add(list);
 			//以上两4为测试代码
 
-			mAdapter.setList(allList);
+			mAdapter.setList(mList);
 			mListView.setAdapter(mAdapter);
 			//保存数据
-			VideoUtils.saveComparedVideosList(allList);
+			VideoUtils.saveComparedVideosList(mList);
 		}
 
 	}
