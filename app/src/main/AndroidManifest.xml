@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".casio.golf.activity.ChoseTwoVideoActivity" />
+        <activity android:name=".casio.golf.activity.ChooseTwoVideoActivity" />
         <activity android:name=".casio.golf.activity.GuideActivity" />
         <activity android:name=".casio.golf.activity.ProtocolActivity" />
         <activity android:name=".casio.golf.activity.MainActivity" />
@@ -39,7 +39,7 @@
         <activity android:name=".casio.golf.activity.PlayVideoActivity" />
         <activity android:name=".casio.golf.activity.CutVideoActivity" />
         <activity android:name=".casio.golf.activity.DeleteTwoVideoActivity" />
-        <activity android:name=".casio.golf.activity.CompareVideoActivity" />
+        <activity android:name=".casio.golf.activity.PlayTwoVideoActivity" />
         <activity android:name=".casio.golf.activity.DrawLineActivity"></activity>
         <activity android:name=".casio.golf.activity.PlayerBaseActivity"></activity>
     </application>

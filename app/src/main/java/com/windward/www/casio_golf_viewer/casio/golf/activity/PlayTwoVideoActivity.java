@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 
-public class CompareVideoActivity extends BaseActivity {
+public class PlayTwoVideoActivity extends BaseActivity {
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mCompareRelativeLayout;
     private RelativeLayout mEditRelativeLayout;

@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.windward.www.casio_golf_viewer.R;
-import com.windward.www.casio_golf_viewer.casio.golf.activity.ChoseTwoVideoActivity;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.ChooseTwoVideoActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.TwoVideosAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
@@ -94,7 +94,7 @@ public class CasioSecondFragment extends Fragment {
 		public void onClick(View v) {
 			switch (v.getId()){
 				case R.id.addImageView:
-					Intent intent=new Intent(mContext, ChoseTwoVideoActivity.class);
+					Intent intent=new Intent(mContext, ChooseTwoVideoActivity.class);
 					startActivityForResult(intent,REQUEST_CODE);
 					break;
 			}

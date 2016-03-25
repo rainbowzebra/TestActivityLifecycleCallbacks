@@ -15,7 +15,7 @@ import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
 
 import java.util.ArrayList;
 
-public class ChoseTwoVideoActivity extends BaseActivity {
+public class ChooseTwoVideoActivity extends BaseActivity {
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mNextRelativeLayout;
     private GridView mGridView;
@@ -63,7 +63,7 @@ public class ChoseTwoVideoActivity extends BaseActivity {
                 break;
             case R.id.nextRelativeLayout:
                 if (null != mSelectedArrayList && mSelectedArrayList.size() == 2) {
-                    Intent intent = new Intent(mContext, CompareVideoActivity.class);
+                    Intent intent = new Intent();
                     intent.putExtra("selected_videos", mSelectedArrayList);
                     setResult(RESULT_CODE, intent);
                     finish();
