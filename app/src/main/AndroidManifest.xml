@@ -36,7 +36,7 @@
         <activity android:name=".casio.golf.activity.CollectionAddActivity" />
         <activity android:name=".casio.golf.activity.CollectionRemoveActivity" />
         <activity android:name=".casio.golf.activity.TestActivity" />
-        <activity android:name=".casio.golf.activity.PlayVideoActivity" />
+        <activity android:name=".casio.golf.activity.PlayOneVideoActivity" />
         <activity android:name=".casio.golf.activity.CutVideoActivity" />
         <activity android:name=".casio.golf.activity.DeleteTwoVideoActivity" />
         <activity android:name=".casio.golf.activity.PlayTwoVideoActivity" />

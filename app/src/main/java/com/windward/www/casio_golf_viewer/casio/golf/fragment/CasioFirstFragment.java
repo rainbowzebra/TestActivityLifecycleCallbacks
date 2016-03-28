@@ -28,6 +28,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.windward.www.casio_golf_viewer.R;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayOneVideoActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayerBaseActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoGridViewAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
@@ -102,7 +103,7 @@ public class CasioFirstFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //			跳转到Activity,现在被注释掉
-//			Intent intent=new Intent(mContext, PlayVideoActivity.class);
+//			Intent intent = new Intent(mContext, PlayOneVideoActivity.class);
 //			Bundle bundle = new Bundle();
 //			bundle.putString("path", mVideosArrayList.get(position).getFilePath());
 //			intent.putExtras(bundle);

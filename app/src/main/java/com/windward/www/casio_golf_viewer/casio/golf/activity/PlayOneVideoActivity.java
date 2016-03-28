@@ -18,7 +18,7 @@ import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoViewPagerAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 
-public class PlayVideoActivity extends BaseActivity {
+public class PlayOneVideoActivity extends BaseActivity {
     private Intent mIntent;
     private RelativeLayout mBackRelativeLayout;
     private RelativeLayout mOperateRelativeLayout;

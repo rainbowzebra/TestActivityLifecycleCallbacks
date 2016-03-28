@@ -144,10 +144,6 @@ public class PlayerBaseActivity extends FragmentActivity {
         if (manager.findFragmentByTag(key) == null) {
             transaction.add(R.id.SinglePlayerContainer, mPlayerFragmentList.get(0), key);
             transaction.commit();
-//            transaction.replace(R.id.SinglePlayerContainer, mPlayerFragmentList.get(0));
-//            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//            transaction.addToBackStack(key);
-//            transaction.commit();
         }
     }
 

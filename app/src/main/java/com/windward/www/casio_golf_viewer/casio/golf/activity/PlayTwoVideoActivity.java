@@ -23,7 +23,7 @@ public class PlayTwoVideoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compare_video);
+        setContentView(R.layout.activity_play_two_video);
     }
 
     @Override
