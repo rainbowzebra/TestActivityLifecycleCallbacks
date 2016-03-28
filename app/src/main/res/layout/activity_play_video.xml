@@ -64,6 +64,9 @@
     </RelativeLayout>
 
 
+
+
+
     <include
         android:id="@+id/mediaController"
         layout="@layout/view_media_controller"
@@ -73,9 +76,25 @@
     </include>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleRelativeLayout"
+        android:layout_above="@id/mediaController">
+        <LinearLayout
+            android:id="@+id/SinglePlayerContainer"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
 
-
-
+        <ImageView
+            android:id="@+id/playImageView"
+            android:layout_centerInParent="true"
+            android:layout_width="186px"
+            android:layout_height="185px"
+            android:src="@drawable/ic_play"/>
+    </RelativeLayout>
 
 
 </RelativeLayout>

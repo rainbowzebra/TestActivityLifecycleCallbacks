@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,9 +49,6 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by kato-hy on 2015/12/07.
@@ -168,10 +163,8 @@ public class PlayerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         mPlayerView = (GLSurfaceView)view.findViewById(R.id.PlayerGLSurfaceView);
-
 
         //隐藏EffectGLSurfaceView即mEffectView
         mEffectView = (GLSurfaceView)view.findViewById(R.id.EffectGLSurfaceView);
@@ -289,22 +282,22 @@ public class PlayerFragment extends Fragment {
      */
     private void initView(View view){
         mClickListenerImpl=new ClickListenerImpl();
-        mBackRelativeLayout=(RelativeLayout)view.findViewById(R.id.backRelativeLayout);
+        mBackRelativeLayout=(RelativeLayout)getActivity().findViewById(R.id.backRelativeLayout);
         mBackRelativeLayout.setOnClickListener(mClickListenerImpl);
-        mEditImageView=(ImageView)view.findViewById(R.id.editImageView);
+        mEditImageView=(ImageView)getActivity().findViewById(R.id.editImageView);
         mEditImageView.setOnClickListener(mClickListenerImpl);
-        mOperateRelativeLayout =(RelativeLayout)view.findViewById(R.id.operateRelativeLayout);
+        mOperateRelativeLayout =(RelativeLayout)getActivity().findViewById(R.id.operateRelativeLayout);
         mOperateRelativeLayout.setOnClickListener(mClickListenerImpl);
-        mPlayImageView=(ImageView)view.findViewById(R.id.playImageView);
+        mPlayImageView=(ImageView)getActivity().findViewById(R.id.playImageView);
         mPlayImageView.setOnClickListener(mClickListenerImpl);
 
-        mStartAndPauseImageView=(ImageView)view.findViewById(R.id.controller_startAndPause_ImageView);
+        mStartAndPauseImageView=(ImageView)getActivity().findViewById(R.id.controller_startAndPause_ImageView);
         mStartAndPauseImageView.setOnClickListener(mClickListenerImpl);
 
-        mToStartImageView=(ImageView)view.findViewById(R.id.controller_to_start_ImageView);
+        mToStartImageView=(ImageView)getActivity().findViewById(R.id.controller_to_start_ImageView);
         mToStartImageView.setOnClickListener(mClickListenerImpl);
 
-        mRateImageView=(ImageView)view.findViewById(R.id.controller_rate_ImageView);
+        mRateImageView=(ImageView)getActivity().findViewById(R.id.controller_rate_ImageView);
         mRateImageView.setOnClickListener(mClickListenerImpl);
 
 
@@ -512,7 +505,8 @@ public class PlayerFragment extends Fragment {
         /**
          * シークバーに対するActionイベント
          */
-        mVideoSeekBar=(SeekBar)view.findViewById(R.id.seekBar);//MainOperationSeekBar
+        //mVideoSeekBar=(SeekBar)view.findViewById(R.id.seekBar);//MainOperationSeekBar
+        mVideoSeekBar=(SeekBar)getActivity().findViewById(R.id.seekBar);//MainOperationSeekBar
         mVideoSeekBar.setOnSeekBarChangeListener(
                 new SeekBar.OnSeekBarChangeListener(){
 
@@ -568,7 +562,8 @@ public class PlayerFragment extends Fragment {
                 });
 
 
-        mTimeText = (TextView)view.findViewById(R.id.timeTextView);//MainOperationTimeText
+        //mTimeText = (TextView)view.findViewById(R.id.timeTextView);//MainOperationTimeText
+        mTimeText = (TextView)getActivity().findViewById(R.id.timeTextView);//MainOperationTimeText
     }
 
 
@@ -1469,7 +1464,6 @@ public class PlayerFragment extends Fragment {
      * 動画の時間に関するUIを更新する関数(シークバー、時間表示)
      */
     private void updateTimeUi(){
-
         labelUpdate();
         if (!mSeekBarUserControl) {
             if (mVideoSeekBar != null) {
@@ -1629,10 +1623,6 @@ public class PlayerFragment extends Fragment {
         }
         return -1;
     }
-
-
-
-
 
 
     private class ClickListenerImpl implements View.OnClickListener{

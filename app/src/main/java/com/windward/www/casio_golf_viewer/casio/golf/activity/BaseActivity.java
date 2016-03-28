@@ -2,13 +2,13 @@ package com.windward.www.casio_golf_viewer.casio.golf.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ScreenUtil;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ToastUtil;
 
 
-public abstract class BaseActivity extends Activity implements View.OnClickListener{
+public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener{
     public Context mContext;
     @Override
     public void setContentView(int layoutResID) {

@@ -102,27 +102,34 @@ public class CasioFirstFragment extends Fragment {
 	private class ItemClickListenerImpl implements AdapterView.OnItemClickListener{
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//			跳转到Activity,现在被注释掉
-//			Intent intent = new Intent(mContext, PlayOneVideoActivity.class);
-//			Bundle bundle = new Bundle();
-//			bundle.putString("path", mVideosArrayList.get(position).getFilePath());
-//			intent.putExtras(bundle);
-//			startActivity(intent);
-
-
-			//需要跳转到fragment
 			if (null != mVideosArrayList && mVideosArrayList.size() > 0) {
 				ListItemInfo itemInfo = mVideosArrayList.get(position);
 				if (itemInfo.isShowVideo()) {
-					ArrayList<String> playList = new ArrayList<String>();
-					Intent intent = new Intent(mContext, PlayerBaseActivity.class);
+                    //跳转到Activity
+					Intent intent = new Intent(mContext, PlayOneVideoActivity.class);
 					Bundle bundle = new Bundle();
-					playList.add(mVideosArrayList.get(position).getFilePath());
+					ArrayList<String> playList = new ArrayList<String>();
+					playList.add(itemInfo.getFilePath());
 					bundle.putStringArrayList("key_playlist", playList);
 					intent.putExtras(bundle);
 					startActivity(intent);
 				}
 			}
+
+
+			//需要跳转到fragment,现在被注释掉
+//			if (null != mVideosArrayList && mVideosArrayList.size() > 0) {
+//				ListItemInfo itemInfo = mVideosArrayList.get(position);
+//				if (itemInfo.isShowVideo()) {
+//					ArrayList<String> playList = new ArrayList<String>();
+//					Intent intent = new Intent(mContext, PlayerBaseActivity.class);
+//					Bundle bundle = new Bundle();
+//					playList.add(mVideosArrayList.get(position).getFilePath());
+//					bundle.putStringArrayList("key_playlist", playList);
+//					intent.putExtras(bundle);
+//					startActivity(intent);
+//				}
+//			}
 		}
 	}
 

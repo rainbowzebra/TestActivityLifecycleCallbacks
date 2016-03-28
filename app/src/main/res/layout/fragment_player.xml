@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/MainLayout"
     android:layout_width="match_parent"
@@ -11,84 +10,10 @@
 
 
     <RelativeLayout
-        android:id="@+id/titleRelativeLayout"
-        style="@style/title_style"
-        android:paddingLeft="58px"
-        android:paddingRight="58px"
-        android:background="@color/title_bg"
-        >
-
-        <RelativeLayout
-            android:id="@+id/backRelativeLayout"
-            android:layout_width="200px"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/backImageView"
-                android:layout_width="39px"
-                android:layout_height="57px"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_back_gr" />
-        </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/play_title"
-            android:textSize="50px"
-            android:textStyle="bold" />
-
-        <RelativeLayout
-            android:id="@+id/operateRelativeLayout"
-            android:layout_alignParentRight="true"
-            android:layout_width="60px"
-            android:gravity="right"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/operateImageView"
-                android:layout_width="15px"
-                android:layout_height="60px"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_overflow_gr" />
-        </RelativeLayout>
-
-
-        <ImageView
-            android:id="@+id/editImageView"
-            android:layout_width="57px"
-            android:layout_height="57px"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30px"
-            android:layout_toLeftOf="@id/operateRelativeLayout"
-            android:src="@drawable/ic_pen_gr" />
-
-    </RelativeLayout>
-
-
-    <include
-        android:id="@+id/mediaController"
-        layout="@layout/view_media_controller"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-    </include>
-
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titleRelativeLayout"
-        android:layout_above="@id/mediaController"
-        >
-
-    <RelativeLayout
         android:id="@+id/MainImageControllerLayout"
-        android:background="@color/main_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/main_bg"
         android:gravity="center_vertical">
 
         <!-- 在代码中隐藏该GLSurfaceView-->
@@ -103,86 +28,89 @@
             android:id="@+id/PlayerGLSurfaceView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:background="#00000000" />
 
     </RelativeLayout>
 
+
+    <!-- 以下几个布局都设置为gone-->
+
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/MainTopOperationLayout"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
 
         <Button
+            android:id="@+id/ReversalLeftRightButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:text="左右反転"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/ReversalLeftRightButton" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:text="左右反転" />
 
         <Button
+            android:id="@+id/ReversalUpDownButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:text="上下反転"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/ReversalLeftRightButton"
             android:layout_toStartOf="@+id/ReversalLeftRightButton"
-            android:id="@+id/ReversalUpDownButton" />
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:text="上下反転" />
 
         <Button
+            android:id="@+id/RotationButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:text="回転"
-            android:id="@+id/RotationButton"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/ReversalUpDownButton"
-            android:layout_toStartOf="@+id/ReversalUpDownButton" />
+            android:layout_toStartOf="@+id/ReversalUpDownButton"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:text="回転" />
 
         <ToggleButton
+            android:id="@+id/TouchModeChangeButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:textOn="縦"
-            android:textOff="横"
-            android:checked="true"
-            android:id="@+id/TouchModeChangeButton"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/RotationButton"
-            android:layout_toStartOf="@+id/RotationButton" />
+            android:layout_toStartOf="@+id/RotationButton"
+            android:background="@null"
+            android:checked="true"
+            android:scaleType="centerCrop"
+            android:textOff="横"
+            android:textOn="縦" />
 
     </RelativeLayout>
+
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/MainBottomOperationLayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:background="#8f000000"
-        >
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/MainOperationLayoutTop"
             android:layout_width="wrap_content"
-            android:layout_toLeftOf="@+id/Dummy"
-            android:layout_height="40dp">
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@+id/Dummy">
 
             <SeekBar
                 android:id="@+id/MainOperationSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp" />
 
         </RelativeLayout>
 
@@ -195,83 +123,75 @@
 
             <ImageButton
                 android:id="@+id/MainOperationPlayPauseButton"
-                android:background="@null"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                android:layout_marginLeft="5dp"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
                 android:src="@drawable/play_btn" />
 
             <ImageButton
                 android:id="@+id/MainOperationRealTimePlayButton"
-                android:background="@null"
-                android:layout_marginLeft="5dp"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/MainOperationPlayPauseButton"
+                android:background="@null"
+                android:scaleType="centerCrop"
                 android:src="@drawable/realtime_btn" />
 
             <ImageButton
                 android:id="@+id/MainOperationBackTopButton"
-                android:background="@null"
                 android:layout_width="40dp"
-                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/MainOperationRealTimePlayButton"
+                android:background="@null"
+                android:scaleType="centerCrop"
                 android:src="@drawable/back_top_btn" />
+
             <TextView
                 android:id="@+id/MainOperationTimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffffff"
-                android:text="0:00:00:00:000"
-                android:textSize="20dp"
-                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_centerVertical="true"
+                android:text="0:00:00:00:000"
+                android:textColor="#ffffffff"
+                android:textSize="20dp" />
         </RelativeLayout>
+
         <RelativeLayout
+            android:id="@+id/Dummy"
             android:layout_width="40dp"
             android:layout_height="80dp"
-            android:id="@+id/Dummy"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true">
-        </RelativeLayout>
+            android:layout_alignParentRight="true"></RelativeLayout>
     </RelativeLayout>
+
     <RelativeLayout
-        android:visibility="gone"
+        android:id="@+id/MainOperationControlButtonLayout"
         android:layout_width="40dp"
         android:layout_height="80dp"
-        android:id="@+id/MainOperationControlButtonLayout"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:visibility="gone">
 
         <ImageButton
+            android:id="@+id/ShowHideButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:id="@+id/ShowHideButton"
             android:layout_centerInParent="true"
+            android:background="@null"
+            android:scaleType="centerCrop"
             android:src="@drawable/hidden_btn" />
     </RelativeLayout>
 
-
-        <ImageView
-            android:id="@+id/playImageView"
-            android:layout_centerInParent="true"
-            android:layout_width="186px"
-            android:layout_height="185px"
-            android:src="@drawable/ic_play"/>
-
-    </RelativeLayout>
-
-
-
-
-
-
 </RelativeLayout>
+
+
+
+
+
