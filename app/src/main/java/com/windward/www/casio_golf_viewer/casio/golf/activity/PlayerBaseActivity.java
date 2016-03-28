@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 import com.windward.www.casio_golf_viewer.R;
-import com.windward.www.casio_golf_viewer.casio.golf.fragment.PlayerFragment;
+import com.windward.www.casio_golf_viewer.casio.golf.fragment.PlayerFirstFragment;
 import com.windward.www.casio_golf_viewer.casio.golf.player.MultiPlayerController;
 import com.windward.www.casio_golf_viewer.casio.golf.player.PlayerInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.player.SinglePlayerController;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class PlayerBaseActivity extends FragmentActivity {
     String TAG = "PlayerBaseActivity";
-    private ArrayList<PlayerFragment> mPlayerFragmentList;          // プレイヤーリスト
+    private ArrayList<PlayerFirstFragment> mPlayerFirstFragmentList;          // プレイヤーリスト
     private ArrayList<String> mVideoPathsArrayList;                            // 再生リスト
     private SinglePlayerController mSinglePlayerController = null;  // シングルプレイヤーコントローラのインスタンス
     private MultiPlayerController mMultiPlayerController = null;    // マルチプレイヤーコントローラのインスタンス
@@ -78,17 +78,17 @@ public class PlayerBaseActivity extends FragmentActivity {
      */
     private void makePlayerFragmentList(){
 
-        mPlayerFragmentList = new ArrayList<PlayerFragment>(); //プレイヤーリストを作成
+        mPlayerFirstFragmentList = new ArrayList<PlayerFirstFragment>(); //プレイヤーリストを作成
 
         for (int i=0; i < mVideoPathsArrayList.size(); i++) {
-            PlayerFragment player = new PlayerFragment();
+            PlayerFirstFragment player = new PlayerFirstFragment();
 
             //PlayerIDを設定する
             Bundle bundle = new Bundle();
             bundle.putInt("key_PlayerId", generatePlayerId());
             player.setArguments(bundle);
 
-            mPlayerFragmentList.add(player);
+            mPlayerFirstFragmentList.add(player);
         }
     }
     /**
@@ -142,7 +142,7 @@ public class PlayerBaseActivity extends FragmentActivity {
 
         //PlayerBaseActivityにPlayerFragmentを追加
         if (manager.findFragmentByTag(key) == null) {
-            transaction.add(R.id.SinglePlayerContainer, mPlayerFragmentList.get(0), key);
+            transaction.add(R.id.SinglePlayerContainer, mPlayerFirstFragmentList.get(0), key);
             transaction.commit();
         }
     }
@@ -162,10 +162,10 @@ public class PlayerBaseActivity extends FragmentActivity {
 
         //PlayerBaseActivityにPlayerFragmentを追加
         if (manager.findFragmentByTag(key0) == null) {
-            transaction.add(R.id.MultiPlayerContainer1, mPlayerFragmentList.get(0), key0);
+            transaction.add(R.id.MultiPlayerContainer1, mPlayerFirstFragmentList.get(0), key0);
         }
         if (manager.findFragmentByTag(key1) == null) {
-            transaction.add(R.id.MultiPlayerContainer2, mPlayerFragmentList.get(1), key1);
+            transaction.add(R.id.MultiPlayerContainer2, mPlayerFirstFragmentList.get(1), key1);
         }
         transaction.commit();
 
@@ -209,7 +209,7 @@ public class PlayerBaseActivity extends FragmentActivity {
 
                 //①各PlayerFragmentのファイルオープン
                 for (int i = 0; i < mVideoPathsArrayList.size(); i++) {
-                    PlayerFragment player = mPlayerFragmentList.get(i);
+                    PlayerFirstFragment player = mPlayerFirstFragmentList.get(i);
                     String videoPath = mVideoPathsArrayList.get(player.getPlayerId());
 
 
@@ -253,9 +253,9 @@ public class PlayerBaseActivity extends FragmentActivity {
     private void initTimeManager() {
 
         //一画面の場合
-        if (mPlayerFragmentList.size() == 1) {
+        if (mPlayerFirstFragmentList.size() == 1) {
 
-            PlayerFragment player = mPlayerFragmentList.get(0);
+            PlayerFirstFragment player = mPlayerFirstFragmentList.get(0);
 
             //PlayerInfoの生成
             //videoInfoの取得はPlayerFragmentのファイルオープン後でないとできないことに注意
@@ -283,9 +283,9 @@ public class PlayerBaseActivity extends FragmentActivity {
                 mMultiPlayerController.createSyncGroup(getNonSyncPlayerInfoList());
             }
 
-            for (int i = 0; i < mPlayerFragmentList.size(); i++) {
+            for (int i = 0; i < mPlayerFirstFragmentList.size(); i++) {
 
-                PlayerFragment player = mPlayerFragmentList.get(i);
+                PlayerFirstFragment player = mPlayerFirstFragmentList.get(i);
 
                 player.setTimeManager(mMultiPlayerController.getTimeManager());
                 player.setInstructionSyncController(mMultiPlayerController.getInstructionSyncController());
@@ -299,7 +299,7 @@ public class PlayerBaseActivity extends FragmentActivity {
      */
     private void releaseTimeManager(){
 
-        if (mPlayerFragmentList.size() == 1) {
+        if (mPlayerFirstFragmentList.size() == 1) {
             if(mSinglePlayerController != null)
                 mSinglePlayerController.finish();
         } else {
@@ -316,9 +316,9 @@ public class PlayerBaseActivity extends FragmentActivity {
 
         ArrayList<ArrayList<PlayerInfo>> syncGroupList = new ArrayList<ArrayList<PlayerInfo>>();
 
-        for(int i=0; i<mPlayerFragmentList.size();i++){
+        for(int i=0; i< mPlayerFirstFragmentList.size();i++){
             ArrayList<PlayerInfo> syncGroup = new ArrayList<PlayerInfo>();
-            PlayerFragment player = mPlayerFragmentList.get(i);
+            PlayerFirstFragment player = mPlayerFirstFragmentList.get(i);
             VideoInfo videoInfo = player.getVideoInfo();
             if(videoInfo != null){
                 PlayerInfo playerInfo = new PlayerInfo(player.getPlayerId(), player.getPresentationTimeUs(), videoInfo.getCaptureRate(),videoInfo.getDurationUs());
@@ -338,8 +338,8 @@ public class PlayerBaseActivity extends FragmentActivity {
         ArrayList<ArrayList<PlayerInfo>> syncGroupList = new ArrayList<ArrayList<PlayerInfo>>();
         ArrayList<PlayerInfo> syncGroup = new ArrayList<PlayerInfo>();
 
-        for(int i=0; i<mPlayerFragmentList.size();i++){
-            PlayerFragment player = mPlayerFragmentList.get(i);
+        for(int i=0; i< mPlayerFirstFragmentList.size();i++){
+            PlayerFirstFragment player = mPlayerFirstFragmentList.get(i);
             VideoInfo videoInfo = player.getVideoInfo();
             if(videoInfo != null){
                 PlayerInfo playerInfo = new PlayerInfo(player.getPlayerId(), player.getPresentationTimeUs(), videoInfo.getCaptureRate(),videoInfo.getDurationUs());

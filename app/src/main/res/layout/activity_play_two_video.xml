@@ -6,7 +6,6 @@
     android:background="@color/main_bg"
     tools:context=".casio.golf.activity.PlayOneVideoActivity">
 
-
     <RelativeLayout
         android:id="@+id/titleRelativeLayout"
         style="@style/title_style"
@@ -55,8 +54,8 @@
             android:id="@+id/editRelativeLayout"
             android:layout_width="60px"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/selectRelativeLayout"
             android:layout_marginRight="50px"
+            android:layout_toLeftOf="@id/selectRelativeLayout"
             android:gravity="right">
 
             <ImageView
@@ -71,8 +70,8 @@
             android:id="@+id/compareRelativeLayout"
             android:layout_width="60px"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/editRelativeLayout"
             android:layout_marginRight="50px"
+            android:layout_toLeftOf="@id/editRelativeLayout"
             android:gravity="right">
 
             <ImageView
@@ -85,11 +84,118 @@
     </RelativeLayout>
 
 
-    <include
-        layout="@layout/view_media_controller"
+    <LinearLayout
+        android:id="@+id/controllers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"></include>
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:id="@+id/seekRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/play_controller_bg"
+            android:paddingLeft="30px"
+            android:paddingRight="30px">
+
+            <SeekBar
+                android:id="@+id/seekBar0"
+                android:layout_width="820px"
+                android:layout_height="100px"
+                android:max="100"
+                android:maxHeight="16dip"
+                android:minHeight="16dip"
+                android:progress="10"
+                android:progressDrawable="@drawable/play_controller_seekbar"
+                android:thumb="@drawable/bar_gray"
+                android:thumbOffset="13px" />
+
+            <TextView
+                android:id="@+id/timeTextView0"
+                android:layout_width="160px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40px"
+                android:gravity="center"
+                android:text="00:26:30"
+                android:textColor="#535353"
+                android:textSize="40px" />
+        </RelativeLayout>
+
+        <include
+            layout="@layout/view_media_controller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </include>
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/controllers"
+        android:layout_below="@id/titleRelativeLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/MultiPlayerContainer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical"></LinearLayout>
+
+                <ImageView
+                    android:id="@+id/playImageView"
+                    android:layout_width="186px"
+                    android:layout_height="185px"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_play" />
+
+            </RelativeLayout>
+
+            <ToggleButton
+                android:id="@+id/MultiPlayerSyncButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:checked="false"
+                android:textOff="同期 OFF"
+                android:textOn="同期 ON" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/MultiPlayerContainer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+
+                <ImageView
+                    android:id="@+id/playImageView2"
+                    android:layout_width="186px"
+                    android:layout_height="185px"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_play" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

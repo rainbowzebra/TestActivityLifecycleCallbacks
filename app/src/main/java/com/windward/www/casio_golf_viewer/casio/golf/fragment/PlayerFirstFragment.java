@@ -57,9 +57,8 @@ import java.util.TimerTask;
  *  GLES20.glClearColor(231, 231, 239, 255);
  *  一共有两处需要修改
  */
-public class PlayerFragment extends Fragment {
+public class PlayerFirstFragment extends Fragment {
 
-    private String TAG = "PlayerFragment";                                          // クラス名
     private double playerRate=1;
     public static final int STATUS_PAUSE = 0;                                       // 再生状態(一時停止)
     public static final int STATUS_PLAY = 1;                                        // 再生状態(再生)

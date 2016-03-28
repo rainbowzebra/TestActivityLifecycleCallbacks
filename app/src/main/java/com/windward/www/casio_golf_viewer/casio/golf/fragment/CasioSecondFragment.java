@@ -29,6 +29,7 @@ import android.widget.ListView;
 
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.activity.ChooseTwoVideoActivity;
+import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayTwoVideoActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.activity.PlayerBaseActivity;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.TwoVideosAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
@@ -98,9 +99,9 @@ public class CasioSecondFragment extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			ArrayList<ListItemInfo> videosArrayList= mList.get(position);
-			//跳转到fragment.
+			//跳转到Activity
 			if (null != mList && videosArrayList.size() > 0) {
-				Intent intent = new Intent(mContext, PlayerBaseActivity.class);
+				Intent intent = new Intent(mContext, PlayTwoVideoActivity.class);
 				Bundle bundle = new Bundle();
 				Iterator<ListItemInfo> iterator=videosArrayList.iterator();
 				ArrayList<String> playList = new ArrayList<String>();
