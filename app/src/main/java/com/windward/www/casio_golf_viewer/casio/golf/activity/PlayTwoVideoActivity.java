@@ -243,6 +243,8 @@ public class PlayTwoVideoActivity extends BaseActivity {
         }
         transaction.commit();
 
+
+
         //同期ボタンの生成とボタンの内容を記述
         mSyncBtn = (ToggleButton)findViewById((R.id.MultiPlayerSyncButton));
         mSyncBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -289,7 +291,6 @@ public class PlayTwoVideoActivity extends BaseActivity {
                     //ファイルが開けるまでループ
                     while (true) {
                         int status = player.openFile(videoPath);
-                        System.out.println("------------> videoPath="+videoPath+",status = "+status);
                         if(status == 0) {
                             //Log.d(TAG,"ファイルオープン成功");
                             break;
@@ -347,19 +348,21 @@ public class PlayTwoVideoActivity extends BaseActivity {
                 mMultiPlayerController = new MultiPlayerController(mContext);
             }
 
-            //同期状態の設定
-            if (mSyncBtn.isChecked()) {
-                //非同期設定
-                mMultiPlayerController.createSyncGroup(getSyncPlayerInfoList());
-            } else {
-                //同期解除設定
-                mMultiPlayerController.createSyncGroup(getNonSyncPlayerInfoList());
-            }
+
+            //默认地设置为同步播放.所以注释掉下面的代码
+            mMultiPlayerController.createSyncGroup(getSyncPlayerInfoList());
+
+//            //同期状態の設定
+//            if (mSyncBtn.isChecked()) {
+//                //非同期設定
+//                mMultiPlayerController.createSyncGroup(getSyncPlayerInfoList());
+//            } else {
+//                //同期解除設定
+//                mMultiPlayerController.createSyncGroup(getNonSyncPlayerInfoList());
+//            }
 
             for (int i = 0; i < mPlayerSecondFragmentList.size(); i++) {
-
                 PlayerSecondFragment player = mPlayerSecondFragmentList.get(i);
-
                 player.setTimeManager(mMultiPlayerController.getTimeManager());
                 player.setInstructionSyncController(mMultiPlayerController.getInstructionSyncController());
             }

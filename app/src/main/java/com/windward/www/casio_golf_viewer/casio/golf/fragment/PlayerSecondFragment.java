@@ -529,13 +529,6 @@ public class PlayerSecondFragment extends Fragment {
                                                   boolean aFromUser) {
                         long presentationTimeUs=(long) ((double) mVideoInfo.getDurationUs() * ((double) aProgress / (double) aSeekBar.getMax()));
 
-//                        long presentationTimeUs=0;
-//                        if (mVideoInfo!=null){
-//                            presentationTimeUs = (long) ((double) mVideoInfo.getDurationUs() * ((double) aProgress / (double) aSeekBar.getMax()));
-//                        } else {
-//                           System.out.println("-------------mVideoInfo=null-----------------");
-//                        }
-
 
                         if (aFromUser) {
 

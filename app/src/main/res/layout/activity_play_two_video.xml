@@ -171,6 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:checked="false"
+                android:visibility="gone"
                 android:textOff="同期 OFF"
                 android:textOn="同期 ON" />
 
