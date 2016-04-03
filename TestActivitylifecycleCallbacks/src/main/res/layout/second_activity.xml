@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cc.FirstActivity" >
+
+    <Button
+        android:id="@+id/openNewActivityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="open new Activity" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/openNewActivityButton"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="50dip"
+        android:textSize="20sp"
+        android:textColor="@android:color/holo_red_light"
+        android:text="This is the second Activity" />
+
+    <Button
+        android:id="@+id/finishThisActivityButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/openNewActivityButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dip"
+        android:text="finish this activity" />
+
+</RelativeLayout>
