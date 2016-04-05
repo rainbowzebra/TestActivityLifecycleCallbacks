@@ -201,7 +201,7 @@ public class VideoUtils {
             try {
                 ArrayList<String> daysList = new ArrayList<String>();
                 ArrayList<ListItemInfo> fixedArrayList = new ArrayList<ListItemInfo>();
-                //对原视频排序,否则可能出现顺序的错乱
+                //对原视频排序,否则可能出现顺序的错乱.丹san三星机子会报错，可注释掉该排序
                 Collections.sort(arrayList, new Comparator<ListItemInfo>() {
                     @Override
                     public int compare(ListItemInfo lhs, ListItemInfo rhs) {
