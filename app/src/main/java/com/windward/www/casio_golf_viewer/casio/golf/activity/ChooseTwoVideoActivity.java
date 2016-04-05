@@ -6,13 +6,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
-
 import com.windward.www.casio_golf_viewer.R;
 import com.windward.www.casio_golf_viewer.casio.golf.adapter.VideoGridViewAdapter;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 import com.windward.www.casio_golf_viewer.casio.golf.util.ToastUtil;
 import com.windward.www.casio_golf_viewer.casio.golf.util.VideoUtils;
-
 import java.util.ArrayList;
 
 public class ChooseTwoVideoActivity extends BaseActivity {

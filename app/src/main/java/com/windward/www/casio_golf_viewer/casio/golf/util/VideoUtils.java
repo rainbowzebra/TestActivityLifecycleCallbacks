@@ -1,6 +1,5 @@
 package com.windward.www.casio_golf_viewer.casio.golf.util;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,13 +14,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-import java.io.FileOutputStream;
-import java.util.Comparator;
 import com.windward.www.casio_golf_viewer.casio.golf.entity.ListItemInfo;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class VideoUtils {
         // 取得视频的长度(单位为秒)
         int seconds = Integer.valueOf(time) / 1000;
         // 得到第一秒的图片
-        Bitmap bitmap = retriever.getFrameAtTime(1*1000*1000,MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+        Bitmap bitmap = retriever.getFrameAtTime(1 * 1000 * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
         return bitmap;
     }
 
@@ -149,7 +147,7 @@ public class VideoUtils {
             }
         }
 
-        System.out.println("----44---->data="+data);
+        System.out.println("----44---->data=" + data);
         return data;
     }
 
@@ -198,38 +196,41 @@ public class VideoUtils {
 
 
     //整理List
-    public ArrayList<ListItemInfo> fixVideoArrayList(Context context,ArrayList<ListItemInfo> arrayList){
-        ArrayList<String> daysList=new ArrayList<String>();
-        ArrayList<ListItemInfo> fixedArrayList=new ArrayList<ListItemInfo>();
+    public ArrayList<ListItemInfo> fixVideoArrayList(Context context,ArrayList<ListItemInfo> arrayList) {
+        if (null != arrayList) {
+            try {
+                ArrayList<String> daysList = new ArrayList<String>();
+                ArrayList<ListItemInfo> fixedArrayList = new ArrayList<ListItemInfo>();
+                //对原视频排序,否则可能出现顺序的错乱
+                Collections.sort(arrayList, new Comparator<ListItemInfo>() {
+                    @Override
+                    public int compare(ListItemInfo lhs, ListItemInfo rhs) {
+                        return -(lhs.getmTime().compareTo(rhs.getmTime()));
+                    }
+                });
 
-        //对原视频排序,否则可能出现顺序的错乱
-        Collections.sort(arrayList, new Comparator<ListItemInfo>() {
-            @Override
-            public int compare(ListItemInfo lhs, ListItemInfo rhs) {
 
-                return -(lhs.getmTime().compareTo(rhs.getmTime()));
+                for (int i = 0; i < arrayList.size(); i++) {
+                    ListItemInfo listItemInfo = arrayList.get(i);
+                    if (!daysList.contains(listItemInfo.getmDay())) {
+                        daysList.add(listItemInfo.getmDay());
+                        ListItemInfo l = new ListItemInfo(context, listItemInfo.getFilePath());
+                        l.setmDay(listItemInfo.getmDay());
+                        l.setIsShowVideo(false);
+                        fixedArrayList.add(l);
+                        fixedArrayList.add(listItemInfo);
+                    } else {
+                        fixedArrayList.add(listItemInfo);
+                    }
+                }
+                mFixedArrayList = fixedArrayList;
+                return fixedArrayList;
+            } catch (Exception e) {
+                return null;
             }
-        });
-
-
-        for(int i=0;i<arrayList.size();i++){
-            ListItemInfo listItemInfo=arrayList.get(i);
-            if(!daysList.contains(listItemInfo.getmDay())){
-                daysList.add(listItemInfo.getmDay());
-                ListItemInfo l=new ListItemInfo(context,listItemInfo.getFilePath());
-                l.setmDay(listItemInfo.getmDay());
-                l.setIsShowVideo(false);
-                fixedArrayList.add(l);
-                fixedArrayList.add(listItemInfo);
-            }else {
-                fixedArrayList.add(listItemInfo);
-            }
+        } else {
+            return null;
         }
-
-       mFixedArrayList=fixedArrayList;
-
-        return fixedArrayList;
-
     }
 
 
@@ -252,8 +253,10 @@ public class VideoUtils {
 
     //获取设备中的视频
     public ArrayList<ListItemInfo> getVideoList(Context context){
-        if(checkFilePath()){
+        try{
 
+
+        if(checkFilePath()){
         mMovieList = new ArrayList<ListItemInfo>();
         File[] files = new File(String.valueOf(DCIM_FILES) + MOVIE_DIR).listFiles();
         //File[] files =new File("/storage/extSdCard/DCIM/Camera").listFiles();//三星专用
@@ -274,6 +277,9 @@ public class VideoUtils {
         }
         }
         return mMovieList;
+        }catch (Exception e){
+            return null;
+        }
     }
 
 
